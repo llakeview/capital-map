@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>신뢰 뉴스 - Capital Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--bg2:#12121a;--card:#1a1a2e;--border:#2a2a40;--text:#e8e8e8;--text2:#999;--gold:#ffd700;--cyan:#00d4ff;--green:#00d26a;--red:#ff4757;--orange:#ff9f43}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.nav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(15,15,26,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:1000}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.nav-logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:8px}
+.nav-link{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:500;transition:.2s}
+.nav-link:hover{color:var(--text);background:var(--card)}
+.nav-link.active{color:var(--gold);background:rgba(255,215,0,.1)}
+.main{padding-top:80px}
+.container{max-width:1200px;margin:0 auto;padding:0 20px 60px}
+.page-header{text-align:center;padding:20px 0}
+.page-title{font-size:28px;font-weight:700;margin-bottom:8px}
+.page-subtitle{color:var(--text2);font-size:14px}
+.disclaimer{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin:20px 0;font-size:12px;color:var(--text2);line-height:1.8}
+.disclaimer strong{color:var(--gold)}
+.section-title{font-size:18px;font-weight:700;margin:32px 0 16px;padding-left:12px;border-left:4px solid var(--gold)}
+.source-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.source-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;text-decoration:none;color:inherit;transition:.2s;display:block}
+.source-card:hover{border-color:var(--cyan)}
+.source-name{font-size:15px;font-weight:700;margin-bottom:4px}
+.source-country{font-size:11px;color:var(--cyan);margin-bottom:8px}
+.source-desc{font-size:11px;color:var(--text2);line-height:1.7}
+.tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:9px;font-weight:600;margin-right:4px;margin-top:8px}
+.tag-wire{background:rgba(0,212,255,.15);color:var(--cyan)}
+.tag-public{background:rgba(0,210,106,.15);color:var(--green)}
+.tag-financial{background:rgba(255,215,0,.15);color:var(--gold)}
+.tag-factcheck{background:rgba(138,43,226,.15);color:#9b59b6}
+</style>
+</head>
+<body>
+<nav class="nav">
+<a href="index.html" class="nav-logo"><div class="nav-logo-icon">💰</div><span class="nav-logo-text">CAPITAL MAP</span></a>
+<div class="nav-links">
+<a href="index.html" class="nav-link">대시보드</a>
+<a href="flow.html" class="nav-link">연결관계</a>
+<a href="map.html" class="nav-link">세계지도</a>
+<a href="industry.html" class="nav-link">산업해부</a>
+<a href="institutions.html" class="nav-link">기관/제도</a>
+<a href="news.html" class="nav-link active">뉴스</a>
+<a href="timeline.html" class="nav-link">역사</a>
+</div>
+</nav>
+<main class="main">
+<div class="container">
+<div class="page-header">
+<h1 class="page-title">📰 신뢰할 수 있는 뉴스</h1>
+<p class="page-subtitle">팩트 중심, 편향 최소화 — 검증된 언론사와 데이터 출처</p>
+</div>
+
+<div class="disclaimer">
+<strong>⚠️ 편향에 대하여:</strong> 모든 언론사는 어느 정도 편향을 가집니다. 여러 소스를 교차 확인하세요.
+</div>
+
+<h2 class="section-title">📡 통신사 (Wire Services)</h2>
+<p style="color:var(--text2);font-size:12px;margin-bottom:16px">가장 팩트 중심. 다른 언론사에 뉴스를 공급하는 원천.</p>
+<div class="source-grid">
+<a href="https://www.reuters.com" target="_blank" class="source-card">
+<div class="source-name">Reuters</div>
+<div class="source-country">🇬🇧 영국</div>
+<div class="source-desc">세계 최대 통신사. 팩트 중심 보도의 표준.</div>
+<span class="tag tag-wire">통신사</span><span class="tag tag-financial">금융</span>
+</a>
+<a href="https://apnews.com" target="_blank" class="source-card">
+<div class="source-name">AP (Associated Press)</div>
+<div class="source-country">🇺🇸 미국</div>
+<div class="source-desc">1846년 설립. 비영리. 팩트체크 선도.</div>
+<span class="tag tag-wire">통신사</span><span class="tag tag-factcheck">팩트체크</span>
+</a>
+<a href="https://www.afp.com" target="_blank" class="source-card">
+<div class="source-name">AFP</div>
+<div class="source-country">🇫🇷 프랑스</div>
+<div class="source-desc">세계 3대 통신사. 유럽/중동 취재 강점.</div>
+<span class="tag tag-wire">통신사</span>
+</a>
+</div>
+
+<h2 class="section-title">🏛️ 공영방송</h2>
+<div class="source-grid">
+<a href="https://www.bbc.com/news" target="_blank" class="source-card">
+<div class="source-name">BBC</div>
+<div class="source-country">🇬🇧 영국</div>
+<div class="source-desc">세계에서 가장 신뢰받는 뉴스 브랜드.</div>
+<span class="tag tag-public">공영</span>
+</a>
+<a href="https://www.npr.org" target="_blank" class="source-card">
+<div class="source-name">NPR</div>
+<div class="source-country">🇺🇸 미국</div>
+<div class="source-desc">미국 공영라디오. 심층 분석.</div>
+<span class="tag tag-public">공영</span>
+</a>
+<a href="https://www3.nhk.or.jp/nhkworld/" target="_blank" class="source-card">
+<div class="source-name">NHK World</div>
+<div class="source-country">🇯🇵 일본</div>
+<div class="source-desc">일본 공영. 아시아 뉴스 강점.</div>
+<span class="tag tag-public">공영</span>
+</a>
+<a href="https://www.dw.com" target="_blank" class="source-card">
+<div class="source-name">Deutsche Welle</div>
+<div class="source-country">🇩🇪 독일</div>
+<div class="source-desc">독일 국제방송. 유럽 시각.</div>
+<span class="tag tag-public">공영</span>
+</a>
+</div>
+
+<h2 class="section-title">💰 경제/금융 전문지</h2>
+<div class="source-grid">
+<a href="https://www.ft.com" target="_blank" class="source-card">
+<div class="source-name">Financial Times</div>
+<div class="source-country">🇬🇧 영국</div>
+<div class="source-desc">세계 최고 경제지. 글로벌 금융의 기준.</div>
+<span class="tag tag-financial">경제지</span>
+</a>
+<a href="https://www.wsj.com" target="_blank" class="source-card">
+<div class="source-name">Wall Street Journal</div>
+<div class="source-country">🇺🇸 미국</div>
+<div class="source-desc">미국 최대 경제지. 뉴스는 중립적.</div>
+<span class="tag tag-financial">경제지</span>
+</a>
+<a href="https://www.bloomberg.com" target="_blank" class="source-card">
+<div class="source-name">Bloomberg</div>
+<div class="source-country">🇺🇸 미국</div>
+<div class="source-desc">실시간 시장 뉴스. 데이터 기반.</div>
+<span class="tag tag-financial">경제지</span>
+</a>
+<a href="https://www.economist.com" target="_blank" class="source-card">
+<div class="source-name">The Economist</div>
+<div class="source-country">🇬🇧 영국</div>
+<div class="source-desc">주간지. 심층 분석. 자유주의 성향.</div>
+<span class="tag tag-financial">경제지</span>
+</a>
+</div>
+
+<h2 class="section-title">🇰🇷 한국 언론</h2>
+<div class="source-grid">
+<a href="https://www.yna.co.kr" target="_blank" class="source-card">
+<div class="source-name">연합뉴스</div>
+<div class="source-country">🇰🇷 한국</div>
+<div class="source-desc">한국 대표 통신사. 상대적 중립.</div>
+<span class="tag tag-wire">통신사</span>
+</a>
+<a href="https://www.hankyung.com" target="_blank" class="source-card">
+<div class="source-name">한국경제</div>
+<div class="source-country">🇰🇷 한국</div>
+<div class="source-desc">경제 전문지. 시장 친화적.</div>
+<span class="tag tag-financial">경제지</span>
+</a>
+<a href="https://www.mk.co.kr" target="_blank" class="source-card">
+<div class="source-name">매일경제</div>
+<div class="source-country">🇰🇷 한국</div>
+<div class="source-desc">종합 경제지. 기업 뉴스 강점.</div>
+<span class="tag tag-financial">경제지</span>
+</a>
+</div>
+
+<h2 class="section-title">✅ 팩트체크 기관</h2>
+<div class="source-grid">
+<a href="https://www.factcheck.org" target="_blank" class="source-card">
+<div class="source-name">FactCheck.org</div>
+<div class="source-country">🇺🇸 미국</div>
+<div class="source-desc">펜실베니아 대학 운영. 정치인 발언 검증.</div>
+<span class="tag tag-factcheck">팩트체크</span>
+</a>
+<a href="https://www.snopes.com" target="_blank" class="source-card">
+<div class="source-name">Snopes</div>
+<div class="source-country">🇺🇸 미국</div>
+<div class="source-desc">가장 오래된 팩트체크 사이트.</div>
+<span class="tag tag-factcheck">팩트체크</span>
+</a>
+<a href="https://factcheck.snu.ac.kr" target="_blank" class="source-card">
+<div class="source-name">SNU 팩트체크</div>
+<div class="source-country">🇰🇷 한국</div>
+<div class="source-desc">서울대 언론정보연구소. 한국 뉴스 검증.</div>
+<span class="tag tag-factcheck">팩트체크</span>
+</a>
+</div>
+
+<h2 class="section-title">📊 공식 데이터 출처</h2>
+<p style="color:var(--text2);font-size:12px;margin-bottom:16px">가공되지 않은 원본 데이터. 1차 자료.</p>
+<div class="source-grid">
+<a href="https://fred.stlouisfed.org" target="_blank" class="source-card">
+<div class="source-name">FRED</div>
+<div class="source-country">🇺🇸 세인트루이스 연준</div>
+<div class="source-desc">미국 경제 데이터의 보고. 무료.</div>
+</a>
+<a href="https://data.worldbank.org" target="_blank" class="source-card">
+<div class="source-name">World Bank Data</div>
+<div class="source-country">🌍 세계은행</div>
+<div class="source-desc">전 세계 개발 지표. GDP, 인구 등.</div>
+</a>
+<a href="https://data.imf.org" target="_blank" class="source-card">
+<div class="source-name">IMF Data</div>
+<div class="source-country">🏦 IMF</div>
+<div class="source-desc">세계 경제 전망, 국가별 지표.</div>
+</a>
+<a href="https://tradingeconomics.com" target="_blank" class="source-card">
+<div class="source-name">Trading Economics</div>
+<div class="source-country">🌐 글로벌</div>
+<div class="source-desc">전 세계 경제 지표 종합.</div>
+</a>
+<a href="https://kosis.kr" target="_blank" class="source-card">
+<div class="source-name">KOSIS</div>
+<div class="source-country">🇰🇷 통계청</div>
+<div class="source-desc">한국 국가 공식 통계 포털.</div>
+</a>
+<a href="https://ecos.bok.or.kr" target="_blank" class="source-card">
+<div class="source-name">ECOS</div>
+<div class="source-country">🇰🇷 한국은행</div>
+<div class="source-desc">금융/통화 데이터.</div>
+</a>
+</div>
+
+</div>
+</main>
+</body>
+</html>
