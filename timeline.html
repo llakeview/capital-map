@@ -1,158 +1,732 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>역사 타임라인 - Capital Map</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        :root{--bg:#0a0a0f;--bg2:#0f0f1a;--card:#1a1a2e;--border:#252540;--text:#e0e0e0;--text2:#888;--gold:#ffd700;--cyan:#00d9ff;--green:#00d26a;--red:#ff4757;--orange:#ff9f43}
-        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-        .nav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(15,15,26,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:1000}
-        .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
-        .nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
-        .nav-logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .nav-links{display:flex;gap:8px}
-        .nav-link{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:500;transition:.2s}
-        .nav-link:hover{color:var(--text);background:var(--card)}
-        .nav-link.active{color:var(--gold);background:rgba(255,215,0,.1)}
-        .main{padding-top:80px}.container{max-width:900px;margin:0 auto;padding:0 30px 60px}
-        .page-header{text-align:center;padding:30px 0}
-        .page-title{font-size:36px;font-weight:700;margin-bottom:12px}
-        .page-subtitle{color:var(--text2);font-size:16px}
-        .timeline{position:relative;padding:40px 0}
-        .timeline::before{content:'';position:absolute;left:50%;transform:translateX(-50%);width:2px;height:100%;background:var(--border)}
-        .event{position:relative;margin-bottom:60px;width:45%;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;transition:.3s}
-        .event:hover{border-color:var(--cyan);transform:translateY(-4px)}
-        .event:nth-child(odd){margin-left:5%}
-        .event:nth-child(even){margin-left:50%}
-        .event::before{content:'';position:absolute;top:30px;width:16px;height:16px;background:var(--gold);border-radius:50%;border:3px solid var(--bg)}
-        .event:nth-child(odd)::before{right:-38px}
-        .event:nth-child(even)::before{left:-38px}
-        .event-year{font-size:32px;font-weight:700;color:var(--gold);margin-bottom:8px}
-        .event-title{font-size:18px;font-weight:600;margin-bottom:12px}
-        .event-desc{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:16px}
-        .event-impact{background:var(--card);border-radius:8px;padding:14px}
-        .event-impact-title{font-size:11px;color:var(--cyan);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600}
-        .event-impact-text{font-size:12px;color:var(--text2);line-height:1.6}
-        @media(max-width:768px){
-            .timeline::before{left:20px}
-            .event{width:calc(100% - 50px);margin-left:50px!important}
-            .event::before{left:-38px!important}
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>자본주의 역사 - Capital Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--bg2:#12121a;--card:#1a1a2e;--border:#2a2a40;--text:#e8e8e8;--text2:#999;--gold:#ffd700;--cyan:#00d4ff;--green:#00d26a;--red:#ff4757;--orange:#ff9f43}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.nav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(15,15,26,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:1000}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.nav-logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:8px}
+.nav-link{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:500;transition:.2s}
+.nav-link:hover{color:var(--text);background:var(--card)}
+.nav-link.active{color:var(--gold);background:rgba(255,215,0,.1)}
+.main{padding-top:80px}
+.container{max-width:1000px;margin:0 auto;padding:0 20px 60px}
+.page-header{text-align:center;padding:30px 0 20px}
+.page-title{font-size:28px;font-weight:700;margin-bottom:8px}
+.page-subtitle{color:var(--text2);font-size:14px}
+.era-tabs{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:30px}
+.era-tab{padding:10px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:.2s}
+.era-tab:hover{border-color:var(--cyan)}
+.era-tab.active{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.1)}
+.era-panel{display:none}
+.era-panel.active{display:block}
+.timeline{position:relative;padding-left:30px}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--border)}
+.event{position:relative;margin-bottom:24px;padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:12px}
+.event::before{content:'';position:absolute;left:-26px;top:24px;width:12px;height:12px;border-radius:50%;background:var(--gold);border:3px solid var(--bg)}
+.event.war::before{background:var(--red)}
+.event.crisis::before{background:var(--orange)}
+.event.boom::before{background:var(--green)}
+.event.policy::before{background:var(--cyan)}
+.event-year{font-size:13px;color:var(--gold);font-weight:700;margin-bottom:6px}
+.event.war .event-year{color:var(--red)}
+.event.crisis .event-year{color:var(--orange)}
+.event.boom .event-year{color:var(--green)}
+.event.policy .event-year{color:var(--cyan)}
+.event-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.event-desc{font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:12px}
+.event-detail{background:var(--card);border-radius:8px;padding:14px;margin-top:12px}
+.event-detail-title{font-size:11px;color:var(--cyan);font-weight:600;margin-bottom:8px}
+.event-detail-text{font-size:11px;color:var(--text2);line-height:1.8}
+.event-impact{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.impact{padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600}
+.impact-up{background:rgba(0,210,106,.15);color:var(--green)}
+.impact-down{background:rgba(255,71,87,.15);color:var(--red)}
+.impact-mixed{background:rgba(255,159,67,.15);color:var(--orange)}
+.legend{display:flex;justify-content:center;gap:20px;margin-bottom:24px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2)}
+.legend-dot{width:10px;height:10px;border-radius:50%}
+.legend-dot.war{background:var(--red)}
+.legend-dot.crisis{background:var(--orange)}
+.legend-dot.boom{background:var(--green)}
+.legend-dot.policy{background:var(--cyan)}
+</style>
 </head>
 <body>
-    <nav class="nav">
-        <a href="index.html" class="nav-logo"><div class="nav-logo-icon">💰</div><span class="nav-logo-text">CAPITAL MAP</span></a>
-        <div class="nav-links">
-            <a href="index.html" class="nav-link">대시보드</a>
-            <a href="flow.html" class="nav-link">연결관계</a>
-            <a href="map.html" class="nav-link">세계지도</a>
-            <a href="industry.html" class="nav-link">산업해부</a>
-            <a href="timeline.html" class="nav-link active">역사</a>
-            <a href="dealers.html" class="nav-link">딜러구조</a>
-        </div>
-    </nav>
+<nav class="nav">
+<a href="index.html" class="nav-logo"><div class="nav-logo-icon">💰</div><span class="nav-logo-text">CAPITAL MAP</span></a>
+<div class="nav-links">
+<a href="index.html" class="nav-link">대시보드</a>
+<a href="flow.html" class="nav-link">연결관계</a>
+<a href="map.html" class="nav-link">세계지도</a>
+<a href="industry.html" class="nav-link">산업해부</a>
+<a href="timeline.html" class="nav-link active">역사</a>
+<a href="dealers.html" class="nav-link">딜러구조</a>
+</div>
+</nav>
+<main class="main">
+<div class="container">
+<div class="page-header">
+<h1 class="page-title">📜 자본주의 역사</h1>
+<p class="page-subtitle">전쟁, 위기, 혁신 — 돈의 흐름을 바꾼 결정적 순간들</p>
+</div>
 
-    <main class="main"><div class="container">
-        <div class="page-header">
-            <h1 class="page-title">📜 돈의 역사</h1>
-            <p class="page-subtitle">역사가 반복되는 이유 — 돈의 흐름이 역사를 만든다</p>
-        </div>
+<div class="legend">
+<div class="legend-item"><div class="legend-dot war"></div>전쟁/갈등</div>
+<div class="legend-item"><div class="legend-dot crisis"></div>금융위기</div>
+<div class="legend-item"><div class="legend-dot boom"></div>호황/혁신</div>
+<div class="legend-item"><div class="legend-dot policy"></div>정책/제도</div>
+</div>
 
-        <div class="timeline">
-            <div class="event">
-                <div class="event-year">1944</div>
-                <div class="event-title">브레튼우즈 체제</div>
-                <div class="event-desc">2차 세계대전 종전 직전, 44개국이 미국 뉴햄프셔주 브레튼우즈에서 회의. 달러를 금에 고정(1온스=$35), 다른 통화는 달러에 고정.</div>
-                <div class="event-impact">
-                    <div class="event-impact-title">영향</div>
-                    <div class="event-impact-text">달러가 세계 기축통화로 등극. 미국 금융 패권의 시작. IMF, 세계은행 설립.</div>
-                </div>
-            </div>
+<div class="era-tabs">
+<button class="era-tab active" data-era="origin">태동 (1600~1900)</button>
+<button class="era-tab" data-era="worldwar">세계대전 (1900~1950)</button>
+<button class="era-tab" data-era="coldwar">냉전시대 (1950~1990)</button>
+<button class="era-tab" data-era="global">세계화 (1990~2010)</button>
+<button class="era-tab" data-era="modern">현대 (2010~현재)</button>
+</div>
 
-            <div class="event">
-                <div class="event-year">1971</div>
-                <div class="event-title">닉슨 쇼크</div>
-                <div class="event-desc">닉슨 대통령이 달러-금 태환 정지 선언. 베트남 전쟁 비용으로 달러 남발 → 금 유출 → 더 이상 못 버팀.</div>
-                <div class="event-impact">
-                    <div class="event-impact-title">영향</div>
-                    <div class="event-impact-text">달러 = 신뢰 기반 화폐로 전환. 변동환율제 시작. 인플레이션 시대 개막.</div>
-                </div>
-            </div>
+<!-- 태동기 -->
+<div class="era-panel active" id="origin">
+<div class="timeline">
+<div class="event boom">
+<div class="event-year">1602</div>
+<div class="event-title">🇳🇱 네덜란드 동인도회사 (VOC) 설립</div>
+<div class="event-desc">세계 최초의 주식회사. 암스테르담 증권거래소에서 주식 거래 시작. 현대 자본주의의 시작점.</div>
+<div class="event-detail">
+<div class="event-detail-title">💡 의미</div>
+<div class="event-detail-text">• 최초의 IPO (기업공개)<br>• 유한책임 개념 도입 — 투자자는 투자금만 잃음<br>• 소유와 경영의 분리 시작<br>• 주식 양도를 통한 유동성 확보</div>
+</div>
+</div>
 
-            <div class="event">
-                <div class="event-year">1973</div>
-                <div class="event-title">1차 오일쇼크</div>
-                <div class="event-desc">중동 전쟁 → OPEC 석유 금수 조치. 유가 4배 폭등 ($3→$12).</div>
-                <div class="event-impact">
-                    <div class="event-impact-title">영향</div>
-                    <div class="event-impact-text">페트로달러 체제 성립 (석유 = 달러 결제). 스태그플레이션. 달러 인덱스 기준점(=100) 설정.</div>
-                </div>
-            </div>
+<div class="event crisis">
+<div class="event-year">1637</div>
+<div class="event-title">🌷 튤립 버블 붕괴</div>
+<div class="event-desc">네덜란드 튤립 가격이 숙련 노동자 연봉의 10배까지 폭등 후 95% 폭락. 인류 최초의 투기 버블.</div>
+<div class="event-detail">
+<div class="event-detail-title">📊 버블의 구조</div>
+<div class="event-detail-text">• 희귀 튤립 구근 1개 = 암스테르담 운하변 저택 가격<br>• 선물계약(futures)으로 실물 없이 거래<br>• 3개월 만에 95% 폭락<br>• 교훈: 내재가치 없는 자산의 투기</div>
+</div>
+</div>
 
-            <div class="event">
-                <div class="event-year">1985</div>
-                <div class="event-title">플라자 합의</div>
-                <div class="event-desc">미국 무역적자 심화 → G5가 달러 약세 유도 합의. 엔화, 마르크 강세.</div>
-                <div class="event-impact">
-                    <div class="event-impact-title">영향</div>
-                    <div class="event-impact-text">일본 엔화 급등 → 수출 타격 → 금리 인하 → 부동산/주식 버블 → 1990년대 일본 잃어버린 30년의 씨앗.</div>
-                </div>
-            </div>
+<div class="event policy">
+<div class="event-year">1694</div>
+<div class="event-title">🇬🇧 영란은행 설립</div>
+<div class="event-desc">세계 최초의 중앙은행. 정부에 대출하고 화폐 발행권 획득. 현대 중앙은행 시스템의 원형.</div>
+<div class="event-detail">
+<div class="event-detail-title">💡 중앙은행의 탄생</div>
+<div class="event-detail-text">• 9년 전쟁 자금 조달 목적<br>• 정부 채권 인수 → 화폐 발행권<br>• "최종 대부자" 역할의 시작<br>• 파운드 스털링의 국제 기축통화화</div>
+</div>
+</div>
 
-            <div class="event">
-                <div class="event-year">1997</div>
-                <div class="event-title">아시아 금융위기</div>
-                <div class="event-desc">태국 바트화 폭락 시작 → 동남아 전역 확산 → 한국 외환보유고 바닥 → IMF 구제금융.</div>
-                <div class="event-impact">
-                    <div class="event-impact-title">영향</div>
-                    <div class="event-impact-text">한국: 기업 구조조정, 정리해고 일상화, 비정규직 확대. "IMF 세대" 트라우마. 외환보유고 중요성 각인.</div>
-                </div>
-            </div>
+<div class="event boom">
+<div class="event-year">1776</div>
+<div class="event-title">📖 애덤 스미스 「국부론」</div>
+<div class="event-desc">"보이지 않는 손"으로 시장경제를 설명. 자유방임주의 경제학의 시작.</div>
+<div class="event-detail">
+<div class="event-detail-title">📚 핵심 개념</div>
+<div class="event-detail-text">• 분업(Division of Labor) → 생산성 혁명<br>• 보이지 않는 손 → 시장의 자율 조정<br>• 자유무역의 이론적 기반<br>• 중상주의 비판 → 자본주의 이론 체계화</div>
+</div>
+</div>
 
-            <div class="event">
-                <div class="event-year">2008</div>
-                <div class="event-title">글로벌 금융위기</div>
-                <div class="event-desc">미국 서브프라임 모기지 부실 → 리먼 브라더스 파산 → 파생상품 연쇄 폭발 → 전 세계 금융시스템 마비.</div>
-                <div class="event-impact">
-                    <div class="event-impact-title">영향</div>
-                    <div class="event-impact-text">양적완화(QE) 시대 개막. 제로금리. 자산 가격 인플레. "Too Big to Fail" 논쟁. 중앙은행 역할 확대.</div>
-                </div>
-            </div>
+<div class="event war">
+<div class="event-year">1776</div>
+<div class="event-title">🇺🇸 미국 독립전쟁 (1775~1783)</div>
+<div class="event-desc">영국으로부터 독립. 신생 미국은 전쟁 비용 조달을 위해 대륙회의 채권 발행 — 미국 국채의 시작.</div>
+<div class="event-impact">
+<span class="impact impact-up">미국 탄생</span>
+<span class="impact impact-mixed">국채 시스템</span>
+</div>
+</div>
 
-            <div class="event">
-                <div class="event-year">2020</div>
-                <div class="event-title">코로나 팬데믹</div>
-                <div class="event-desc">전 세계 봉쇄 → 경제 급정지 → Fed 무제한 양적완화 → 역대급 유동성 공급.</div>
-                <div class="event-impact">
-                    <div class="event-impact-title">영향</div>
-                    <div class="event-impact-text">주식/부동산/크립토 폭등. 동학개미 탄생. 이후 인플레 폭발의 씨앗.</div>
-                </div>
-            </div>
+<div class="event boom">
+<div class="event-year">1769~1840</div>
+<div class="event-title">🏭 영국 산업혁명</div>
+<div class="event-desc">증기기관, 방적기, 철도. 농업사회 → 산업사회 대전환. 자본가 계급의 등장.</div>
+<div class="event-detail">
+<div class="event-detail-title">💡 경제적 의미</div>
+<div class="event-detail-text">• 대량생산 → 규모의 경제<br>• 공장제 → 임금노동자 계급 형성<br>• 철도 → 최초의 대규모 주식투자 붐<br>• 영국 = 세계의 공장 (GDP 세계 1위)</div>
+</div>
+</div>
 
-            <div class="event">
-                <div class="event-year">2022</div>
-                <div class="event-title">인플레 + 우크라이나</div>
-                <div class="event-desc">러시아 우크라이나 침공 → 에너지 위기 → 40년 만의 인플레 → Fed 역대급 금리 인상 (0%→5.25%).</div>
-                <div class="event-impact">
-                    <div class="event-impact-title">영향</div>
-                    <div class="event-impact-text">주식/채권/부동산 동반 하락. 달러 초강세. 원화 1,440원. 글로벌 공급망 재편. 탈세계화 가속.</div>
-                </div>
-            </div>
+<div class="event policy">
+<div class="event-year">1792</div>
+<div class="event-title">🇺🇸 뉴욕증권거래소(NYSE) 설립</div>
+<div class="event-desc">월스트리트 버튼우드 나무 아래서 24명의 브로커가 협정. 세계 최대 증권거래소의 시작.</div>
+</div>
 
-            <div class="event">
-                <div class="event-year">2024~</div>
-                <div class="event-title">현재: 전환기</div>
-                <div class="event-desc">금리 고점 논쟁. AI 혁명. 미중 디커플링. 탈달러 시도. 새로운 질서 형성 중.</div>
-                <div class="event-impact">
-                    <div class="event-impact-title">주목 포인트</div>
-                    <div class="event-impact-text">Fed 피벗 시점, 중국 경기, 지정학 리스크, AI가 바꿀 생산성, 기축통화 체제의 미래.</div>
-                </div>
-            </div>
-        </div>
-    </div></main>
+<div class="event war">
+<div class="event-year">1803~1815</div>
+<div class="event-title">⚔️ 나폴레옹 전쟁</div>
+<div class="event-desc">유럽 전역을 휩쓴 대전쟁. 영국은 막대한 전비 조달을 위해 국채 대량 발행. 로스차일드 가문의 부상.</div>
+<div class="event-detail">
+<div class="event-detail-title">💰 로스차일드의 교훈</div>
+<div class="event-detail-text">• 워털루 전투 결과를 먼저 알고 영국 국채 매집<br>• "전쟁의 승자는 총을 든 자가 아니라 돈을 빌려준 자"<br>• 국제 금융 네트워크의 위력 입증<br>• 정보의 비대칭 = 금융 권력</div>
+</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">1844</div>
+<div class="event-title">🇬🇧 필 은행법 (Bank Charter Act)</div>
+<div class="event-desc">영란은행에 독점적 화폐 발행권 부여. 금본위제 법제화. 현대 통화정책의 기원.</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">1857</div>
+<div class="event-title">💥 1857년 공황 — 최초의 글로벌 금융위기</div>
+<div class="event-desc">미국 철도 버블 붕괴 → 영국, 유럽으로 전염. 전신의 발달로 위기가 실시간 전파된 최초 사례.</div>
+<div class="event-impact">
+<span class="impact impact-down">미국 은행 파산</span>
+<span class="impact impact-down">영국 신용경색</span>
+</div>
+</div>
+
+<div class="event war">
+<div class="event-year">1861~1865</div>
+<div class="event-title">🇺🇸 미국 남북전쟁</div>
+<div class="event-desc">노예제를 둘러싼 내전. 전비 조달을 위해 그린백(Greenback) 지폐 발행. 미국 최초의 법정화폐.</div>
+<div class="event-detail">
+<div class="event-detail-title">💵 그린백의 유산</div>
+<div class="event-detail-text">• 금 태환 없는 정부 발행 화폐<br>• 인플레이션 발생 → 전후 디플레이션<br>• 국가 채무 $65M → $2.7B (40배 증가)<br>• 연방정부 재정권한 강화</div>
+</div>
+</div>
+
+<div class="event boom">
+<div class="event-year">1870~1914</div>
+<div class="event-title">🌐 제1차 세계화 (Globalization 1.0)</div>
+<div class="event-desc">금본위제 확산, 자유무역, 대규모 이민. 세계 무역량 10배 증가. 런던이 세계 금융의 중심.</div>
+<div class="event-detail">
+<div class="event-detail-title">📊 수치로 보는 세계화</div>
+<div class="event-detail-text">• 세계 무역/GDP 비율: 5% → 17%<br>• 유럽→미국 이민: 5,000만 명<br>• 영국 해외투자: GDP의 180%<br>• 금본위제 채택국: 주요국 전부</div>
+</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">1873</div>
+<div class="event-title">💥 1873년 대공황 (Long Depression)</div>
+<div class="event-desc">비엔나 증시 붕괴 → 미국/유럽 불황. 23년간 지속된 장기 침체. "대공황"이라는 용어의 원조.</div>
+<div class="event-impact">
+<span class="impact impact-down">디플레이션 20년</span>
+<span class="impact impact-mixed">보호무역 부상</span>
+</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">1913</div>
+<div class="event-title">🇺🇸 연방준비제도(Fed) 설립</div>
+<div class="event-desc">1907년 공황 후 JP모건의 개인 구제에 의존한 것을 반성, 중앙은행 설립. 달러 패권의 제도적 기반.</div>
+<div class="event-detail">
+<div class="event-detail-title">🏦 Fed의 구조</div>
+<div class="event-detail-text">• 12개 지역 연방준비은행<br>• 민간 은행이 지분 보유 (독특한 구조)<br>• 이중 책무: 물가 안정 + 완전 고용<br>• 독립성 보장 → 정치 압력 차단</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 세계대전 시대 -->
+<div class="era-panel" id="worldwar">
+<div class="timeline">
+<div class="event war">
+<div class="event-year">1914~1918</div>
+<div class="event-title">⚔️ 제1차 세계대전</div>
+<div class="event-desc">유럽의 자멸. 영국/프랑스/독일 경제 파탄. 미국이 채권국으로 부상. 금본위제 붕괴.</div>
+<div class="event-detail">
+<div class="event-detail-title">💰 경제적 영향</div>
+<div class="event-detail-text">• 전비: 약 $2,000억 (현재가치 $4조)<br>• 영국: 채권국 → 채무국으로 전락<br>• 미국: 세계 최대 채권국으로 부상<br>• 금본위제 정지 → 인플레이션<br>• 독일 전쟁 배상금 → 하이퍼인플레이션 씨앗</div>
+</div>
+<div class="event-impact">
+<span class="impact impact-down">유럽 몰락</span>
+<span class="impact impact-up">미국 부상</span>
+<span class="impact impact-down">금본위제 붕괴</span>
+</div>
+</div>
+
+<div class="event boom">
+<div class="event-year">1920s</div>
+<div class="event-title">🎷 광란의 20년대 (Roaring Twenties)</div>
+<div class="event-desc">미국 경제 황금기. 자동차(포드), 라디오, 영화 산업 폭발. 주식시장 300% 상승.</div>
+<div class="event-detail">
+<div class="event-detail-title">📈 버블의 형성</div>
+<div class="event-detail-text">• 다우지수: 63 → 381 (6배)<br>• 마진거래 확산 (10% 증거금으로 투자)<br>• "주식은 영원히 오른다" — 예일대 어빙 피셔 교수<br>• 모든 계층이 주식 투기에 참여</div>
+</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">1923</div>
+<div class="event-title">🇩🇪 독일 하이퍼인플레이션</div>
+<div class="event-desc">전쟁 배상금 + 루르 점령 → 마르크화 붕괴. 빵 한 조각에 수십억 마르크. 중산층 몰락.</div>
+<div class="event-detail">
+<div class="event-detail-title">💸 인플레이션의 극단</div>
+<div class="event-detail-text">• 1달러 = 4.2조 마르크 (1923년 11월)<br>• 물가 상승률: 월 30,000%<br>• 월급받으면 점심 전에 써야 함<br>• 중산층 저축 전멸 → 나치 부상의 토양</div>
+</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">1929.10.24</div>
+<div class="event-title">💥 검은 목요일 — 대공황 시작</div>
+<div class="event-desc">월스트리트 대폭락. 다우지수 -89%. 전 세계로 확산된 10년 대공황의 시작.</div>
+<div class="event-detail">
+<div class="event-detail-title">📉 대공황의 수치</div>
+<div class="event-detail-text">• 다우지수: 381 → 41 (-89%)<br>• 미국 GDP: -30%<br>• 실업률: 3% → 25%<br>• 은행 파산: 9,000개 (전체의 40%)<br>• 세계 무역: -65%</div>
+</div>
+<div class="event-impact">
+<span class="impact impact-down">GDP -30%</span>
+<span class="impact impact-down">실업 25%</span>
+<span class="impact impact-down">은행 40% 파산</span>
+</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">1933</div>
+<div class="event-title">🇺🇸 뉴딜 정책</div>
+<div class="event-desc">루스벨트 대통령의 대규모 정부 개입. 케인즈주의의 실천. 현대 복지국가의 원형.</div>
+<div class="event-detail">
+<div class="event-detail-title">📋 주요 정책</div>
+<div class="event-detail-text">• 은행 휴일 선포 → 뱅크런 진정<br>• 예금보험공사(FDIC) 설립<br>• 증권거래위원회(SEC) 설립<br>• 사회보장제도 도입<br>• TVA 등 대규모 공공사업</div>
+</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">1933</div>
+<div class="event-title">🥇 미국 금본위제 폐지</div>
+<div class="event-desc">민간 금 보유 금지. 달러 평가절하. 통화정책 자율성 확보 → 경기 부양 가능해짐.</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">1936</div>
+<div class="event-title">📖 케인즈 「일반이론」 출간</div>
+<div class="event-desc">정부 재정지출로 경기 부양 가능. "죽은 경제학자의 사상이 세상을 지배한다."</div>
+<div class="event-detail">
+<div class="event-detail-title">💡 케인즈 혁명</div>
+<div class="event-detail-text">• 유효수요 이론 — 수요가 공급을 결정<br>• 정부 개입의 정당화<br>• "장기적으로 우리는 모두 죽는다"<br>• 재정정책의 이론적 기반</div>
+</div>
+</div>
+
+<div class="event war">
+<div class="event-year">1939~1945</div>
+<div class="event-title">⚔️ 제2차 세계대전</div>
+<div class="event-desc">인류 역사상 최대 전쟁. 유럽/일본 초토화. 미국만 무사 → 전후 세계 경제의 절반 장악.</div>
+<div class="event-detail">
+<div class="event-detail-title">💰 경제적 결과</div>
+<div class="event-detail-text">• 전비: $1조+ (현재가치 $20조)<br>• 미국 GDP: 세계의 50%<br>• 달러 = 사실상 유일한 건전통화<br>• 금 보유량의 70%가 미국에<br>• 마샬플랜으로 유럽 재건 주도</div>
+</div>
+<div class="event-impact">
+<span class="impact impact-up">미국 패권 확립</span>
+<span class="impact impact-down">유럽/일본 파괴</span>
+</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">1944</div>
+<div class="event-title">🌐 브레튼우즈 체제</div>
+<div class="event-desc">44개국 대표가 뉴햄프셔에 모여 전후 국제통화질서 설계. 달러 기축통화 체제 탄생.</div>
+<div class="event-detail">
+<div class="event-detail-title">📋 브레튼우즈의 핵심</div>
+<div class="event-detail-text">• 달러-금 태환: $35 = 금 1온스<br>• 다른 통화는 달러에 고정<br>• IMF 설립 — 국제수지 위기 대응<br>• 세계은행 설립 — 개발금융<br>• 미국 = 세계의 중앙은행</div>
+</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">1947</div>
+<div class="event-title">🇺🇸 마셜 플랜</div>
+<div class="event-desc">유럽 재건에 $130억 지원 (현재가치 $1,500억). 소련 봉쇄 + 미국 수출시장 확보의 이중 목적.</div>
+</div>
+</div>
+</div>
+
+<!-- 냉전 시대 -->
+<div class="era-panel" id="coldwar">
+<div class="timeline">
+<div class="event war">
+<div class="event-year">1950~1953</div>
+<div class="event-title">🇰🇷 한국전쟁</div>
+<div class="event-desc">냉전의 열전화. 미국 군비 지출 급증 → 일본 특수 호황. 한국은 폐허에서 시작.</div>
+<div class="event-detail">
+<div class="event-detail-title">💰 경제적 영향</div>
+<div class="event-detail-text">• 일본: 조달 특수로 전후 부흥의 발판<br>• 미국: 군산복합체 성장<br>• 한국: GDP 파괴 → 원조 경제</div>
+</div>
+</div>
+
+<div class="event boom">
+<div class="event-year">1950~1973</div>
+<div class="event-title">🌟 자본주의 황금기</div>
+<div class="event-desc">서방 선진국 연평균 5% 성장. 완전 고용, 복지국가 확대. "영광의 30년".</div>
+<div class="event-detail">
+<div class="event-detail-title">📊 황금기의 비결</div>
+<div class="event-detail-text">• 브레튼우즈 안정적 환율<br>• 저렴한 석유 ($2~3/배럴)<br>• 케인즈주의 재정정책<br>• 노조-기업-정부 대타협<br>• 기술혁신 + 인구증가</div>
+</div>
+</div>
+
+<div class="event boom">
+<div class="event-year">1960s</div>
+<div class="event-title">🇯🇵 일본 고도성장</div>
+<div class="event-desc">연 10% 성장. 소니, 도요타, 혼다의 부상. "메이드 인 재팬"이 품질의 상징으로.</div>
+<div class="event-impact">
+<span class="impact impact-up">GDP 세계 2위</span>
+<span class="impact impact-up">수출 대국</span>
+</div>
+</div>
+
+<div class="event war">
+<div class="event-year">1964~1975</div>
+<div class="event-title">🇻🇳 베트남 전쟁</div>
+<div class="event-desc">미국의 수렁. 전비 조달을 위한 재정적자 → 인플레이션 → 달러 신뢰 하락.</div>
+<div class="event-detail">
+<div class="event-detail-title">💸 달러 위기의 시작</div>
+<div class="event-detail-text">• 전비: $1,680억 (현재가치 $1조)<br>• "대포와 버터" — 전쟁 + 복지 동시 추구<br>• 재정적자 → 달러 남발<br>• 프랑스 등 금 태환 요구 증가</div>
+</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">1971.08.15</div>
+<div class="event-title">💥 닉슨 쇼크 — 금태환 정지</div>
+<div class="event-desc">달러-금 태환 중단 선언. 브레튼우즈 체제 붕괴. 변동환율제 시대 개막.</div>
+<div class="event-detail">
+<div class="event-detail-title">💰 역사적 의미</div>
+<div class="event-detail-text">• 1944년 이후 27년 만에 체제 붕괴<br>• 달러 = 더 이상 금이 아닌 "신용"<br>• 환율 자유 변동 → 외환시장 탄생<br>• 중앙은행 통화정책 자율성 확대<br>• 역설적으로 달러 패권은 유지</div>
+</div>
+<div class="event-impact">
+<span class="impact impact-mixed">금본위제 종말</span>
+<span class="impact impact-up">달러 패권 유지</span>
+</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">1973</div>
+<div class="event-title">🛢️ 1차 오일쇼크</div>
+<div class="event-desc">OPEC 석유 금수조치. 유가 4배 폭등 ($3→$12). 스태그플레이션(경기침체+인플레) 시작.</div>
+<div class="event-detail">
+<div class="event-detail-title">⛽ 석유의 무기화</div>
+<div class="event-detail-text">• 욤 키푸르 전쟁 (이스라엘 vs 아랍)<br>• 아랍 산유국의 서방 제재<br>• 주유소 줄서기, 배급제<br>• 자동차 산업 혁명 (소형차, 연비)</div>
+</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">1979</div>
+<div class="event-title">🛢️ 2차 오일쇼크</div>
+<div class="event-desc">이란 혁명 → 유가 재폭등 ($13→$34). 미국 인플레이션 13%. 스태그플레이션 절정.</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">1979~1982</div>
+<div class="event-title">🇺🇸 볼커 쇼크</div>
+<div class="event-desc">Fed 의장 폴 볼커, 금리 20%까지 인상. 인플레이션 격퇴. 현대 중앙은행 독립성의 상징.</div>
+<div class="event-detail">
+<div class="event-detail-title">💪 고통스러운 처방</div>
+<div class="event-detail-text">• 연방기금금리: 11% → 20%<br>• 인플레이션: 13% → 3%<br>• 실업률: 7% → 11%<br>• 2번의 경기침체 감수<br>• "인플레이션은 반드시 죽여야 한다"</div>
+</div>
+<div class="event-impact">
+<span class="impact impact-down">실업률 11%</span>
+<span class="impact impact-up">인플레 격퇴</span>
+</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">1980s</div>
+<div class="event-title">🇺🇸🇬🇧 레이건/대처 혁명</div>
+<div class="event-desc">신자유주의 시대. 감세, 규제 완화, 민영화, 노조 약화. 금융 빅뱅.</div>
+<div class="event-detail">
+<div class="event-detail-title">📋 신자유주의의 내용</div>
+<div class="event-detail-text">• 최고 소득세율: 70% → 28% (미국)<br>• 국영기업 민영화 (영국 텔레콤, 브리티시 에어웨이)<br>• 금융 규제 완화<br>• 노조 파업 강경 진압<br>• "정부는 문제의 해결책이 아니라 문제 그 자체"</div>
+</div>
+</div>
+
+<div class="event boom">
+<div class="event-year">1980s</div>
+<div class="event-title">🇯🇵 일본 버블 경제</div>
+<div class="event-desc">플라자 합의(1985) 후 엔고 → 저금리 → 부동산/주식 버블. 도쿄 땅값 = 미국 전체.</div>
+<div class="event-detail">
+<div class="event-detail-title">🎈 버블의 규모</div>
+<div class="event-detail-text">• 닛케이지수: 10,000 → 38,915<br>• 도쿄 황궁 땅값 = 캘리포니아 전체<br>• 골프 회원권 $3백만<br>• "일본이 미국을 산다" — 록펠러센터 인수</div>
+</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">1989~</div>
+<div class="event-title">🇯🇵 일본 버블 붕괴 → 잃어버린 30년</div>
+<div class="event-desc">닛케이 -80%, 부동산 -70%. 디플레이션과 저성장의 30년. "일본화"의 교훈.</div>
+<div class="event-detail">
+<div class="event-detail-title">📉 잃어버린 30년</div>
+<div class="event-detail-text">• 닛케이: 38,915(1989) → 7,054(2009)<br>• 명목 GDP: 30년간 제자리<br>• 제로금리 20년+<br>• 좀비기업, 좀비은행 양산<br>• 2024년 드디어 신고가 돌파</div>
+</div>
+<div class="event-impact">
+<span class="impact impact-down">잃어버린 30년</span>
+<span class="impact impact-mixed">2024 회복?</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 세계화 시대 -->
+<div class="era-panel" id="global">
+<div class="timeline">
+<div class="event policy">
+<div class="event-year">1991</div>
+<div class="event-title">🇷🇺 소련 붕괴</div>
+<div class="event-desc">냉전 종식. 자본주의 유일 체제. "역사의 종말" 선언. 러시아/동유럽 체제전환.</div>
+<div class="event-impact">
+<span class="impact impact-up">자본주의 승리</span>
+<span class="impact impact-up">세계화 가속</span>
+</div>
+</div>
+
+<div class="event war">
+<div class="event-year">1991</div>
+<div class="event-title">🛢️ 걸프전쟁</div>
+<div class="event-desc">이라크의 쿠웨이트 침공 → 미국 주도 다국적군 격퇴. 석유 안보와 중동 개입의 시작.</div>
+</div>
+
+<div class="event boom">
+<div class="event-year">1990s</div>
+<div class="event-title">🇺🇸 IT 버블 (닷컴 버블)</div>
+<div class="event-desc">인터넷 혁명. 나스닥 5배 상승. 수익 없는 닷컴 기업들도 시총 폭등.</div>
+<div class="event-detail">
+<div class="event-detail-title">🌐 인터넷 광풍</div>
+<div class="event-detail-text">• 나스닥: 1,000 → 5,048 (1995~2000)<br>• "이번엔 다르다" — 뉴 이코노미<br>• 매출 0인 기업도 시총 $10억<br>• 슈퍼볼 광고 = 닷컴 기업들<br>• pets.com, webvan 등 파산</div>
+</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">1997</div>
+<div class="event-title">🌏 아시아 금융위기</div>
+<div class="event-desc">태국 바트화 폭락 → 한국, 인도네시아, 말레이시아 전염. IMF 구제금융.</div>
+<div class="event-detail">
+<div class="event-detail-title">🇰🇷 한국의 IMF</div>
+<div class="event-detail-text">• 외환보유고 고갈 ($39억)<br>• 원달러: 800 → 2,000<br>• IMF $580억 구제금융<br>• 대기업 30개 중 16개 해체<br>• 금모으기 운동 $22억<br>• 구조조정 → 2001년 조기 상환</div>
+</div>
+<div class="event-impact">
+<span class="impact impact-down">환율 2배</span>
+<span class="impact impact-down">대기업 해체</span>
+<span class="impact impact-up">2001 조기졸업</span>
+</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">1998</div>
+<div class="event-title">🇷🇺 러시아 디폴트 / LTCM 붕괴</div>
+<div class="event-desc">러시아 국채 디폴트 → 노벨상 수상자들이 만든 헤지펀드 LTCM 파산 위기 → Fed 개입.</div>
+<div class="event-detail">
+<div class="event-detail-title">🎓 천재들의 실패</div>
+<div class="event-detail-text">• 노벨 경제학상 수상자 2명 참여<br>• 레버리지 25배<br>• "100년에 한 번 있을 손실"이 발생<br>• Fed 주도로 은행들이 $36억 구제<br>• 교훈: 모델은 현실이 아니다</div>
+</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">2000~2002</div>
+<div class="event-title">💥 닷컴 버블 붕괴</div>
+<div class="event-desc">나스닥 -78%. 아마존 -95%. 그러나 살아남은 기업들이 오늘의 빅테크.</div>
+<div class="event-impact">
+<span class="impact impact-down">나스닥 -78%</span>
+<span class="impact impact-up">생존자가 빅테크</span>
+</div>
+</div>
+
+<div class="event war">
+<div class="event-year">2001</div>
+<div class="event-title">🇺🇸 9/11 테러</div>
+<div class="event-desc">세계무역센터 붕괴. 미국 본토 첫 공격. 아프간/이라크 전쟁 → 재정적자 확대.</div>
+<div class="event-detail">
+<div class="event-detail-title">💰 경제적 영향</div>
+<div class="event-detail-text">• 뉴욕증시 1주일 폐장<br>• 재개 후 -14%<br>• 아프간+이라크 전비: $8조+<br>• Fed 금리 인하 → 주택 버블의 씨앗<br>• 보안/방산 산업 급성장</div>
+</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">2001</div>
+<div class="event-title">🇨🇳 중국 WTO 가입</div>
+<div class="event-desc">세계의 공장 등극. 글로벌 공급망 재편. 저물가+저금리 시대의 핵심 요인.</div>
+<div class="event-detail">
+<div class="event-detail-title">🏭 중국의 부상</div>
+<div class="event-detail-text">• GDP: 2001년 세계 6위 → 2010년 2위<br>• 세계 제조업 비중: 7% → 30%<br>• "차이나 프라이스" — 물가 하락 압력<br>• 미국 제조업 일자리 유출 → 트럼프의 토양</div>
+</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">2007~2009</div>
+<div class="event-title">💥 글로벌 금융위기 (리먼 사태)</div>
+<div class="event-desc">서브프라임 모기지 → 리먼 파산 → 글로벌 신용경색. 1929년 이후 최악의 위기.</div>
+<div class="event-detail">
+<div class="event-detail-title">🏚️ 위기의 메커니즘</div>
+<div class="event-detail-text">• 저금리 → 주택 버블 → 서브프라임 대출<br>• MBS, CDO, CDS — 복잡한 파생상품<br>• 리먼 브라더스 파산 (2008.9.15)<br>• AIG 구제 $1,820억<br>• S&P 500: -57%<br>• 실업률: 10%</div>
+</div>
+<div class="event-impact">
+<span class="impact impact-down">S&P -57%</span>
+<span class="impact impact-down">실업 10%</span>
+<span class="impact impact-mixed">QE 시작</span>
+</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">2008~2014</div>
+<div class="event-title">💵 양적완화 (QE) 시대</div>
+<div class="event-desc">Fed, 금리 0% + 채권 매입. "돈 찍어내기". 자산가격 폭등의 시작.</div>
+<div class="event-detail">
+<div class="event-detail-title">📊 QE의 규모</div>
+<div class="event-detail-text">• Fed 자산: $0.9조 → $4.5조 (5배)<br>• QE1, QE2, QE3 연속<br>• "Don't fight the Fed"<br>• 자산 불평등 확대<br>• 주식/부동산 사상 최고가</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 현대 -->
+<div class="era-panel" id="modern">
+<div class="timeline">
+<div class="event crisis">
+<div class="event-year">2010~2012</div>
+<div class="event-title">🇪🇺 유럽 재정위기</div>
+<div class="event-desc">그리스, 포르투갈, 스페인, 이탈리아 국채 위기. 유로존 해체 우려.</div>
+<div class="event-detail">
+<div class="event-detail-title">🇬🇷 그리스 사태</div>
+<div class="event-detail-text">• GDP 대비 부채: 180%<br>• 3차례 구제금융 €2,890억<br>• GDP -25%, 실업률 27%<br>• ECB 드라기 "whatever it takes"<br>• OMT로 유로 방어 성공</div>
+</div>
+</div>
+
+<div class="event war">
+<div class="event-year">2014</div>
+<div class="event-title">🇷🇺 크림반도 병합</div>
+<div class="event-desc">러시아의 크림반도 병합. 서방 제재 시작. 2022년 전면전의 전조.</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">2015</div>
+<div class="event-title">🇨🇳 중국 증시 폭락</div>
+<div class="event-desc">상해지수 -45%. 서킷브레이커 발동. 중국발 글로벌 충격의 첫 사례.</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">2016</div>
+<div class="event-title">🇬🇧 브렉시트</div>
+<div class="event-desc">영국 EU 탈퇴 결정. 세계화에 대한 반발. 포퓰리즘 부상의 신호탄.</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">2017</div>
+<div class="event-title">🇺🇸 트럼프 행정부</div>
+<div class="event-desc">감세 + 보호무역. 미중 무역전쟁 시작. 관세 25%.</div>
+</div>
+
+<div class="event war">
+<div class="event-year">2018~</div>
+<div class="event-title">🇺🇸🇨🇳 미중 무역/기술 전쟁</div>
+<div class="event-desc">관세전쟁 → 화웨이 제재 → 반도체 전쟁. 탈동조화(Decoupling).</div>
+<div class="event-detail">
+<div class="event-detail-title">🔧 기술 패권 경쟁</div>
+<div class="event-detail-text">• 화웨이 거래 금지<br>• CHIPS Act $520억<br>• 첨단 반도체 수출 통제<br>• 틱톡 금지 논의<br>• 공급망 재편 — 프렌드쇼어링</div>
+</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">2020</div>
+<div class="event-title">🦠 코로나19 팬데믹</div>
+<div class="event-desc">글로벌 봉쇄. S&P -34% (34일 만에). 사상 최대 부양책. V자 반등.</div>
+<div class="event-detail">
+<div class="event-detail-title">💰 무제한 양적완화</div>
+<div class="event-detail-text">• Fed 무제한 QE 선언<br>• 미국 부양책 $5조+<br>• 금리 0%, 채권 무제한 매입<br>• 개인에게 현금 직접 지급<br>• S&P: -34% → +114% (2년)</div>
+</div>
+<div class="event-impact">
+<span class="impact impact-down">S&P -34%</span>
+<span class="impact impact-up">V자 반등</span>
+<span class="impact impact-up">인플레 씨앗</span>
+</div>
+</div>
+
+<div class="event boom">
+<div class="event-year">2020~2021</div>
+<div class="event-title">🚀 밈주식 / 코인 광풍</div>
+<div class="event-desc">개미들의 반란. GME, AMC 숏스퀴즈. 비트코인 $69,000. NFT 버블.</div>
+<div class="event-detail">
+<div class="event-detail-title">🎮 밈주식 현상</div>
+<div class="event-detail-text">• GameStop: $20 → $480 (24배)<br>• 레딧 vs 헤지펀드<br>• 로빈후드 거래 중단 논란<br>• 도지코인, 시바이누<br>• "다이아몬드 핸드 💎🙌"</div>
+</div>
+</div>
+
+<div class="event war">
+<div class="event-year">2022.02.24</div>
+<div class="event-title">⚔️ 러시아-우크라이나 전쟁</div>
+<div class="event-desc">유럽의 전쟁. 에너지 위기. 러시아 제재 + SWIFT 배제. 인플레이션 폭발.</div>
+<div class="event-detail">
+<div class="event-detail-title">💥 경제적 충격</div>
+<div class="event-detail-text">• 유럽 가스 10배 폭등<br>• 유가 $130 돌파<br>• 러시아 SWIFT 배제<br>• 글로벌 인플레 → 금리 인상<br>• 달러 강세 → 신흥국 압박</div>
+</div>
+<div class="event-impact">
+<span class="impact impact-up">에너지↑</span>
+<span class="impact impact-up">인플레↑</span>
+<span class="impact impact-down">유럽 타격</span>
+</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">2022</div>
+<div class="event-title">📉 글로벌 긴축 / 자산시장 폭락</div>
+<div class="event-desc">40년 만의 인플레. Fed 역사상 최고속 금리 인상 (0→5.25%). 주식/채권/코인 동반 폭락.</div>
+<div class="event-detail">
+<div class="event-detail-title">📊 2022년 성적표</div>
+<div class="event-detail-text">• S&P 500: -19%<br>• 나스닥: -33%<br>• 미국 채권: -13% (역대 최악)<br>• 비트코인: -65%<br>• 60/40 포트폴리오 최악의 해</div>
+</div>
+</div>
+
+<div class="event crisis">
+<div class="event-year">2023</div>
+<div class="event-title">🏦 SVB 사태</div>
+<div class="event-desc">금리 급등 → 채권 손실 → 뱅크런 → 3일 만에 파산. 2008년 이후 최대 은행 파산.</div>
+<div class="event-detail">
+<div class="event-detail-title">💥 3일 천하</div>
+<div class="event-detail-text">• 수요일: 자본확충 발표<br>• 목요일: 주가 -60%, 예금 인출 $420억<br>• 금요일: FDIC 폐쇄 조치<br>• 시그니처, 퍼스트리퍼블릭 연쇄 파산<br>• Fed 긴급 유동성 공급</div>
+</div>
+</div>
+
+<div class="event boom">
+<div class="event-year">2023~2024</div>
+<div class="event-title">🤖 AI 혁명</div>
+<div class="event-desc">ChatGPT 폭발. Nvidia 시총 $3조. Magnificent 7 독주. AI 버블인가 혁명인가.</div>
+<div class="event-detail">
+<div class="event-detail-title">💻 AI 투자 광풍</div>
+<div class="event-detail-text">• Nvidia: +800% (2년)<br>• Mag 7이 S&P 상승의 70% 기여<br>• AI 반도체 품귀<br>• 빅테크 AI 투자 $1,000억+<br>• "AI가 아니면 투자 안 받음"</div>
+</div>
+<div class="event-impact">
+<span class="impact impact-up">Nvidia 8배</span>
+<span class="impact impact-up">S&P 신고가</span>
+<span class="impact impact-mixed">버블 논쟁</span>
+</div>
+</div>
+
+<div class="event war">
+<div class="event-year">2023.10</div>
+<div class="event-title">🇮🇱 이스라엘-하마스 전쟁</div>
+<div class="event-desc">중동 갈등 격화. 원유/금 상승. 지정학 리스크 상시화.</div>
+</div>
+
+<div class="event policy">
+<div class="event-year">2024</div>
+<div class="event-title">🇺🇸 트럼프 2기 / 관세 정책</div>
+<div class="event-desc">관세 전쟁 재개. 중국 60%, 전세계 10~20%. 인플레 재점화 우려.</div>
+<div class="event-detail">
+<div class="event-detail-title">📋 예상 영향</div>
+<div class="event-detail-text">• 인플레이션 재상승 가능<br>• Fed 금리 인하 지연<br>• 공급망 재편 가속<br>• 달러 강세 지속<br>• 무역 전쟁 2.0</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</main>
+<script>
+document.querySelectorAll('.era-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.era-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.era-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.era).classList.add('active');
+    });
+});
+</script>
 </body>
 </html>
