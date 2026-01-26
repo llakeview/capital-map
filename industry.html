@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>산업 해부 - Capital Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--bg:#0a0a0f;--bg2:#0f0f1a;--card:#1a1a2e;--border:#252540;--text:#e0e0e0;--text2:#888;--gold:#ffd700;--cyan:#00d9ff;--green:#00d26a;--red:#ff4757;--orange:#ff9f43}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+        .nav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(15,15,26,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:1000}
+        .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+        .nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+        .nav-logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .nav-links{display:flex;gap:8px}
+        .nav-link{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:500;transition:.2s}
+        .nav-link:hover{color:var(--text);background:var(--card)}
+        .nav-link.active{color:var(--gold);background:rgba(255,215,0,.1)}
+        .main{padding-top:80px}.container{max-width:1100px;margin:0 auto;padding:0 30px 60px}
+        .page-header{text-align:center;padding:30px 0}
+        .page-title{font-size:36px;font-weight:700;margin-bottom:12px}
+        .page-subtitle{color:var(--text2);font-size:16px}
+        .tabs{display:flex;justify-content:center;gap:12px;margin:30px 0;flex-wrap:wrap}
+        .tab{padding:14px 28px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:14px;font-weight:500;cursor:pointer;transition:.2s}
+        .tab:hover{border-color:var(--cyan);color:var(--text)}
+        .tab.active{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.1)}
+        .content{display:none}.content.active{display:block}
+        .section{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:30px;margin-bottom:24px}
+        .section-title{font-size:20px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+        .section-title::before{content:'';width:4px;height:24px;background:linear-gradient(180deg,var(--gold),var(--orange));border-radius:2px}
+        .flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;padding:24px;background:var(--card);border-radius:12px;margin-bottom:20px}
+        .flow-box{background:var(--bg2);border:2px solid var(--border);border-radius:10px;padding:14px 18px;text-align:center;min-width:90px}
+        .flow-box-icon{font-size:22px;margin-bottom:4px}
+        .flow-box-label{font-size:11px;font-weight:600}
+        .flow-arrow{font-size:18px;color:var(--cyan)}
+        table{width:100%;border-collapse:collapse}
+        th,td{padding:12px;text-align:left;border-bottom:1px solid var(--border);font-size:13px}
+        th{color:var(--text2);text-transform:uppercase;font-size:11px;background:var(--card)}
+        .badge{padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600}
+        .badge-high{background:rgba(255,71,87,.2);color:var(--red)}
+        .badge-mid{background:rgba(255,159,67,.2);color:var(--orange)}
+        .badge-low{background:rgba(0,210,106,.2);color:var(--green)}
+        .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+        .card{background:var(--card);border-radius:10px;padding:20px}
+        .card-title{font-size:14px;font-weight:600;margin-bottom:10px;color:var(--gold)}
+        .card-text{font-size:13px;color:var(--text2);line-height:1.6}
+        .example{background:var(--card);border-left:3px solid var(--red);border-radius:0 10px 10px 0;padding:20px;margin-top:20px}
+        .example-title{font-size:14px;font-weight:600;color:var(--red);margin-bottom:10px}
+        .example-text{font-size:13px;color:var(--text2);line-height:1.6}
+        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:20px}
+        .stat{background:var(--card);border-radius:10px;padding:20px;text-align:center}
+        .stat-value{font-size:26px;font-weight:700;color:var(--gold)}
+        .stat-label{font-size:11px;color:var(--text2);margin-top:6px}
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-logo"><div class="nav-logo-icon">💰</div><span class="nav-logo-text">CAPITAL MAP</span></a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">대시보드</a>
+            <a href="flow.html" class="nav-link">연결관계</a>
+            <a href="map.html" class="nav-link">세계지도</a>
+            <a href="industry.html" class="nav-link active">산업해부</a>
+            <a href="timeline.html" class="nav-link">역사</a>
+            <a href="dealers.html" class="nav-link">딜러구조</a>
+        </div>
+    </nav>
+
+    <main class="main"><div class="container">
+        <div class="page-header">
+            <h1 class="page-title">🏗️ 산업 해부</h1>
+            <p class="page-subtitle">돈이 어떻게 도는지 — 구조를 알면 리스크가 보인다</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-id="pf">🏢 부동산 PF</button>
+            <button class="tab" data-id="defense">🎖️ 방산</button>
+            <button class="tab" data-id="semi">💾 반도체</button>
+        </div>
+
+        <!-- PF -->
+        <div class="content active" id="pf">
+            <div class="section">
+                <h2 class="section-title">PF 구조 흐름</h2>
+                <div class="flow">
+                    <div class="flow-box"><div class="flow-box-icon">🏗️</div><div class="flow-box-label">시행사</div></div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-box"><div class="flow-box-icon">🏦</div><div class="flow-box-label">PF대출</div></div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-box"><div class="flow-box-icon">🔨</div><div class="flow-box-label">건설사</div></div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-box"><div class="flow-box-icon">🏠</div><div class="flow-box-label">분양</div></div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-box"><div class="flow-box-icon">💰</div><div class="flow-box-label">상환</div></div>
+                </div>
+                <table>
+                    <thead><tr><th>참여자</th><th>역할</th><th>리스크</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>시행사</strong></td><td>사업기획, 인허가, 분양</td><td><span class="badge badge-high">매우높음</span></td></tr>
+                        <tr><td><strong>건설사</strong></td><td>시공, 책임준공, 연대보증</td><td><span class="badge badge-high">높음</span></td></tr>
+                        <tr><td><strong>선순위(은행)</strong></td><td>대출 (1순위 회수)</td><td><span class="badge badge-low">낮음</span></td></tr>
+                        <tr><td><strong>중순위(증권)</strong></td><td>대출 (2순위 회수)</td><td><span class="badge badge-mid">중간</span></td></tr>
+                        <tr><td><strong>후순위(캐피탈)</strong></td><td>대출 (마지막 회수)</td><td><span class="badge badge-high">높음</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section">
+                <h2 class="section-title">대출 금리 구조</h2>
+                <div class="stats">
+                    <div class="stat"><div class="stat-value">5~7%</div><div class="stat-label">선순위</div></div>
+                    <div class="stat"><div class="stat-value">8~12%</div><div class="stat-label">중순위</div></div>
+                    <div class="stat"><div class="stat-value">15~20%</div><div class="stat-label">후순위</div></div>
+                    <div class="stat"><div class="stat-value">15~25%</div><div class="stat-label">브릿지론</div></div>
+                </div>
+                <div class="example">
+                    <div class="example-title">⚠️ 2024년 태영건설 워크아웃</div>
+                    <div class="example-text">PF 연대보증 약 10조원 → 분양 부진 → 보증 실행 → 유동성 위기 → 워크아웃 신청. 건설사가 시행사 보증 서주는 구조의 위험성이 드러남.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 방산 -->
+        <div class="content" id="defense">
+            <div class="section">
+                <h2 class="section-title">방산 산업 구조</h2>
+                <div class="flow">
+                    <div class="flow-box"><div class="flow-box-icon">🎖️</div><div class="flow-box-label">합참</div></div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-box"><div class="flow-box-icon">🏛️</div><div class="flow-box-label">국방부</div></div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-box"><div class="flow-box-icon">📋</div><div class="flow-box-label">방사청</div></div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-box"><div class="flow-box-icon">🏭</div><div class="flow-box-label">방산업체</div></div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-box"><div class="flow-box-icon">⚙️</div><div class="flow-box-label">협력사</div></div>
+                </div>
+            </div>
+            <div class="section">
+                <h2 class="section-title">주요 방산업체</h2>
+                <table>
+                    <thead><tr><th>회사</th><th>주력 분야</th><th>대표 제품</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>한화에어로</strong></td><td>항공엔진, 포병</td><td>K9 자주포</td></tr>
+                        <tr><td><strong>한화시스템</strong></td><td>레이더, 전자전</td><td>천궁 레이더</td></tr>
+                        <tr><td><strong>LIG넥스원</strong></td><td>미사일</td><td>천궁, 해성</td></tr>
+                        <tr><td><strong>현대로템</strong></td><td>전차, 철도</td><td>K2 전차</td></tr>
+                        <tr><td><strong>KAI</strong></td><td>전투기, 헬기</td><td>KF-21, FA-50</td></tr>
+                        <tr><td><strong>풍산</strong></td><td>탄약</td><td>각종 포탄</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section">
+                <h2 class="section-title">수출 현황 (세계 9위)</h2>
+                <div class="grid">
+                    <div class="card"><div class="card-title">🇵🇱 폴란드</div><div class="card-text">K2 전차 1000대, K9 자주포 672문, FA-50 48대. 역대 최대 수출 계약.</div></div>
+                    <div class="card"><div class="card-title">🇦🇺 호주</div><div class="card-text">K9 자주포, 레드백 장갑차 수출.</div></div>
+                    <div class="card"><div class="card-title">🇦🇪 UAE</div><div class="card-text">천궁-II 미사일 수출 계약.</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 반도체 -->
+        <div class="content" id="semi">
+            <div class="section">
+                <h2 class="section-title">반도체 공급망</h2>
+                <div class="flow">
+                    <div class="flow-box"><div class="flow-box-icon">💡</div><div class="flow-box-label">설계(팹리스)</div></div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-box"><div class="flow-box-icon">🏭</div><div class="flow-box-label">생산(파운드리)</div></div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-box"><div class="flow-box-icon">📦</div><div class="flow-box-label">패키징</div></div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-box"><div class="flow-box-icon">📱</div><div class="flow-box-label">완제품</div></div>
+                </div>
+            </div>
+            <div class="section">
+                <h2 class="section-title">주요 기업</h2>
+                <table>
+                    <thead><tr><th>구분</th><th>기업</th><th>비고</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>팹리스</strong></td><td>Nvidia, AMD, Qualcomm, Apple</td><td>설계만</td></tr>
+                        <tr><td><strong>파운드리</strong></td><td>TSMC, 삼성전자</td><td>위탁생산</td></tr>
+                        <tr><td><strong>메모리</strong></td><td>삼성, SK하이닉스, 마이크론</td><td>DRAM, NAND</td></tr>
+                        <tr><td><strong>장비</strong></td><td>ASML, Applied Materials</td><td>EUV 독점</td></tr>
+                        <tr><td><strong>소재</strong></td><td>JSR, 신에츠, SK머티리얼즈</td><td>포토레지스트 등</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section">
+                <h2 class="section-title">미중 갈등 포인트</h2>
+                <div class="grid">
+                    <div class="card"><div class="card-title">🇺🇸 미국</div><div class="card-text">첨단 장비/기술 대중 수출 통제. CHIPS Act로 자국 생산 유도.</div></div>
+                    <div class="card"><div class="card-title">🇨🇳 중국</div><div class="card-text">반도체 자급자족 시도 (SMIC). 성숙공정 집중.</div></div>
+                    <div class="card"><div class="card-title">🇰🇷🇹🇼 한국/대만</div><div class="card-text">샌드위치 신세. 양쪽 눈치 보며 균형.</div></div>
+                </div>
+            </div>
+        </div>
+    </div></main>
+
+    <script>
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.id).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

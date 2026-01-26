@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연결 관계 맵 - Capital Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --border: #252540;
+            --text-primary: #e0e0e0;
+            --text-secondary: #888;
+            --accent-gold: #ffd700;
+            --accent-cyan: #00d9ff;
+            --positive: #00d26a;
+            --negative: #ff4757;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; height: 60px;
+            background: rgba(15, 15, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 30px; z-index: 1000;
+        }
+        .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .nav-logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--accent-gold), #ff9f43);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px;
+        }
+        .nav-logo-text {
+            font-size: 20px; font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-cyan));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav-links { display: flex; gap: 8px; }
+        .nav-link {
+            padding: 8px 16px; border-radius: 8px; text-decoration: none;
+            color: var(--text-secondary); font-size: 14px; font-weight: 500; transition: all 0.2s;
+        }
+        .nav-link:hover { color: var(--text-primary); background: var(--bg-card); }
+        .nav-link.active { color: var(--accent-gold); background: rgba(255,215,0,0.1); }
+
+        .main { padding-top: 80px; min-height: 100vh; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 30px; }
+        .page-header { text-align: center; padding: 30px 0; }
+        .page-title { font-size: 36px; font-weight: 700; margin-bottom: 12px; }
+        .page-subtitle { color: var(--text-secondary); font-size: 16px; }
+
+        .flow-container { display: grid; grid-template-columns: 1fr 380px; gap: 30px; margin-top: 30px; }
+        .flow-canvas {
+            background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px;
+            padding: 40px; position: relative; min-height: 650px;
+        }
+        .node {
+            position: absolute;
+            background: linear-gradient(135deg, var(--bg-card) 0%, #12121f 100%);
+            border: 2px solid var(--border); border-radius: 16px;
+            padding: 16px 20px; cursor: pointer; transition: all 0.3s ease;
+            text-align: center; min-width: 130px; z-index: 10;
+        }
+        .node:hover { border-color: var(--accent-cyan); box-shadow: 0 0 30px rgba(0, 217, 255, 0.3); transform: scale(1.05); }
+        .node.active { border-color: var(--accent-gold); box-shadow: 0 0 40px rgba(255, 215, 0, 0.4); }
+        .node.highlighted { border-color: var(--accent-cyan); box-shadow: 0 0 25px rgba(0, 217, 255, 0.3); }
+        .node.dimmed { opacity: 0.3; }
+        .node-icon { font-size: 28px; margin-bottom: 8px; }
+        .node-label { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+        .node-sub { font-size: 10px; color: var(--text-secondary); }
+
+        .node-geopolitics { top: 30px; left: 50%; transform: translateX(-50%); }
+        .node-energy { top: 120px; right: 40px; }
+        .node-central-bank { top: 180px; left: 50%; transform: translateX(-50%); }
+        .node-politics { top: 250px; left: 40px; }
+        .node-rates { top: 250px; right: 40px; }
+        .node-capital-market { top: 340px; left: 50%; transform: translateX(-50%); }
+        .node-currency { top: 420px; left: 80px; }
+        .node-commodity { top: 420px; right: 80px; }
+        .node-real-economy { top: 520px; left: 50%; transform: translateX(-50%); }
+
+        .flow-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .flow-line { stroke: var(--border); stroke-width: 2; fill: none; transition: all 0.3s; }
+        .flow-line.active { stroke: var(--accent-cyan); stroke-width: 3; filter: drop-shadow(0 0 6px var(--accent-cyan)); }
+        .flow-line.dimmed { opacity: 0.1; }
+
+        .detail-panel {
+            background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px;
+            padding: 24px; height: fit-content; position: sticky; top: 90px;
+        }
+        .detail-placeholder { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+        .detail-placeholder-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+        .detail-header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+        .detail-icon { font-size: 36px; margin-bottom: 10px; }
+        .detail-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+        .detail-subtitle { color: var(--text-secondary); font-size: 13px; }
+        .detail-section { margin-bottom: 20px; }
+        .detail-section-title { font-size: 11px; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; font-weight: 600; }
+        .detail-text { color: var(--text-secondary); font-size: 13px; line-height: 1.7; }
+        .connection-list { list-style: none; }
+        .connection-item {
+            display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+            background: var(--bg-card); border-radius: 8px; margin-bottom: 8px; font-size: 12px; cursor: pointer; transition: all 0.2s;
+        }
+        .connection-item:hover { background: var(--border); }
+        .connection-arrow { font-weight: 700; font-size: 14px; }
+        .connection-arrow.up { color: var(--positive); }
+        .connection-arrow.down { color: var(--negative); }
+        .connection-arrow.mixed { color: var(--accent-cyan); }
+        .example-box { background: var(--bg-card); border-left: 3px solid var(--accent-gold); border-radius: 0 8px 8px 0; padding: 14px; }
+        .example-title { font-size: 12px; color: var(--accent-gold); font-weight: 600; margin-bottom: 6px; }
+        .example-text { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+        .scenario-section { margin-top: 40px; padding: 30px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; }
+        .scenario-title { font-size: 20px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+        .scenario-title::before { content: ''; width: 4px; height: 24px; background: linear-gradient(180deg, var(--accent-gold), #ff9f43); border-radius: 2px; }
+        .scenario-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+        .scenario-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.3s; }
+        .scenario-card:hover { border-color: var(--accent-cyan); transform: translateY(-4px); }
+        .scenario-card.active { border-color: var(--accent-gold); background: rgba(255, 215, 0, 0.05); }
+        .scenario-card-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+        .scenario-card-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+        .scenario-flow { margin-top: 24px; padding: 20px; background: var(--bg-card); border-radius: 12px; display: none; }
+        .scenario-flow.active { display: block; }
+        .scenario-steps { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .scenario-step { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 12px; transition: all 0.3s; opacity: 0.4; }
+        .scenario-step.active { opacity: 1; border-color: var(--accent-cyan); background: rgba(0, 217, 255, 0.1); }
+        .scenario-step.completed { opacity: 1; border-color: var(--positive); background: rgba(0, 210, 106, 0.1); }
+        .scenario-arrow { color: var(--text-secondary); font-size: 16px; }
+        .scenario-controls { margin-top: 16px; display: flex; gap: 12px; }
+        .scenario-btn { padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); }
+        .scenario-btn:hover { border-color: var(--accent-cyan); }
+        .scenario-btn.primary { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); }
+
+        @media (max-width: 1100px) { .flow-container { grid-template-columns: 1fr; } .detail-panel { position: static; } }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">💰</div>
+            <span class="nav-logo-text">CAPITAL MAP</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">대시보드</a>
+            <a href="flow.html" class="nav-link active">연결관계</a>
+            <a href="map.html" class="nav-link">세계지도</a>
+            <a href="industry.html" class="nav-link">산업해부</a>
+            <a href="timeline.html" class="nav-link">역사</a>
+            <a href="dealers.html" class="nav-link">딜러구조</a>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">🔗 연결 관계 맵</h1>
+                <p class="page-subtitle">모든 것은 연결되어 있다 — 노드를 클릭해서 영향 관계를 확인하세요</p>
+            </div>
+
+            <div class="flow-container">
+                <div class="flow-canvas" id="flowCanvas">
+                    <svg class="flow-lines" id="flowLines"></svg>
+
+                    <div class="node node-geopolitics" data-node="geopolitics">
+                        <div class="node-icon">🌍</div>
+                        <div class="node-label">지정학/전쟁</div>
+                        <div class="node-sub">갈등, 제재, 전쟁</div>
+                    </div>
+                    <div class="node node-energy" data-node="energy">
+                        <div class="node-icon">⛽</div>
+                        <div class="node-label">에너지/자원</div>
+                        <div class="node-sub">원유, 가스, 희토류</div>
+                    </div>
+                    <div class="node node-politics" data-node="politics">
+                        <div class="node-icon">🏛️</div>
+                        <div class="node-label">정치/정책</div>
+                        <div class="node-sub">선거, 규제, 세금</div>
+                    </div>
+                    <div class="node node-central-bank" data-node="centralBank">
+                        <div class="node-icon">🏦</div>
+                        <div class="node-label">중앙은행</div>
+                        <div class="node-sub">Fed, 한은, ECB</div>
+                    </div>
+                    <div class="node node-rates" data-node="rates">
+                        <div class="node-icon">📊</div>
+                        <div class="node-label">금리</div>
+                        <div class="node-sub">국채, 대출금리</div>
+                    </div>
+                    <div class="node node-capital-market" data-node="capitalMarket">
+                        <div class="node-icon">📈</div>
+                        <div class="node-label">자본시장</div>
+                        <div class="node-sub">주식, 채권</div>
+                    </div>
+                    <div class="node node-currency" data-node="currency">
+                        <div class="node-icon">💱</div>
+                        <div class="node-label">환율</div>
+                        <div class="node-sub">달러, 원화, 엔화</div>
+                    </div>
+                    <div class="node node-commodity" data-node="commodity">
+                        <div class="node-icon">🥇</div>
+                        <div class="node-label">원자재</div>
+                        <div class="node-sub">금, 구리, 곡물</div>
+                    </div>
+                    <div class="node node-real-economy" data-node="realEconomy">
+                        <div class="node-icon">🏭</div>
+                        <div class="node-label">실물경제</div>
+                        <div class="node-sub">고용, 소비, 생산</div>
+                    </div>
+                </div>
+
+                <div class="detail-panel" id="detailPanel">
+                    <div class="detail-placeholder" id="detailPlaceholder">
+                        <div class="detail-placeholder-icon">👆</div>
+                        <p>노드를 클릭하면<br>상세 정보가 표시됩니다</p>
+                    </div>
+                    <div id="detailContent" style="display: none;"></div>
+                </div>
+            </div>
+
+            <section class="scenario-section">
+                <h2 class="scenario-title">머니 플로우 시나리오</h2>
+                <div class="scenario-cards">
+                    <div class="scenario-card" data-scenario="fedHike">
+                        <div class="scenario-card-title">📈 Fed 금리 인상</div>
+                        <div class="scenario-card-desc">Fed가 금리를 올리면 전 세계에 어떤 연쇄 반응이?</div>
+                    </div>
+                    <div class="scenario-card" data-scenario="war">
+                        <div class="scenario-card-title">⚔️ 전쟁/지정학 충격</div>
+                        <div class="scenario-card-desc">전쟁이 터지면 에너지부터 자산까지 어떻게?</div>
+                    </div>
+                    <div class="scenario-card" data-scenario="chinaSlowdown">
+                        <div class="scenario-card-title">🇨🇳 중국 경기 둔화</div>
+                        <div class="scenario-card-desc">중국이 무너지면 원자재와 신흥국은?</div>
+                    </div>
+                    <div class="scenario-card" data-scenario="dollarWeak">
+                        <div class="scenario-card-title">💵 달러 약세 전환</div>
+                        <div class="scenario-card-desc">달러가 약해지면 누가 웃고 누가 우나?</div>
+                    </div>
+                </div>
+                <div class="scenario-flow" id="scenarioFlow">
+                    <div class="scenario-steps" id="scenarioSteps"></div>
+                    <div class="scenario-controls">
+                        <button class="scenario-btn" id="scenarioReset">리셋</button>
+                        <button class="scenario-btn primary" id="scenarioPlay">▶ 재생</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        const nodeData = {
+            geopolitics: {
+                icon: '🌍', title: '지정학/전쟁', subtitle: '국제 관계와 분쟁',
+                description: '국가 간 갈등, 전쟁, 제재가 글로벌 경제에 미치는 영향. 에너지와 원자재 공급망에 직접적 충격.',
+                connections: [
+                    { target: 'energy', direction: 'up', desc: '전쟁/제재 → 에너지 공급 차질 → 가격↑' },
+                    { target: 'commodity', direction: 'up', desc: '공급망 불안 → 원자재 가격↑' },
+                    { target: 'currency', direction: 'mixed', desc: '안전자산 선호 → 달러 강세' }
+                ],
+                example: { title: '2022 우크라이나', text: '러시아 제재 → 유럽 가스 위기 → 에너지 폭등 → 글로벌 인플레 → 금리 인상 → 자산 하락' }
+            },
+            energy: {
+                icon: '⛽', title: '에너지/자원', subtitle: '원유, 가스, 희토류',
+                description: '모든 경제 활동의 기반. 에너지 가격이 물가와 생산비용을 결정. 자원 부국이 지정학적 영향력 행사.',
+                connections: [
+                    { target: 'realEconomy', direction: 'down', desc: '에너지↑ → 생산비용↑ → 기업이익↓' },
+                    { target: 'centralBank', direction: 'up', desc: '유가↑ → 인플레↑ → 금리인상 압박' },
+                    { target: 'commodity', direction: 'up', desc: '에너지가 원자재 운송/생산 비용' }
+                ],
+                example: { title: '2022 유럽 가스', text: '러시아 공급 차단 → 가스 10배 폭등 → 전기료 급등 → 제조업 위기' }
+            },
+            politics: {
+                icon: '🏛️', title: '정치/정책', subtitle: '선거, 규제, 세금',
+                description: '정권에 따라 경제 정책 방향 결정. 규제/세금 정책이 특정 산업에 직접 영향.',
+                connections: [
+                    { target: 'centralBank', direction: 'mixed', desc: '정치가 중앙은행 독립성에 압력' },
+                    { target: 'capitalMarket', direction: 'mixed', desc: '규제/세금이 기업 비용 구조 변화' },
+                    { target: 'realEconomy', direction: 'up', desc: '재정정책 → 경기 부양/긴축' }
+                ],
+                example: { title: '트럼프 관세', text: '관세 인상 공약 → 수입물가↑ 우려 → 인플레 압박 → 금리인하 지연' }
+            },
+            centralBank: {
+                icon: '🏦', title: '중앙은행', subtitle: 'Fed, 한은, ECB',
+                description: '금리와 통화량 조절의 핵심. Fed가 움직이면 전 세계가 따라간다. 한국도 예외 없음.',
+                connections: [
+                    { target: 'rates', direction: 'up', desc: '기준금리 → 시장금리 전달' },
+                    { target: 'currency', direction: 'up', desc: '금리차 → 환율 결정' },
+                    { target: 'capitalMarket', direction: 'down', desc: '금리↑ → 자산가격↓' }
+                ],
+                example: { title: '2022 Fed', text: '0%→5.25% 역사상 최고속 인상. 주식 -20%, 채권 -15%, 부동산 절벽' }
+            },
+            rates: {
+                icon: '📊', title: '금리', subtitle: '국채금리, 대출금리',
+                description: '10년물 금리가 모든 대출의 기준. 금리가 자산 가격의 할인율을 결정.',
+                connections: [
+                    { target: 'capitalMarket', direction: 'down', desc: '금리↑ → 주식 밸류에이션↓' },
+                    { target: 'realEconomy', direction: 'down', desc: '대출비용↑ → 투자/소비↓' },
+                    { target: 'currency', direction: 'up', desc: '금리↑ → 통화 강세' }
+                ],
+                example: { title: '10년물 4%', text: '무위험 수익 4%면 주식 매력↓. PER 25배 → 20배 조정' }
+            },
+            capitalMarket: {
+                icon: '📈', title: '자본시장', subtitle: '주식, 채권',
+                description: '돈이 거래되는 곳. 모든 경제 주체의 기대와 공포가 가격에 반영.',
+                connections: [
+                    { target: 'realEconomy', direction: 'up', desc: '주가↑ → 자산효과 → 소비↑' },
+                    { target: 'centralBank', direction: 'mixed', desc: '버블 → 긴축, 폭락 → 완화' }
+                ],
+                example: { title: '2020 동학개미', text: '개인 대거 유입 → KOSPI 3,300 → 2022년 2,200 급락' }
+            },
+            currency: {
+                icon: '💱', title: '환율', subtitle: '달러, 원화, 엔화',
+                description: '통화 가치. 달러 강세는 신흥국에 압박, 수출국에 기회.',
+                connections: [
+                    { target: 'realEconomy', direction: 'mixed', desc: '원화약세 → 수출↑, 수입비용↑' },
+                    { target: 'commodity', direction: 'down', desc: '달러강세 → 원자재↓ (달러 표시)' },
+                    { target: 'capitalMarket', direction: 'down', desc: '원화약세 → 외국인 이탈' }
+                ],
+                example: { title: '원화 1,440원', text: '2022년 13년 최저. 외국인 12조 순매도' }
+            },
+            commodity: {
+                icon: '🥇', title: '원자재', subtitle: '금, 구리, 곡물',
+                description: '실물 자원. 금은 안전자산, 구리는 경기지표 (닥터코퍼).',
+                connections: [
+                    { target: 'realEconomy', direction: 'mixed', desc: '원자재↑ → 생산비용↑' },
+                    { target: 'centralBank', direction: 'up', desc: '원자재↑ → 인플레↑ → 금리압박' }
+                ],
+                example: { title: '금 $2,700', text: '2024년 역대 최고. 지정학 불안 + 중앙은행 매수' }
+            },
+            realEconomy: {
+                icon: '🏭', title: '실물경제', subtitle: '고용, 소비, 생산',
+                description: '실제 물건 만들고 소비하는 경제. 자본시장과 상호작용하며 사이클 형성.',
+                connections: [
+                    { target: 'capitalMarket', direction: 'up', desc: '실적↑ → 주가↑' },
+                    { target: 'centralBank', direction: 'mixed', desc: '인플레↑ → 긴축, 실업↑ → 완화' },
+                    { target: 'politics', direction: 'up', desc: '경기 → 지지율 → 정책 방향' }
+                ],
+                example: { title: '2023 미국', text: '금리인상에도 고용 견조 → 연착륙 기대 → 주가 반등' }
+            }
+        };
+
+        const scenarios = {
+            fedHike: {
+                title: 'Fed 금리 인상',
+                steps: [
+                    { text: 'Fed 금리 인상', node: 'centralBank' },
+                    { text: '시장금리 상승', node: 'rates' },
+                    { text: '달러 강세', node: 'currency' },
+                    { text: '신흥국 자금 유출', node: 'capitalMarket' },
+                    { text: '원화 약세', node: 'currency' },
+                    { text: '한은 금리 인상', node: 'centralBank' },
+                    { text: '부동산/소비 위축', node: 'realEconomy' }
+                ]
+            },
+            war: {
+                title: '전쟁/지정학 충격',
+                steps: [
+                    { text: '전쟁 발발', node: 'geopolitics' },
+                    { text: '에너지 공급 차질', node: 'energy' },
+                    { text: '유가 급등', node: 'commodity' },
+                    { text: '인플레이션 상승', node: 'realEconomy' },
+                    { text: '중앙은행 금리 인상', node: 'centralBank' },
+                    { text: '자산 가격 하락', node: 'capitalMarket' }
+                ]
+            },
+            chinaSlowdown: {
+                title: '중국 경기 둔화',
+                steps: [
+                    { text: '중국 부동산 위기', node: 'realEconomy' },
+                    { text: '원자재 수요 감소', node: 'commodity' },
+                    { text: '호주/브라질 타격', node: 'realEconomy' },
+                    { text: '위안화 약세', node: 'currency' },
+                    { text: '아시아 통화 동반 약세', node: 'currency' },
+                    { text: '글로벌 성장 둔화', node: 'realEconomy' }
+                ]
+            },
+            dollarWeak: {
+                title: '달러 약세 전환',
+                steps: [
+                    { text: 'Fed 금리 인하', node: 'centralBank' },
+                    { text: '달러 약세', node: 'currency' },
+                    { text: '원자재 상승', node: 'commodity' },
+                    { text: '신흥국 자금 유입', node: 'capitalMarket' },
+                    { text: '원화 강세', node: 'currency' },
+                    { text: '신흥국 주가 상승', node: 'capitalMarket' }
+                ]
+            }
+        };
+
+        const connections = [
+            { from: 'geopolitics', to: 'energy' }, { from: 'geopolitics', to: 'commodity' },
+            { from: 'energy', to: 'centralBank' }, { from: 'energy', to: 'realEconomy' }, { from: 'energy', to: 'commodity' },
+            { from: 'politics', to: 'centralBank' }, { from: 'politics', to: 'realEconomy' },
+            { from: 'centralBank', to: 'rates' }, { from: 'centralBank', to: 'currency' }, { from: 'centralBank', to: 'capitalMarket' },
+            { from: 'rates', to: 'capitalMarket' }, { from: 'rates', to: 'realEconomy' }, { from: 'rates', to: 'currency' },
+            { from: 'capitalMarket', to: 'realEconomy' },
+            { from: 'currency', to: 'realEconomy' }, { from: 'currency', to: 'commodity' }, { from: 'currency', to: 'capitalMarket' },
+            { from: 'commodity', to: 'realEconomy' }, { from: 'commodity', to: 'centralBank' }
+        ];
+
+        let activeScenario = null, scenarioStep = 0, scenarioInterval = null;
+
+        function drawLines() {
+            const svg = document.getElementById('flowLines');
+            const canvas = document.getElementById('flowCanvas');
+            const rect = canvas.getBoundingClientRect();
+            let html = `<defs>
+                <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#252540"/></marker>
+                <marker id="arrow-active" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#00d9ff"/></marker>
+            </defs>`;
+            connections.forEach(conn => {
+                const from = document.querySelector(`[data-node="${conn.from}"]`);
+                const to = document.querySelector(`[data-node="${conn.to}"]`);
+                if (!from || !to) return;
+                const fr = from.getBoundingClientRect(), tr = to.getBoundingClientRect();
+                const x1 = fr.left + fr.width/2 - rect.left, y1 = fr.top + fr.height/2 - rect.top;
+                const x2 = tr.left + tr.width/2 - rect.left, y2 = tr.top + tr.height/2 - rect.top;
+                html += `<line class="flow-line" data-from="${conn.from}" data-to="${conn.to}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" marker-end="url(#arrow)"/>`;
+            });
+            svg.innerHTML = html;
+        }
+
+        function showNodeDetail(nodeId) {
+            const data = nodeData[nodeId];
+            document.getElementById('detailPlaceholder').style.display = 'none';
+            document.getElementById('detailContent').style.display = 'block';
+            document.getElementById('detailContent').innerHTML = `
+                <div class="detail-header">
+                    <div class="detail-icon">${data.icon}</div>
+                    <div class="detail-title">${data.title}</div>
+                    <div class="detail-subtitle">${data.subtitle}</div>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title">개요</div>
+                    <p class="detail-text">${data.description}</p>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title">영향 관계</div>
+                    <ul class="connection-list">
+                        ${data.connections.map(c => `
+                            <li class="connection-item">
+                                <span class="connection-arrow ${c.direction}">${c.direction === 'up' ? '↑' : c.direction === 'down' ? '↓' : '↕'}</span>
+                                <span>${c.desc}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                <div class="detail-section">
+                    <div class="detail-section-title">실제 사례</div>
+                    <div class="example-box">
+                        <div class="example-title">${data.example.title}</div>
+                        <div class="example-text">${data.example.text}</div>
+                    </div>
+                </div>
+            `;
+            highlightConnections(nodeId);
+        }
+
+        function highlightConnections(nodeId) {
+            document.querySelectorAll('.node').forEach(n => n.classList.remove('active', 'highlighted', 'dimmed'));
+            document.querySelectorAll('.flow-line').forEach(l => { l.classList.remove('active', 'dimmed'); l.setAttribute('marker-end', 'url(#arrow)'); });
+            document.querySelector(`[data-node="${nodeId}"]`).classList.add('active');
+            const connected = new Set([nodeId]);
+            connections.forEach(c => { if (c.from === nodeId) connected.add(c.to); if (c.to === nodeId) connected.add(c.from); });
+            document.querySelectorAll('.node').forEach(n => {
+                if (connected.has(n.dataset.node)) { if (n.dataset.node !== nodeId) n.classList.add('highlighted'); }
+                else n.classList.add('dimmed');
+            });
+            document.querySelectorAll('.flow-line').forEach(l => {
+                if (l.dataset.from === nodeId || l.dataset.to === nodeId) { l.classList.add('active'); l.setAttribute('marker-end', 'url(#arrow-active)'); }
+                else l.classList.add('dimmed');
+            });
+        }
+
+        function resetHighlights() {
+            document.querySelectorAll('.node').forEach(n => n.classList.remove('active', 'highlighted', 'dimmed'));
+            document.querySelectorAll('.flow-line').forEach(l => { l.classList.remove('active', 'dimmed'); l.setAttribute('marker-end', 'url(#arrow)'); });
+        }
+
+        function showScenario(id) {
+            activeScenario = scenarios[id]; scenarioStep = 0;
+            document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('active'));
+            document.querySelector(`[data-scenario="${id}"]`).classList.add('active');
+            document.getElementById('scenarioFlow').classList.add('active');
+            renderSteps();
+        }
+
+        function renderSteps() {
+            document.getElementById('scenarioSteps').innerHTML = activeScenario.steps.map((s, i) => `
+                <div class="scenario-step ${i < scenarioStep ? 'completed' : ''} ${i === scenarioStep ? 'active' : ''}">${s.text}</div>
+                ${i < activeScenario.steps.length - 1 ? '<span class="scenario-arrow">→</span>' : ''}
+            `).join('');
+        }
+
+        function playScenario() {
+            if (scenarioInterval) clearInterval(scenarioInterval);
+            scenarioStep = 0; renderSteps();
+            scenarioInterval = setInterval(() => {
+                if (scenarioStep < activeScenario.steps.length) {
+                    highlightConnections(activeScenario.steps[scenarioStep].node);
+                    scenarioStep++; renderSteps();
+                } else clearInterval(scenarioInterval);
+            }, 1200);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(drawLines, 100);
+            window.addEventListener('resize', drawLines);
+            document.querySelectorAll('.node').forEach(n => n.addEventListener('click', () => showNodeDetail(n.dataset.node)));
+            document.querySelectorAll('.scenario-card').forEach(c => c.addEventListener('click', () => showScenario(c.dataset.scenario)));
+            document.getElementById('scenarioPlay').addEventListener('click', playScenario);
+            document.getElementById('scenarioReset').addEventListener('click', () => { if (scenarioInterval) clearInterval(scenarioInterval); scenarioStep = 0; renderSteps(); resetHighlights(); });
+        });
+    </script>
+</body>
+</html>

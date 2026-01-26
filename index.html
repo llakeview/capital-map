@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital Map - 자본주의 투시경</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --border: #252540;
+            --text-primary: #e0e0e0;
+            --text-secondary: #888;
+            --accent-gold: #ffd700;
+            --accent-cyan: #00d9ff;
+            --positive: #00d26a;
+            --negative: #ff4757;
+            --warning: #ff9f43;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(15, 15, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--warning) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .nav-logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: var(--bg-card);
+        }
+
+        .nav-link.active {
+            color: var(--accent-gold);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--positive);
+            font-weight: 500;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--positive);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.9); }
+        }
+
+        .nav-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--accent-cyan);
+        }
+
+        /* Main Content */
+        .main {
+            padding-top: 80px;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-cyan), var(--accent-gold));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 3s linear infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero-subtitle span {
+            color: var(--accent-gold);
+        }
+
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .quick-stat {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .quick-stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .quick-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .quick-stat-value.positive { color: var(--positive); }
+        .quick-stat-value.negative { color: var(--negative); }
+        .quick-stat-value.neutral { color: var(--accent-cyan); }
+
+        /* Section */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(180deg, var(--accent-gold), var(--warning));
+            border-radius: 2px;
+        }
+
+        .section-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .section-tab {
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            background: transparent;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .section-tab:hover {
+            border-color: var(--text-secondary);
+        }
+
+        .section-tab.active {
+            color: var(--accent-gold);
+            border-color: var(--accent-gold);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Index Grid */
+        .index-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .index-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .index-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--card-color), transparent);
+        }
+
+        .index-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--card-color);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .index-card.positive { --card-color: var(--positive); }
+        .index-card.negative { --card-color: var(--negative); }
+
+        .index-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .index-name {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .index-flag {
+            font-size: 16px;
+        }
+
+        .index-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .index-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .index-change {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .index-change.positive { color: var(--positive); }
+        .index-change.negative { color: var(--negative); }
+
+        .index-category {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Quick Links */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .quick-link {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quick-link:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0, 217, 255, 0.1);
+        }
+
+        .quick-link-icon {
+            font-size: 32px;
+        }
+
+        .quick-link-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .quick-link-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Detail Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 2000;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 2001;
+        }
+
+        .modal.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: var(--bg-secondary);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .modal-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 42px;
+            font-weight: 700;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .modal-value.positive { color: var(--positive); }
+        .modal-value.negative { color: var(--negative); }
+
+        .modal-content {
+            padding: 24px;
+        }
+
+        .modal-section {
+            margin-bottom: 24px;
+        }
+
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-section-title {
+            font-size: 12px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .modal-text {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .affect-list {
+            list-style: none;
+        }
+
+        .affect-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .affect-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .affect-icon.positive {
+            background: rgba(0, 210, 106, 0.2);
+            color: var(--positive);
+        }
+
+        .affect-icon.negative {
+            background: rgba(255, 71, 87, 0.2);
+            color: var(--negative);
+        }
+
+        .affect-content {
+            flex: 1;
+        }
+
+        .affect-target {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .affect-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .example-box {
+            background: var(--bg-card);
+            border-left: 3px solid var(--accent-gold);
+            border-radius: 0 8px 8px 0;
+            padding: 16px;
+        }
+
+        .example-title {
+            font-size: 13px;
+            color: var(--accent-gold);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .example-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .footer-text span {
+            color: var(--accent-gold);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .quick-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hero-title {
+                font-size: 32px;
+            }
+            .quick-stats {
+                grid-template-columns: 1fr;
+            }
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">💰</div>
+            <span class="nav-logo-text">CAPITAL MAP</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link active">대시보드</a>
+            <a href="flow.html" class="nav-link">연결관계</a>
+            <a href="map.html" class="nav-link">세계지도</a>
+            <a href="industry.html" class="nav-link">산업해부</a>
+            <a href="timeline.html" class="nav-link">역사</a>
+            <a href="dealers.html" class="nav-link">딜러구조</a>
+        </div>
+        <div class="nav-right">
+            <div class="live-badge">
+                <div class="live-dot"></div>
+                LIVE
+            </div>
+            <div class="nav-time" id="navTime"></div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero -->
+            <section class="hero">
+                <h1 class="hero-title">자본주의 투시경</h1>
+                <p class="hero-subtitle">
+                    <span>"모든 것은 연결되어 있다"</span> — 구조를 알면 다음 수가 보인다
+                </p>
+            </section>
+
+            <!-- Quick Stats -->
+            <section class="quick-stats">
+                <div class="quick-stat">
+                    <div class="quick-stat-label">시장 심리</div>
+                    <div class="quick-stat-value neutral" id="marketSentiment">NEUTRAL</div>
+                </div>
+                <div class="quick-stat">
+                    <div class="quick-stat-label">달러 방향</div>
+                    <div class="quick-stat-value positive" id="dollarDirection">강세 ↑</div>
+                </div>
+                <div class="quick-stat">
+                    <div class="quick-stat-label">금리 트렌드</div>
+                    <div class="quick-stat-value negative" id="rateTrend">긴축 유지</div>
+                </div>
+                <div class="quick-stat">
+                    <div class="quick-stat-label">리스크 레벨</div>
+                    <div class="quick-stat-value neutral" id="riskLevel">MEDIUM</div>
+                </div>
+            </section>
+
+            <!-- Index Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">실시간 핵심 지수</h2>
+                    <div class="section-tabs">
+                        <button class="section-tab active" data-category="all">전체</button>
+                        <button class="section-tab" data-category="rates">금리</button>
+                        <button class="section-tab" data-category="currency">통화</button>
+                        <button class="section-tab" data-category="equity">주식</button>
+                        <button class="section-tab" data-category="commodity">원자재</button>
+                        <button class="section-tab" data-category="crypto">크립토</button>
+                    </div>
+                </div>
+                <div class="index-grid" id="indexGrid"></div>
+            </section>
+
+            <!-- Quick Links -->
+            <section class="quick-links">
+                <a href="flow.html" class="quick-link">
+                    <div class="quick-link-icon">🔗</div>
+                    <div class="quick-link-title">연결 관계 맵</div>
+                    <div class="quick-link-desc">정치 → 중앙은행 → 자본시장 → 실물경제. 모든 연결고리를 시각화</div>
+                </a>
+                <a href="map.html" class="quick-link">
+                    <div class="quick-link-icon">🗺️</div>
+                    <div class="quick-link-title">세계 자원 지도</div>
+                    <div class="quick-link-desc">원유, 희토류, 리튬... 누가 뭘 가졌는지, 왜 중요한지</div>
+                </a>
+                <a href="industry.html" class="quick-link">
+                    <div class="quick-link-icon">🏗️</div>
+                    <div class="quick-link-title">산업 해부</div>
+                    <div class="quick-link-desc">PF 구조, 방산, 반도체. 돈이 어떻게 도는지</div>
+                </a>
+                <a href="timeline.html" class="quick-link">
+                    <div class="quick-link-icon">📜</div>
+                    <div class="quick-link-title">역사 타임라인</div>
+                    <div class="quick-link-desc">닉슨쇼크부터 지금까지. 돈의 역사가 만든 세상</div>
+                </a>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">
+            <span>"돈의 흐름이 역사를 만든다"</span> — Capital Map by llakeview
+        </p>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <p class="modal-subtitle" id="modalSubtitle"></p>
+        </div>
+        <div class="modal-value" id="modalValue"></div>
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <script>
+        // ==================== DATA ====================
+        const indexData = [
+            // 금리
+            {
+                id: 'us10y', name: '미국 10년물', value: '4.28', unit: '%', change: '+0.05', changePercent: '+1.18%', positive: true,
+                category: 'rates', flag: '🇺🇸',
+                definition: '미국 정부 10년 만기 국채 금리. 전 세계 무위험 수익률의 기준점.',
+                whyImportant: '모든 대출 금리의 기준. 주담대, 회사채, 자동차 할부가 여기서 파생. 이 금리가 오르면 모든 자산에 하락 압력.',
+                affects: [
+                    { target: '달러', direction: 'positive', desc: '금리↑ → 달러 강세' },
+                    { target: '주식', direction: 'negative', desc: '할인율↑ → 밸류에이션↓' },
+                    { target: '신흥국', direction: 'negative', desc: '자금 유출' }
+                ],
+                example: { title: '2022년', text: 'Fed 금리 인상 → 10년물 4.3% → S&P -20%, 원화 1,440원' }
+            },
+            {
+                id: 'us2y', name: '미국 2년물', value: '4.71', unit: '%', change: '+0.03', changePercent: '+0.64%', positive: true,
+                category: 'rates', flag: '🇺🇸',
+                definition: '미국 정부 2년 만기 국채 금리. Fed 정책 기대를 가장 민감하게 반영.',
+                whyImportant: '10년물과의 차이(장단기 스프레드)가 경기 침체 신호. 2년물 > 10년물이면 장단기 역전 = 침체 경고.',
+                affects: [
+                    { target: 'Fed 정책 기대', direction: 'positive', desc: '2년물이 Fed 금리 방향 선반영' },
+                    { target: '장단기 스프레드', direction: 'negative', desc: '역전 시 침체 신호' }
+                ],
+                example: { title: '2023년', text: '2년물 5.0% vs 10년물 3.8% = 역전. 역사적으로 침체 선행.' }
+            },
+            {
+                id: 'fedfunds', name: 'Fed 기준금리', value: '5.33', unit: '%', change: '0.00', changePercent: '0.00%', positive: false,
+                category: 'rates', flag: '🇺🇸',
+                definition: '미국 연방준비제도 정책금리. FOMC에서 연 8회 결정.',
+                whyImportant: '전 세계 금리의 닻. Fed가 움직이면 모든 중앙은행이 따라감. 한국도 예외 없음.',
+                affects: [
+                    { target: '모든 금리', direction: 'positive', desc: '기준점 역할' },
+                    { target: '글로벌 유동성', direction: 'negative', desc: '인상 시 긴축' },
+                    { target: '신흥국 통화', direction: 'negative', desc: '달러 강세 유발' }
+                ],
+                example: { title: '2022년', text: '0% → 5.25% 역사상 가장 빠른 인상. 전 세계 자산 폭락.' }
+            },
+            {
+                id: 'kr3y', name: '한국 3년물', value: '2.85', unit: '%', change: '-0.02', changePercent: '-0.70%', positive: false,
+                category: 'rates', flag: '🇰🇷',
+                definition: '한국 국고채 3년물 금리. 한국 채권시장의 벤치마크.',
+                whyImportant: '한국 주담대 금리와 직결. 기업 자금조달 비용의 기준.',
+                affects: [
+                    { target: '주담대 금리', direction: 'positive', desc: '직접 연동' },
+                    { target: '회사채', direction: 'positive', desc: '가산금리 기준' }
+                ],
+                example: { title: '2022년', text: '금리 급등 → 주담대 7% 돌파 → 부동산 거래 절벽' }
+            },
+            // 통화
+            {
+                id: 'dxy', name: '달러인덱스', value: '107.32', unit: '', change: '+0.45', changePercent: '+0.42%', positive: true,
+                category: 'currency', flag: '💵',
+                definition: '달러 가치를 6개 통화(유로 57.6%, 엔 13.6% 등) 대비 측정. 1973년=100 기준.',
+                whyImportant: '100 이상=달러 강세. 유로 비중 57%라서 ECB 정책이 큰 영향. 달러 강세 → 신흥국 압박.',
+                affects: [
+                    { target: '신흥국 통화', direction: 'negative', desc: 'DXY↑ → 원화 등 약세' },
+                    { target: '원자재', direction: 'negative', desc: '달러 강세 → 원자재 가격↓' },
+                    { target: '수출', direction: 'positive', desc: '한국 수출 경쟁력↑' }
+                ],
+                example: { title: '2022년', text: 'DXY 114 (20년 최고) → 원화 1,440원, 엔화 150엔' }
+            },
+            {
+                id: 'usdkrw', name: '원/달러', value: '1,398.50', unit: '원', change: '+5.20', changePercent: '+0.37%', positive: true,
+                category: 'currency', flag: '🇰🇷',
+                definition: '1달러당 원화 가격. 숫자↑ = 원화 약세.',
+                whyImportant: '1,400원 넘으면 경고등. 수출엔 유리하지만 수입물가↑, 외국인 이탈 우려.',
+                affects: [
+                    { target: '수출기업', direction: 'positive', desc: '원화 약세 → 가격경쟁력' },
+                    { target: '수입물가', direction: 'positive', desc: '원화 약세 → 비용↑' },
+                    { target: '외국인', direction: 'negative', desc: '환차손 우려 → 이탈' }
+                ],
+                example: { title: '2022년', text: '1,440원 (13년 만에 최저). 외국인 12조원 순매도.' }
+            },
+            {
+                id: 'usdjpy', name: '달러/엔', value: '154.82', unit: '엔', change: '+0.65', changePercent: '+0.42%', positive: true,
+                category: 'currency', flag: '🇯🇵',
+                definition: '1달러당 엔화 가격. 숫자↑ = 엔화 약세.',
+                whyImportant: '일본은행(BOJ) 정책과 직결. 엔화 약세 → 일본 수출↑, 하지만 아시아 통화 전체 압박.',
+                affects: [
+                    { target: '원화', direction: 'positive', desc: '엔화 약세 따라 원화도 약세 압력' },
+                    { target: '일본 수출', direction: 'positive', desc: '가격 경쟁력↑' },
+                    { target: 'BOJ 개입', direction: 'negative', desc: '160엔 넘으면 개입 가능성' }
+                ],
+                example: { title: '2024년', text: '160엔 돌파 → BOJ 개입 → 급락 후 재상승' }
+            },
+            {
+                id: 'eurusd', name: '유로/달러', value: '1.0523', unit: '', change: '-0.0032', changePercent: '-0.30%', positive: false,
+                category: 'currency', flag: '🇪🇺',
+                definition: '1유로당 달러 가격. 세계 최대 거래량 통화쌍.',
+                whyImportant: 'DXY의 57%가 유로. ECB vs Fed 정책 차이가 핵심. 유로 약세 = 달러 강세.',
+                affects: [
+                    { target: 'DXY', direction: 'negative', desc: '유로↓ → DXY↑' },
+                    { target: '유럽 수출', direction: 'positive', desc: '유로 약세 → 경쟁력↑' }
+                ],
+                example: { title: '2022년', text: '패리티(1:1) 붕괴. 20년 만에 달러와 동등.' }
+            },
+            {
+                id: 'usdcny', name: '달러/위안', value: '7.27', unit: '위안', change: '+0.02', changePercent: '+0.28%', positive: true,
+                category: 'currency', flag: '🇨🇳',
+                definition: '1달러당 위안화 가격. 중국 인민은행(PBOC)이 매일 기준환율 고시.',
+                whyImportant: '7.0 이상이면 위안화 약세 신호. 미중 갈등, 중국 경기 둔화 지표.',
+                affects: [
+                    { target: '아시아 통화', direction: 'positive', desc: '위안 약세 → 원화 등 동반 약세' },
+                    { target: '중국 수출', direction: 'positive', desc: '가격 경쟁력↑' },
+                    { target: '미중 갈등', direction: 'negative', desc: '환율 조작 비난 가능' }
+                ],
+                example: { title: '2023년', text: '7.3 돌파. 중국 부동산 위기 + 경기 둔화 반영.' }
+            },
+            // 주식
+            {
+                id: 'spx', name: 'S&P 500', value: '6,012.45', unit: '', change: '+28.32', changePercent: '+0.47%', positive: true,
+                category: 'equity', flag: '🇺🇸',
+                definition: '미국 대형주 500개 지수. 미국 경제의 체력.',
+                whyImportant: '전 세계 자금이 가장 많이 몰리는 시장. 흔들리면 전 세계가 흔들림.',
+                affects: [
+                    { target: '글로벌 증시', direction: 'positive', desc: 'S&P↓ → 전 세계 동반↓' },
+                    { target: 'Fed 정책', direction: 'negative', desc: '폭락 시 완화 기대' }
+                ],
+                example: { title: '2020년', text: '코로나 -34% → Fed 무제한 QE → 1년 만에 신고가' }
+            },
+            {
+                id: 'nasdaq', name: 'NASDAQ', value: '19,432.15', unit: '', change: '+156.78', changePercent: '+0.81%', positive: true,
+                category: 'equity', flag: '🇺🇸',
+                definition: '미국 기술주 중심 지수. 애플, MS, 엔비디아 등 빅테크 비중 높음.',
+                whyImportant: '금리에 가장 민감. 성장주 밸류에이션이 금리로 할인되기 때문.',
+                affects: [
+                    { target: '기술주 심리', direction: 'positive', desc: '나스닥이 기술주 방향 결정' },
+                    { target: '금리 민감도', direction: 'negative', desc: '금리↑ → 나스닥 타격 큼' }
+                ],
+                example: { title: '2022년', text: '금리 급등 → 나스닥 -33%. 기술주 참사.' }
+            },
+            {
+                id: 'vix', name: 'VIX 공포지수', value: '14.23', unit: '', change: '-0.87', changePercent: '-5.76%', positive: false,
+                category: 'equity', flag: '📊',
+                definition: 'S&P 500 옵션 변동성. 시장 공포 수준.',
+                whyImportant: '20↓=안정, 25~30=불안, 30↑=공포. "공포에 사라"의 기준.',
+                affects: [
+                    { target: '주가 변동성', direction: 'positive', desc: 'VIX↑ → 급락 가능성' },
+                    { target: '안전자산', direction: 'positive', desc: 'VIX↑ → 금/달러/국채로 이동' }
+                ],
+                example: { title: '2020년 3월', text: 'VIX 82 (역대 최고). 시장 패닉.' }
+            },
+            {
+                id: 'kospi', name: 'KOSPI', value: '2,456.78', unit: '', change: '-12.34', changePercent: '-0.50%', positive: false,
+                category: 'equity', flag: '🇰🇷',
+                definition: '한국 유가증권시장 대표 지수. 삼성전자, SK하이닉스 비중 높음.',
+                whyImportant: '외국인 비중 30%. 글로벌 자금 흐름에 민감. 반도체 업황이 핵심.',
+                affects: [
+                    { target: '개인 자산', direction: 'positive', desc: '연금, 펀드 수익률' },
+                    { target: '소비 심리', direction: 'positive', desc: '자산효과 → 소비' }
+                ],
+                example: { title: '2021년', text: '동학개미 + 유동성 → 3,300 돌파 → 2022년 2,200 급락' }
+            },
+            {
+                id: 'kosdaq', name: 'KOSDAQ', value: '721.45', unit: '', change: '-5.67', changePercent: '-0.78%', positive: false,
+                category: 'equity', flag: '🇰🇷',
+                definition: '한국 중소형/기술주 시장. 바이오, 게임 비중 높음.',
+                whyImportant: '개인 투자자 비중 높음. 변동성 큼. 테마주 광풍의 무대.',
+                affects: [
+                    { target: '개인 심리', direction: 'positive', desc: '코스닥이 개미 심리 반영' },
+                    { target: '벤처 자금', direction: 'positive', desc: 'IPO, 자금조달 환경' }
+                ],
+                example: { title: '2024년', text: '2차전지 테마 급등락. 개인 손실 막심.' }
+            },
+            // 원자재
+            {
+                id: 'wti', name: 'WTI 원유', value: '71.24', unit: '$/배럴', change: '-1.32', changePercent: '-1.82%', positive: false,
+                category: 'commodity', flag: '🛢️',
+                definition: '미국 텍사스산 원유. 에너지 가격 기준.',
+                whyImportant: '유가↑ → 물가↑ → 금리↑ 연쇄반응. 지정학 리스크 1순위.',
+                affects: [
+                    { target: '인플레', direction: 'positive', desc: '유가↑ → 물가↑' },
+                    { target: '항공/운송', direction: 'negative', desc: '비용 증가' },
+                    { target: '산유국', direction: 'positive', desc: '수입 증가' }
+                ],
+                example: { title: '2022년', text: '우크라이나 전쟁 → $130 → 글로벌 인플레 폭발' }
+            },
+            {
+                id: 'brent', name: '브렌트유', value: '74.56', unit: '$/배럴', change: '-1.18', changePercent: '-1.56%', positive: false,
+                category: 'commodity', flag: '🛢️',
+                definition: '북해산 원유. 국제 유가 기준. 아시아/유럽 수입가 기준.',
+                whyImportant: 'WTI보다 국제적. 한국 수입 원유는 브렌트 기준으로 가격 결정.',
+                affects: [
+                    { target: '한국 유가', direction: 'positive', desc: '직접 연동' },
+                    { target: '정유사', direction: 'positive', desc: '마진 영향' }
+                ],
+                example: { title: '2022년', text: 'WTI와 함께 급등. 유럽 에너지 위기 심화.' }
+            },
+            {
+                id: 'gold', name: '금', value: '2,678.40', unit: '$/oz', change: '+12.50', changePercent: '+0.47%', positive: true,
+                category: 'commodity', flag: '🥇',
+                definition: '금 1온스 가격. 대표 안전자산.',
+                whyImportant: '달러와 역상관. 불확실성↑ → 금↑. 중앙은행도 보유.',
+                affects: [
+                    { target: '달러', direction: 'negative', desc: '달러↓ → 금↑' },
+                    { target: '실질금리', direction: 'negative', desc: '실질금리↓ → 금↑' }
+                ],
+                example: { title: '2024년', text: '지정학 불안 + 중앙은행 매수 → $2,700 역대 최고' }
+            },
+            {
+                id: 'silver', name: '은', value: '31.24', unit: '$/oz', change: '+0.45', changePercent: '+1.46%', positive: true,
+                category: 'commodity', flag: '🥈',
+                definition: '은 1온스 가격. 귀금속이자 산업용 금속.',
+                whyImportant: '태양광 패널 수요 급증. 금보다 변동성 큼.',
+                affects: [
+                    { target: '태양광', direction: 'positive', desc: '신재생 수요' },
+                    { target: '금', direction: 'positive', desc: '금과 동행하지만 더 변동적' }
+                ],
+                example: { title: '2024년', text: '태양광 수요 + 금 상승 따라 급등' }
+            },
+            {
+                id: 'copper', name: '구리', value: '4.12', unit: '$/lb', change: '-0.05', changePercent: '-1.20%', positive: false,
+                category: 'commodity', flag: '🔶',
+                definition: '구리 가격. "닥터 코퍼" - 경기 선행 지표.',
+                whyImportant: '건설, 전기, 전자에 필수. 경기 좋으면 구리 수요↑.',
+                affects: [
+                    { target: '경기 전망', direction: 'positive', desc: '구리↑ → 경기 회복 신호' },
+                    { target: 'EV/신재생', direction: 'positive', desc: '전기차 수요' }
+                ],
+                example: { title: '2021년', text: '경기 회복 기대 → 구리 $4.8 역대 최고' }
+            },
+            {
+                id: 'natgas', name: '천연가스', value: '2.34', unit: '$/MMBtu', change: '+0.12', changePercent: '+5.41%', positive: true,
+                category: 'commodity', flag: '🔥',
+                definition: '미국 헨리허브 천연가스 가격.',
+                whyImportant: '유럽은 TTF 기준. 러시아 의존도 높았던 유럽이 LNG로 전환 중.',
+                affects: [
+                    { target: '유틸리티', direction: 'positive', desc: '발전 비용' },
+                    { target: '유럽 에너지', direction: 'positive', desc: 'LNG 수입가' }
+                ],
+                example: { title: '2022년', text: '유럽 가스 위기 → TTF 10배 폭등. 미국 LNG 수출 급증.' }
+            },
+            // 크립토
+            {
+                id: 'btc', name: '비트코인', value: '97,245', unit: '$', change: '+1,234', changePercent: '+1.29%', positive: true,
+                category: 'crypto', flag: '₿',
+                definition: '비트코인 가격. 암호화폐 대장.',
+                whyImportant: '위험자산 심리 지표. 유동성 장세에서 급등, 긴축에서 급락.',
+                affects: [
+                    { target: '크립토 전체', direction: 'positive', desc: 'BTC가 방향 결정' },
+                    { target: '위험 심리', direction: 'positive', desc: '리스크온 지표' }
+                ],
+                example: { title: '2024년', text: 'ETF 승인 → $100K 돌파 시도' }
+            },
+            {
+                id: 'eth', name: '이더리움', value: '3,456', unit: '$', change: '+89', changePercent: '+2.64%', positive: true,
+                category: 'crypto', flag: 'Ξ',
+                definition: '이더리움 가격. 스마트컨트랙트 플랫폼.',
+                whyImportant: 'DeFi, NFT 생태계 기반. 비트코인보다 변동성 큼.',
+                affects: [
+                    { target: '알트코인', direction: 'positive', desc: 'ETH가 알트 방향 결정' },
+                    { target: 'DeFi', direction: 'positive', desc: '생태계 활성도' }
+                ],
+                example: { title: '2024년', text: 'ETF 승인 기대 → 급등' }
+            }
+        ];
+
+        // ==================== FUNCTIONS ====================
+        function updateTime() {
+            const now = new Date();
+            const options = { 
+                month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
+                hour12: false
+            };
+            document.getElementById('navTime').textContent = now.toLocaleString('ko-KR', options);
+        }
+
+        function renderIndexCards(category = 'all') {
+            const grid = document.getElementById('indexGrid');
+            const filtered = category === 'all' 
+                ? indexData 
+                : indexData.filter(i => i.category === category);
+            
+            grid.innerHTML = filtered.map(index => `
+                <div class="index-card ${index.positive ? 'positive' : 'negative'}" data-id="${index.id}">
+                    <div class="index-card-header">
+                        <span class="index-name">${index.name}</span>
+                        <span class="index-flag">${index.flag}</span>
+                    </div>
+                    <div class="index-value">${index.value}${index.unit && !index.value.includes(index.unit) ? ' ' + index.unit : ''}</div>
+                    <div class="index-bottom">
+                        <span class="index-change ${index.positive ? 'positive' : 'negative'}">
+                            ${index.positive ? '▲' : '▼'} ${index.change} (${index.changePercent})
+                        </span>
+                        <span class="index-category">${getCategoryLabel(index.category)}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Add click listeners
+            document.querySelectorAll('.index-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const data = indexData.find(i => i.id === card.dataset.id);
+                    openModal(data);
+                });
+            });
+        }
+
+        function getCategoryLabel(cat) {
+            const labels = {
+                rates: '금리',
+                currency: '통화',
+                equity: '주식',
+                commodity: '원자재',
+                crypto: '크립토'
+            };
+            return labels[cat] || cat;
+        }
+
+        function openModal(data) {
+            document.getElementById('modalTitle').textContent = data.name;
+            document.getElementById('modalSubtitle').textContent = data.definition;
+            
+            const valueEl = document.getElementById('modalValue');
+            valueEl.textContent = `${data.value}${data.unit ? ' ' + data.unit : ''}`;
+            valueEl.className = `modal-value ${data.positive ? 'positive' : 'negative'}`;
+
+            document.getElementById('modalContent').innerHTML = `
+                <div class="modal-section">
+                    <div class="modal-section-title">왜 중요한가?</div>
+                    <p class="modal-text">${data.whyImportant}</p>
+                </div>
+                <div class="modal-section">
+                    <div class="modal-section-title">영향 관계</div>
+                    <ul class="affect-list">
+                        ${data.affects.map(a => `
+                            <li class="affect-item">
+                                <div class="affect-icon ${a.direction}">${a.direction === 'positive' ? '↑' : '↓'}</div>
+                                <div class="affect-content">
+                                    <div class="affect-target">${a.target}</div>
+                                    <div class="affect-desc">${a.desc}</div>
+                                </div>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                <div class="modal-section">
+                    <div class="modal-section-title">실제 사례</div>
+                    <div class="example-box">
+                        <div class="example-title">${data.example.title}</div>
+                        <div class="example-text">${data.example.text}</div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('modalOverlay').classList.add('open');
+            document.getElementById('modal').classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('open');
+            document.getElementById('modal').classList.remove('open');
+        }
+
+        // ==================== INIT ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTime();
+            setInterval(updateTime, 1000);
+            renderIndexCards();
+
+            // Tab switching
+            document.querySelectorAll('.section-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    renderIndexCards(tab.dataset.category);
+                });
+            });
+
+            // Modal close
+            document.getElementById('modalClose').addEventListener('click', closeModal);
+            document.getElementById('modalOverlay').addEventListener('click', closeModal);
+            document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+        });
+    </script>
+</body>
+</html>

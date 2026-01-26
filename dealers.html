@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>딜러 구조 - Capital Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--bg:#0a0a0f;--bg2:#0f0f1a;--card:#1a1a2e;--border:#252540;--text:#e0e0e0;--text2:#888;--gold:#ffd700;--cyan:#00d9ff;--green:#00d26a;--red:#ff4757;--orange:#ff9f43}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+        .nav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(15,15,26,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:1000}
+        .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+        .nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+        .nav-logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .nav-links{display:flex;gap:8px}
+        .nav-link{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:500;transition:.2s}
+        .nav-link:hover{color:var(--text);background:var(--card)}
+        .nav-link.active{color:var(--gold);background:rgba(255,215,0,.1)}
+        .main{padding-top:80px}.container{max-width:1100px;margin:0 auto;padding:0 30px 60px}
+        .page-header{text-align:center;padding:30px 0}
+        .page-title{font-size:36px;font-weight:700;margin-bottom:12px}
+        .page-subtitle{color:var(--text2);font-size:16px}
+        .section{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:30px;margin-bottom:24px}
+        .section-title{font-size:20px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+        .section-title::before{content:'';width:4px;height:24px;background:linear-gradient(180deg,var(--gold),var(--orange));border-radius:2px}
+        .flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;padding:24px;background:var(--card);border-radius:12px;margin-bottom:20px}
+        .flow-box{background:var(--bg2);border:2px solid var(--border);border-radius:10px;padding:14px 18px;text-align:center;min-width:100px}
+        .flow-box-icon{font-size:22px;margin-bottom:4px}
+        .flow-box-label{font-size:11px;font-weight:600}
+        .flow-arrow{font-size:18px;color:var(--cyan)}
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+        .card{background:var(--card);border-radius:10px;padding:20px}
+        .card-title{font-size:14px;font-weight:600;margin-bottom:10px;color:var(--gold)}
+        .card-text{font-size:13px;color:var(--text2);line-height:1.6}
+        table{width:100%;border-collapse:collapse}
+        th,td{padding:12px;text-align:left;border-bottom:1px solid var(--border);font-size:13px}
+        th{color:var(--text2);text-transform:uppercase;font-size:11px;background:var(--card)}
+        .flag{font-size:18px;margin-right:8px}
+        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:16px;margin-bottom:20px}
+        .stat{background:var(--card);border-radius:10px;padding:16px;text-align:center}
+        .stat-value{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;color:var(--gold)}
+        .stat-label{font-size:11px;color:var(--text2);margin-top:6px}
+        .info-box{background:var(--card);border-left:3px solid var(--cyan);border-radius:0 10px 10px 0;padding:20px;margin-top:20px}
+        .info-title{font-size:14px;font-weight:600;color:var(--cyan);margin-bottom:10px}
+        .info-text{font-size:13px;color:var(--text2);line-height:1.6}
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-logo"><div class="nav-logo-icon">💰</div><span class="nav-logo-text">CAPITAL MAP</span></a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">대시보드</a>
+            <a href="flow.html" class="nav-link">연결관계</a>
+            <a href="map.html" class="nav-link">세계지도</a>
+            <a href="industry.html" class="nav-link">산업해부</a>
+            <a href="timeline.html" class="nav-link">역사</a>
+            <a href="dealers.html" class="nav-link active">딜러구조</a>
+        </div>
+    </nav>
+
+    <main class="main"><div class="container">
+        <div class="page-header">
+            <h1 class="page-title">🏦 프라이머리 딜러 & 국채 구조</h1>
+            <p class="page-subtitle">미국 국채는 어떻게 발행되고 누가 사는가</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">국채 발행 흐름</h2>
+            <div class="flow">
+                <div class="flow-box"><div class="flow-box-icon">🏛️</div><div class="flow-box-label">미 재무부</div></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box"><div class="flow-box-icon">📋</div><div class="flow-box-label">입찰 공고</div></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box"><div class="flow-box-icon">🏦</div><div class="flow-box-label">프라이머리딜러</div></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box"><div class="flow-box-icon">📊</div><div class="flow-box-label">낙찰</div></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box"><div class="flow-box-icon">🌍</div><div class="flow-box-label">유통시장</div></div>
+            </div>
+            <div class="info-box">
+                <div class="info-title">더치 옥션 방식</div>
+                <div class="info-text">1. 재무부가 발행 규모 공고 (예: 10년물 420억 달러)<br>2. 딜러들이 원하는 금리와 금액 제출<br>3. 낮은 금리(높은 가격) 순으로 낙찰<br>4. 컷오프 금리 = 해당 회차 발행 금리</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">미국 국채 종류</h2>
+            <table>
+                <thead><tr><th>종류</th><th>만기</th><th>특징</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>T-Bills</strong></td><td>4주 ~ 1년</td><td>할인채 (이자 없음)</td></tr>
+                    <tr><td><strong>T-Notes</strong></td><td>2 ~ 10년</td><td>반기 이자. <span style="color:var(--gold)">10년물이 핵심 기준금리</span></td></tr>
+                    <tr><td><strong>T-Bonds</strong></td><td>20 ~ 30년</td><td>장기 채권</td></tr>
+                    <tr><td><strong>TIPS</strong></td><td>5 ~ 30년</td><td>물가연동 (인플레 헤지)</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">프라이머리 딜러 26개사 (2025년 1월)</h2>
+            <div class="stats">
+                <div class="stat"><div class="stat-value">26</div><div class="stat-label">총 딜러 수</div></div>
+                <div class="stat"><div class="stat-value">10</div><div class="stat-label">미국 🇺🇸</div></div>
+                <div class="stat"><div class="stat-value">5</div><div class="stat-label">일본 🇯🇵</div></div>
+                <div class="stat"><div class="stat-value">4</div><div class="stat-label">캐나다 🇨🇦</div></div>
+                <div class="stat"><div class="stat-value">3</div><div class="stat-label">영국 🇬🇧</div></div>
+            </div>
+            <table>
+                <thead><tr><th>#</th><th>회사명</th><th>국적</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>J.P. Morgan Securities LLC</td><td><span class="flag">🇺🇸</span>미국</td></tr>
+                    <tr><td>2</td><td>Goldman Sachs & Co. LLC</td><td><span class="flag">🇺🇸</span>미국</td></tr>
+                    <tr><td>3</td><td>Morgan Stanley & Co. LLC</td><td><span class="flag">🇺🇸</span>미국</td></tr>
+                    <tr><td>4</td><td>Citigroup Global Markets Inc.</td><td><span class="flag">🇺🇸</span>미국</td></tr>
+                    <tr><td>5</td><td>BofA Securities, Inc.</td><td><span class="flag">🇺🇸</span>미국</td></tr>
+                    <tr><td>6</td><td>Barclays Capital Inc.</td><td><span class="flag">🇬🇧</span>영국</td></tr>
+                    <tr><td>7</td><td>Deutsche Bank Securities Inc.</td><td><span class="flag">🇩🇪</span>독일</td></tr>
+                    <tr><td>8</td><td>BNP Paribas Securities Corp.</td><td><span class="flag">🇫🇷</span>프랑스</td></tr>
+                    <tr><td>9</td><td>HSBC Securities (USA) Inc.</td><td><span class="flag">🇬🇧</span>영국</td></tr>
+                    <tr><td>10</td><td>UBS Securities LLC</td><td><span class="flag">🇨🇭</span>스위스</td></tr>
+                    <tr><td>11</td><td>Wells Fargo Securities, LLC</td><td><span class="flag">🇺🇸</span>미국</td></tr>
+                    <tr><td>12</td><td>Nomura Securities International</td><td><span class="flag">🇯🇵</span>일본</td></tr>
+                    <tr><td>13</td><td>Mizuho Securities USA LLC</td><td><span class="flag">🇯🇵</span>일본</td></tr>
+                    <tr><td>14</td><td>Daiwa Capital Markets America</td><td><span class="flag">🇯🇵</span>일본</td></tr>
+                    <tr><td>15</td><td>SMBC Nikko Securities America</td><td><span class="flag">🇯🇵</span>일본</td></tr>
+                    <tr><td>16</td><td>MUFG Securities Americas Inc.</td><td><span class="flag">🇯🇵</span>일본</td></tr>
+                    <tr><td>17</td><td>RBC Capital Markets, LLC</td><td><span class="flag">🇨🇦</span>캐나다</td></tr>
+                    <tr><td>18</td><td>TD Securities (USA) LLC</td><td><span class="flag">🇨🇦</span>캐나다</td></tr>
+                    <tr><td>19</td><td>Bank of Montreal, Chicago Branch</td><td><span class="flag">🇨🇦</span>캐나다</td></tr>
+                    <tr><td>20</td><td>Bank of Nova Scotia, NY Agency</td><td><span class="flag">🇨🇦</span>캐나다</td></tr>
+                    <tr><td>21</td><td>Societe Generale, NY Branch</td><td><span class="flag">🇫🇷</span>프랑스</td></tr>
+                    <tr><td>22</td><td>NatWest Markets Securities Inc.</td><td><span class="flag">🇬🇧</span>영국</td></tr>
+                    <tr><td>23</td><td>Jefferies LLC</td><td><span class="flag">🇺🇸</span>미국</td></tr>
+                    <tr><td>24</td><td>Cantor Fitzgerald & Co.</td><td><span class="flag">🇺🇸</span>미국</td></tr>
+                    <tr><td>25</td><td>Santander US Capital Markets</td><td><span class="flag">🇪🇸</span>스페인</td></tr>
+                    <tr><td>26</td><td>ASL Capital Markets Inc.</td><td><span class="flag">🇺🇸</span>미국</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">자격 요건</h2>
+            <div class="grid">
+                <div class="card"><div class="card-title">💰 자본 요건</div><div class="card-text">SEC 등록 브로커-딜러: 순자본 $5,000만 이상<br>은행: Tier 1 자본 $10억 이상</div></div>
+                <div class="card"><div class="card-title">📊 시장 점유율</div><div class="card-text">미국채 시장 점유율 0.25% 이상 유지</div></div>
+                <div class="card"><div class="card-title">📋 의무</div><div class="card-text">모든 국채 입찰에 참여 의무<br>Pro-rata 기준으로 경쟁적 가격 제시</div></div>
+                <div class="card"><div class="card-title">🔗 연준과의 관계</div><div class="card-text">뉴욕 연준의 통화정책 실행 파트너<br>시장 정보 제공 의무</div></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">10년물 금리가 왜 중요한가?</h2>
+            <div class="info-box">
+                <div class="info-title">모든 금리의 기준점</div>
+                <div class="info-text">
+                    • <strong>주담대 금리:</strong> 10년물 + 가산금리<br>
+                    • <strong>회사채:</strong> 10년물 + 신용 스프레드<br>
+                    • <strong>주식 밸류에이션:</strong> 할인율 = 무위험수익률(10년물) + 리스크프리미엄<br>
+                    • <strong>달러 가치:</strong> 금리 상승 → 달러 강세<br><br>
+                    10년물 1% 변동 = 전 세계 수조 달러의 자산 가치 변동
+                </div>
+            </div>
+        </div>
+    </div></main>
+</body>
+</html>
