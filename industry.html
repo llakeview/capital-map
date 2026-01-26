@@ -6,7 +6,23 @@
 <title>산업 해부 - Capital Map</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#0a0a0f;--bg2:#0f0f1a;--card:#1a1a2e;--border:#252540;--text:#e0e0e0;--text2:#888;--gold:#ffd700;--cyan:#00d9ff;--green:#00d26a;--red:#ff4757;--orange:#ff9f43}body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text)}.nav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(15,15,26,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:1000}.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}.nav-logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.nav-links{display:flex;gap:8px}.nav-link{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:500}.nav-link:hover{color:var(--text);background:var(--card)}.nav-link.active{color:var(--gold);background:rgba(255,215,0,.1)}.main{padding-top:80px}.container{max-width:1200px;margin:0 auto;padding:0 30px 60px}.page-header{text-align:center;padding:30px 0}.page-title{font-size:36px;font-weight:700;margin-bottom:12px}.page-subtitle{color:var(--text2)}.tabs{display:flex;justify-content:center;gap:8px;margin:30px 0;flex-wrap:wrap}.tab{padding:10px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer}.tab:hover{border-color:var(--cyan);color:var(--text)}.tab.active{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.1)}.content{display:none}.content.active{display:block}.section{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px}.section-title{font-size:18px;font-weight:600;margin-bottom:16px;padding-left:12px;border-left:3px solid var(--gold)}.flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;padding:20px;background:var(--card);border-radius:10px;margin-bottom:16px}.flow-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;text-align:center}.flow-icon{font-size:18px}.flow-label{font-size:10px;font-weight:600;margin-top:4px}.flow-arrow{color:var(--cyan)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px;text-align:left;border-bottom:1px solid var(--border)}th{color:var(--text2);font-size:11px;background:var(--card)}.badge{padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600}.badge-high{background:rgba(255,71,87,.2);color:var(--red)}.badge-mid{background:rgba(255,159,67,.2);color:var(--orange)}.badge-low{background:rgba(0,210,106,.2);color:var(--green)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.card{background:var(--card);border-radius:8px;padding:16px}.card-title{font-size:13px;font-weight:600;color:var(--gold);margin-bottom:8px}.card-text{font-size:12px;color:var(--text2);line-height:1.6}.tip{background:var(--card);border-left:3px solid var(--cyan);padding:14px;margin:12px 0;border-radius:0 8px 8px 0}.tip-title{font-size:11px;color:var(--cyan);font-weight:600;margin-bottom:6px}.tip-text{font-size:12px;color:var(--text2);line-height:1.5}.warn{background:var(--card);border-left:3px solid var(--red);padding:14px;margin:12px 0;border-radius:0 8px 8px 0}.warn-title{font-size:11px;color:var(--red);font-weight:600;margin-bottom:6px}.warn-text{font-size:12px;color:var(--text2);line-height:1.5}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin:12px 0}.stat{background:var(--card);border-radius:8px;padding:14px;text-align:center}.stat-value{font-size:20px;font-weight:700;color:var(--gold)}.stat-label{font-size:10px;color:var(--text2);margin-top:4px}.insight{background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(0,217,255,.08));border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:16px}.insight-title{font-size:13px;font-weight:600;color:var(--gold);margin-bottom:8px}.insight-text{font-size:12px;color:var(--text);line-height:1.7}
+*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#0a0a0f;--bg2:#0f0f1a;--card:#1a1a2e;--border:#252540;--text:#e0e0e0;--text2:#888;--gold:#ffd700;--cyan:#00d9ff;--green:#00d26a;--red:#ff4757;--orange:#ff9f43}body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text)}.nav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(15,15,26,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:1000}.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}.nav-logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.nav-links{display:flex;gap:8px}.nav-link{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:500}.nav-link:hover{color:var(--text);background:var(--card)}.nav-link.active{color:var(--gold);background:rgba(255,215,0,.1)}
+.main{padding-top:80px}.container{max-width:1200px;margin:0 auto;padding:0 30px 60px}.page-header{text-align:center;padding:20px 0}.page-title{font-size:32px;font-weight:700;margin-bottom:8px}.page-subtitle{color:var(--text2);font-size:14px}
+.tabs{display:flex;justify-content:center;gap:6px;margin:20px 0;flex-wrap:wrap}.tab{padding:8px 12px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer}.tab:hover{border-color:var(--cyan)}.tab.active{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.1)}
+.content{display:none}.content.active{display:block}
+.section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.section-title{font-size:16px;font-weight:600;margin-bottom:14px;padding-left:10px;border-left:3px solid var(--gold)}
+.flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;padding:16px;background:var(--card);border-radius:8px;margin-bottom:12px}
+.flow-box{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 12px;text-align:center}
+.flow-icon{font-size:16px}.flow-label{font-size:9px;font-weight:600;margin-top:2px}.flow-arrow{color:var(--cyan);font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:8px;text-align:left;border-bottom:1px solid var(--border)}th{color:var(--text2);font-size:10px;background:var(--card)}
+.badge{padding:2px 6px;border-radius:3px;font-size:9px;font-weight:600}.badge-high{background:rgba(255,71,87,.2);color:var(--red)}.badge-mid{background:rgba(255,159,67,.2);color:var(--orange)}.badge-low{background:rgba(0,210,106,.2);color:var(--green)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.card{background:var(--card);border-radius:6px;padding:14px}.card-title{font-size:12px;font-weight:600;color:var(--gold);margin-bottom:6px}.card-text{font-size:11px;color:var(--text2);line-height:1.5}
+.tip{background:var(--card);border-left:2px solid var(--cyan);padding:10px;margin:10px 0;border-radius:0 6px 6px 0}.tip-title{font-size:10px;color:var(--cyan);font-weight:600;margin-bottom:4px}.tip-text{font-size:11px;color:var(--text2);line-height:1.5}
+.warn{background:var(--card);border-left:2px solid var(--red);padding:10px;margin:10px 0;border-radius:0 6px 6px 0}.warn-title{font-size:10px;color:var(--red);font-weight:600;margin-bottom:4px}.warn-text{font-size:11px;color:var(--text2);line-height:1.5}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));gap:8px;margin:10px 0}.stat{background:var(--card);border-radius:6px;padding:12px;text-align:center}.stat-value{font-size:18px;font-weight:700;color:var(--gold)}.stat-label{font-size:9px;color:var(--text2);margin-top:2px}
+.insight{background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(0,217,255,.08));border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:12px}.insight-title{font-size:12px;font-weight:600;color:var(--gold);margin-bottom:6px}.insight-text{font-size:11px;color:var(--text);line-height:1.6}
 </style>
 </head>
 <body>
@@ -23,167 +39,287 @@
 <button class="tab" data-id="auto">🚗 자동차</button>
 <button class="tab" data-id="retail">🛒 유통</button>
 <button class="tab" data-id="insurance">🛡️ 보험</button>
+<button class="tab" data-id="shipping">🚢 해운</button>
+<button class="tab" data-id="airline">✈️ 항공</button>
+<button class="tab" data-id="telecom">📡 통신</button>
+<button class="tab" data-id="steel">🔩 철강</button>
+<button class="tab" data-id="chemical">🧪 화학</button>
+<button class="tab" data-id="food">🥗 식품</button>
+<button class="tab" data-id="pe">💼 PE/VC</button>
 </div>
 
+<!-- 부동산PF -->
 <div class="content active" id="pf">
 <div class="section"><h2 class="section-title">PF 구조 흐름</h2>
-<div class="flow"><div class="flow-box"><div class="flow-icon">📋</div><div class="flow-label">토지확보</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏗️</div><div class="flow-label">시행사</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏦</div><div class="flow-label">PF대출</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🔨</div><div class="flow-label">건설사</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏠</div><div class="flow-label">분양</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">💰</div><div class="flow-label">상환</div></div></div>
-<div class="tip"><div class="tip-title">💡 핵심 포인트</div><div class="tip-text">시행사는 자기자본 10~20%만 넣고 나머지는 전부 대출. 분양이 안 되면 연쇄 부도. 건설사가 연대보증을 서기 때문에 시행사 부실 → 건설사 부실로 전이된다.</div></div></div>
-<div class="section"><h2 class="section-title">참여자별 역할과 리스크</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">📋</div><div class="flow-label">토지</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏗️</div><div class="flow-label">시행사</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏦</div><div class="flow-label">PF대출</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🔨</div><div class="flow-label">건설사</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏠</div><div class="flow-label">분양</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">💰</div><div class="flow-label">상환</div></div></div>
+<div class="tip"><div class="tip-title">💡 핵심</div><div class="tip-text">시행사 자기자본 10~20%만. 분양 실패 → 연쇄 부도. 건설사 연대보증이 폭탄.</div></div></div>
+<div class="section"><h2 class="section-title">참여자별 리스크</h2>
 <table><thead><tr><th>참여자</th><th>역할</th><th>수익</th><th>리스크</th></tr></thead><tbody>
-<tr><td><strong>시행사</strong></td><td>사업기획, 인허가, 분양</td><td>개발이익 (수백억)</td><td><span class="badge badge-high">매우높음</span></td></tr>
-<tr><td><strong>건설사</strong></td><td>시공, 책임준공, 연대보증</td><td>도급이익 (3~5%)</td><td><span class="badge badge-high">높음</span></td></tr>
-<tr><td><strong>선순위 (은행)</strong></td><td>대출 (1순위 회수)</td><td>금리 5~7%</td><td><span class="badge badge-low">낮음</span></td></tr>
-<tr><td><strong>중순위 (증권)</strong></td><td>대출 (2순위 회수)</td><td>금리 8~12%</td><td><span class="badge badge-mid">중간</span></td></tr>
-<tr><td><strong>후순위 (캐피탈)</strong></td><td>대출 (마지막 회수)</td><td>금리 15~20%</td><td><span class="badge badge-high">높음</span></td></tr>
+<tr><td>시행사</td><td>사업기획, 분양</td><td>개발이익</td><td><span class="badge badge-high">매우높음</span></td></tr>
+<tr><td>건설사</td><td>시공, 연대보증</td><td>3~5%</td><td><span class="badge badge-high">높음</span></td></tr>
+<tr><td>선순위</td><td>1순위 대출</td><td>5~7%</td><td><span class="badge badge-low">낮음</span></td></tr>
+<tr><td>후순위</td><td>마지막 대출</td><td>15~20%</td><td><span class="badge badge-high">높음</span></td></tr>
 </tbody></table>
-<div class="stats"><div class="stat"><div class="stat-value">5~7%</div><div class="stat-label">선순위 금리</div></div><div class="stat"><div class="stat-value">8~12%</div><div class="stat-label">중순위 금리</div></div><div class="stat"><div class="stat-value">15~20%</div><div class="stat-label">후순위 금리</div></div><div class="stat"><div class="stat-value">15~25%</div><div class="stat-label">브릿지론</div></div></div>
-<div class="warn"><div class="warn-title">⚠️ 2024년 태영건설 워크아웃</div><div class="warn-text">PF 연대보증 약 10조원 → 분양 부진 → 보증 실행 → 유동성 위기 → 워크아웃 신청. 건설사가 시행사 보증 서주는 구조의 위험성이 드러남.</div></div></div>
-<div class="insight"><div class="insight-title">🎯 투자자가 봐야 할 것</div><div class="insight-text">• <strong>분양률:</strong> 70% 이하면 위험신호<br>• <strong>금리:</strong> 금리 상승 → 분양가 부담 → 미분양 증가<br>• <strong>건설사 연대보증:</strong> 재무제표에 안 보이는 숨은 폭탄<br>• <strong>브릿지론 만기:</strong> 연장 실패 = 사업 중단</div></div>
+<div class="warn"><div class="warn-title">⚠️ 태영건설 워크아웃</div><div class="warn-text">PF 연대보증 10조 → 분양 부진 → 유동성 위기. 2024년 건설업 구조조정 시작.</div></div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• 분양률 70% 이하 = 위험 • 금리↑ → 미분양↑ • 브릿지론 만기 주시</div></div>
 </div>
 
+<!-- 금융 -->
 <div class="content" id="finance">
-<div class="section"><h2 class="section-title">은행 수익 구조</h2>
-<div class="flow"><div class="flow-box"><div class="flow-icon">👤</div><div class="flow-label">예금자</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏦</div><div class="flow-label">은행</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏠</div><div class="flow-label">대출자</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">💵</div><div class="flow-label">이자수익</div></div></div>
-<div class="tip"><div class="tip-title">💡 예대마진이란?</div><div class="tip-text">대출금리 - 예금금리 = 예대마진. 예금 3%, 대출 6%면 마진 3%. 이게 은행의 핵심 수익. 금리 상승기엔 예대마진 확대 → 은행 실적↑</div></div></div>
+<div class="section"><h2 class="section-title">은행 수익구조</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">👤</div><div class="flow-label">예금</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏦</div><div class="flow-label">은행</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏠</div><div class="flow-label">대출</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">💵</div><div class="flow-label">이자수익</div></div></div>
+<div class="tip"><div class="tip-title">💡 예대마진</div><div class="tip-text">대출금리 - 예금금리 = 마진. 금리 상승기 → 예대마진 확대 → 은행 실적↑</div></div></div>
 <div class="section"><h2 class="section-title">핵심 지표</h2>
 <div class="grid">
-<div class="card"><div class="card-title">📊 BIS 비율</div><div class="card-text">자기자본 ÷ 위험가중자산. 8% 이상 유지 의무. 낮으면 증자 필요 → 주가 하락. 한국 은행 14~16%.</div></div>
-<div class="card"><div class="card-title">📈 NIM (순이자마진)</div><div class="card-text">이자수익 ÷ 이자수익자산. 한국 평균 1.5~2%. 높을수록 수익성 좋음. 금리 상승기에 개선.</div></div>
-<div class="card"><div class="card-title">⚠️ NPL 비율</div><div class="card-text">부실채권 비율. 1% 이하면 건전. 경기 침체 시 급등 → 대손충당금 적립 → 이익 감소.</div></div>
-<div class="card"><div class="card-title">💰 배당수익률</div><div class="card-text">한국 은행주는 고배당 (4~6%). 안정적 현금흐름 원하는 투자자에게 인기.</div></div>
-</div>
-<div class="warn"><div class="warn-title">⚠️ 2023년 SVB 사태</div><div class="warn-text">금리 급등 → 채권 가치 하락 → 예금 인출 러시 → 3일 만에 파산. 디지털 뱅크런의 위력. SNS로 공포 확산 → 하루 만에 420억 달러 인출.</div></div></div>
-<div class="insight"><div class="insight-title">🎯 투자자가 봐야 할 것</div><div class="insight-text">• <strong>금리 방향:</strong> 금리 상승 → 예대마진 확대 / 금리 하락 → 마진 축소<br>• <strong>부동산 익스포저:</strong> PF 대출 많으면 리스크<br>• <strong>배당:</strong> 한국 은행주 고배당 (4~6%)<br>• <strong>규제:</strong> 정부 규제에 민감</div></div>
+<div class="card"><div class="card-title">BIS 비율</div><div class="card-text">자기자본/위험자산. 8% 이상 의무.</div></div>
+<div class="card"><div class="card-title">NIM</div><div class="card-text">순이자마진. 높을수록 수익성↑</div></div>
+<div class="card"><div class="card-title">NPL</div><div class="card-text">부실채권 비율. 1% 이하 건전.</div></div>
+<div class="card"><div class="card-title">배당</div><div class="card-text">은행주 고배당 4~6%.</div></div>
+</div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• 금리 방향 = 실적 방향 • PF 익스포저 확인 • SVB 사태: 뱅크런 리스크</div></div>
 </div>
 
+<!-- 에너지 -->
 <div class="content" id="energy">
-<div class="section"><h2 class="section-title">에너지 산업 구조</h2>
-<div class="flow"><div class="flow-box"><div class="flow-icon">🛢️</div><div class="flow-label">원유수입</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏭</div><div class="flow-label">정유사</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">⛽</div><div class="flow-label">주유소</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🚗</div><div class="flow-label">소비자</div></div></div>
-<div class="tip"><div class="tip-title">💡 정제마진이란?</div><div class="tip-text">석유제품 가격 - 원유 가격 = 정제마진. 배럴당 $5~15가 정상. 수요 급증 시 $20+ 가능. 이게 정유사 실적 결정.</div></div></div>
-<div class="section"><h2 class="section-title">분야별 구조</h2>
+<div class="section"><h2 class="section-title">에너지 구조</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">🛢️</div><div class="flow-label">원유</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏭</div><div class="flow-label">정유</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">⛽</div><div class="flow-label">주유소</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🚗</div><div class="flow-label">소비자</div></div></div>
+<div class="tip"><div class="tip-title">💡 정제마진</div><div class="tip-text">석유제품 - 원유 = 마진. $5~15 정상. 정유사 실적 결정.</div></div></div>
+<div class="section"><h2 class="section-title">분야별</h2>
 <div class="grid">
-<div class="card"><div class="card-title">🛢️ 정유</div><div class="card-text"><strong>SK이노베이션, S-Oil, GS칼텍스</strong><br>원유 수입 → 정제 → 판매. 정제마진과 환율이 핵심 변수.</div></div>
-<div class="card"><div class="card-title">⚡ 발전</div><div class="card-text"><strong>한전, 한국수력원자력</strong><br>전기 생산→송전→배전. 전기요금 규제로 만성 적자.</div></div>
-<div class="card"><div class="card-title">🔥 가스</div><div class="card-text"><strong>한국가스공사</strong><br>LNG 수입 독점. 원가연동제로 상대적 안정.</div></div>
-<div class="card"><div class="card-title">🌱 신재생</div><div class="card-text"><strong>한화솔루션, 씨에스윈드</strong><br>태양광, 풍력. 정부 정책과 ESG 트렌드 수혜.</div></div>
+<div class="card"><div class="card-title">🛢️ 정유</div><div class="card-text">SK이노, S-Oil, GS칼텍스</div></div>
+<div class="card"><div class="card-title">⚡ 발전</div><div class="card-text">한전, 한수원. 요금 규제.</div></div>
+<div class="card"><div class="card-title">🔥 가스</div><div class="card-text">가스공사. LNG 독점.</div></div>
+<div class="card"><div class="card-title">🌱 신재생</div><div class="card-text">한화솔루션, 씨에스윈드</div></div>
 </div></div>
-<div class="insight"><div class="insight-title">🎯 투자자가 봐야 할 것</div><div class="insight-text">• <strong>유가:</strong> WTI, 브렌트유 방향이 모든 것 결정<br>• <strong>정제마진:</strong> 정유사 실적 선행지표<br>• <strong>환율:</strong> 원화 약세 → 수입비용 증가<br>• <strong>정책:</strong> 탄소중립, 신재생 의무 비율</div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• 유가(WTI/브렌트) • 정제마진 • 환율 영향 • 탄소중립 정책</div></div>
 </div>
 
+<!-- 방산 -->
 <div class="content" id="defense">
-<div class="section"><h2 class="section-title">방산 산업 구조</h2>
-<div class="flow"><div class="flow-box"><div class="flow-icon">🎖️</div><div class="flow-label">합참(소요)</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏛️</div><div class="flow-label">국방부</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📋</div><div class="flow-label">방사청</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏭</div><div class="flow-label">방산업체</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">⚙️</div><div class="flow-label">협력사</div></div></div>
-<div class="tip"><div class="tip-title">💡 방산의 특수성</div><div class="tip-text">내수는 정부가 유일한 고객. 원가보전 방식이라 마진 5~10%. 하지만 수출은 고마진 15~20%+. 그래서 수출이 성장 핵심.</div></div></div>
-<div class="section"><h2 class="section-title">주요 방산업체</h2>
-<table><thead><tr><th>회사</th><th>주력 분야</th><th>대표 제품</th><th>수출</th></tr></thead><tbody>
-<tr><td><strong>한화에어로</strong></td><td>포병, 항공엔진</td><td>K9 자주포</td><td>🔥높음</td></tr>
-<tr><td><strong>LIG넥스원</strong></td><td>미사일</td><td>천궁, 해성</td><td>🔥높음</td></tr>
-<tr><td><strong>현대로템</strong></td><td>전차</td><td>K2 전차</td><td>🔥높음</td></tr>
-<tr><td><strong>KAI</strong></td><td>항공기</td><td>KF-21, FA-50</td><td>🔥높음</td></tr>
-<tr><td><strong>풍산</strong></td><td>탄약</td><td>포탄류</td><td>🔥높음</td></tr>
+<div class="section"><h2 class="section-title">방산 구조</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">🎖️</div><div class="flow-label">합참</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏛️</div><div class="flow-label">국방부</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📋</div><div class="flow-label">방사청</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏭</div><div class="flow-label">방산업체</div></div></div>
+<div class="tip"><div class="tip-title">💡 핵심</div><div class="tip-text">내수 마진 5~10%, 수출 마진 15~20%+. 수출이 성장 핵심.</div></div></div>
+<div class="section"><h2 class="section-title">주요 업체</h2>
+<table><thead><tr><th>회사</th><th>주력</th><th>제품</th></tr></thead><tbody>
+<tr><td>한화에어로</td><td>포병</td><td>K9 자주포</td></tr>
+<tr><td>LIG넥스원</td><td>미사일</td><td>천궁</td></tr>
+<tr><td>현대로템</td><td>전차</td><td>K2</td></tr>
+<tr><td>KAI</td><td>항공</td><td>KF-21</td></tr>
+<tr><td>풍산</td><td>탄약</td><td>포탄류</td></tr>
 </tbody></table></div>
-<div class="section"><h2 class="section-title">수출 현황 (세계 9위)</h2>
-<div class="stats"><div class="stat"><div class="stat-value">$170억</div><div class="stat-label">2023 수주</div></div><div class="stat"><div class="stat-value">9위</div><div class="stat-label">세계 순위</div></div><div class="stat"><div class="stat-value">+40%</div><div class="stat-label">전년대비</div></div></div>
-<div class="grid">
-<div class="card"><div class="card-title">🇵🇱 폴란드</div><div class="card-text">K2 전차 1,000대, K9 672문, FA-50 48대. 역대 최대 계약 $15B+</div></div>
-<div class="card"><div class="card-title">🇦🇺 호주</div><div class="card-text">K9 자주포, 레드백 장갑차. 아태 교두보.</div></div>
-<div class="card"><div class="card-title">🇦🇪 UAE</div><div class="card-text">천궁-II 미사일. 중동 방공 시장 진출.</div></div>
-<div class="card"><div class="card-title">🇸🇦 사우디</div><div class="card-text">K9 자주포, 함정. 중동 최대 시장.</div></div>
-</div></div>
-<div class="insight"><div class="insight-title">🎯 투자자가 봐야 할 것</div><div class="insight-text">• <strong>수출 수주:</strong> 내수는 정해져 있고, 수출이 성장 동력<br>• <strong>지정학:</strong> 전쟁/갈등 → 방산 수요 급증<br>• <strong>수주잔고:</strong> 향후 매출 가시성<br>• <strong>기술 자립:</strong> 독자 개발 = 수출 가능성</div></div>
+<div class="stats"><div class="stat"><div class="stat-value">$170억</div><div class="stat-label">2023 수주</div></div><div class="stat"><div class="stat-value">9위</div><div class="stat-label">세계순위</div></div><div class="stat"><div class="stat-value">+40%</div><div class="stat-label">성장률</div></div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• 수출 수주 • 지정학(전쟁/갈등) • 수주잔고 • 폴란드 계약</div></div>
 </div>
 
+<!-- 반도체 -->
 <div class="content" id="semi">
 <div class="section"><h2 class="section-title">반도체 공급망</h2>
-<div class="flow"><div class="flow-box"><div class="flow-icon">💡</div><div class="flow-label">설계(팹리스)</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏭</div><div class="flow-label">생산(파운드리)</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📦</div><div class="flow-label">패키징</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📱</div><div class="flow-label">완제품</div></div></div></div>
-<div class="section"><h2 class="section-title">분야별 주요 기업</h2>
-<table><thead><tr><th>구분</th><th>기업</th><th>점유율/비고</th></tr></thead><tbody>
-<tr><td><strong>팹리스</strong></td><td>Nvidia, AMD, Qualcomm, Apple</td><td>설계만</td></tr>
-<tr><td><strong>파운드리</strong></td><td>TSMC, 삼성전자</td><td>TSMC 55%</td></tr>
-<tr><td><strong>메모리</strong></td><td>삼성, SK하이닉스, 마이크론</td><td>삼성 40%</td></tr>
-<tr><td><strong>장비</strong></td><td>ASML, Applied Materials</td><td>EUV 독점</td></tr>
-<tr><td><strong>소재</strong></td><td>JSR, 신에츠, SK머티리얼즈</td><td>포토레지스트</td></tr>
-</tbody></table>
-<div class="tip"><div class="tip-title">💡 실리콘 사이클</div><div class="tip-text">수요 급증 → 가격 상승 → 설비 투자 → 공급 과잉 → 가격 하락 → 투자 축소 → 다시 수요>공급. 보통 3~4년 주기. AI가 사이클 왜곡 중.</div></div></div>
-<div class="section"><h2 class="section-title">미중 반도체 전쟁</h2>
-<div class="grid">
-<div class="card"><div class="card-title">🇺🇸 미국</div><div class="card-text">첨단 장비/기술 대중 수출 통제. CHIPS Act $520억 보조금.</div></div>
-<div class="card"><div class="card-title">🇨🇳 중국</div><div class="card-text">자급자족 시도 (SMIC). 성숙공정 집중. 첨단은 5년+ 격차.</div></div>
-<div class="card"><div class="card-title">🇰🇷 한국</div><div class="card-text">샌드위치 신세. 미국 동맹이지만 중국이 최대 시장.</div></div>
-<div class="card"><div class="card-title">🇹🇼 대만</div><div class="card-text">TSMC가 첨단 칩 90% 생산. 대만 리스크 = 세계 리스크.</div></div>
-</div></div>
-<div class="insight"><div class="insight-title">🎯 투자자가 봐야 할 것</div><div class="insight-text">• <strong>메모리 가격:</strong> DRAM/NAND 가격이 삼성/SK 실적 결정<br>• <strong>AI 수요:</strong> 엔비디아향 HBM이 SK하이닉스 성장 동력<br>• <strong>설비투자:</strong> 삼성 파운드리 투자 규모<br>• <strong>재고:</strong> 반도체 재고 수준이 사이클 위치</div></div>
-</div>
-
-<div class="content" id="pharma">
-<div class="section"><h2 class="section-title">신약 개발 파이프라인</h2>
-<div class="flow"><div class="flow-box"><div class="flow-icon">🔬</div><div class="flow-label">기초연구</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🧪</div><div class="flow-label">전임상</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">👤</div><div class="flow-label">임상1상</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">👥</div><div class="flow-label">임상2상</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">👨‍👩‍👧‍👦</div><div class="flow-label">임상3상</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">✅</div><div class="flow-label">FDA승인</div></div></div>
-<div class="tip"><div class="tip-title">💡 신약 개발의 현실</div><div class="tip-text">기간: 10~15년, 비용: $1~3B, 성공률: 5~10%. 임상 2상에서 대부분 탈락. 성공하면 대박, 실패하면 쪽박.</div></div>
-<div class="stats"><div class="stat"><div class="stat-value">65%</div><div class="stat-label">1상→2상</div></div><div class="stat"><div class="stat-value">30%</div><div class="stat-label">2상→3상</div></div><div class="stat"><div class="stat-value">60%</div><div class="stat-label">3상→승인</div></div><div class="stat"><div class="stat-value">~10%</div><div class="stat-label">전체 성공률</div></div></div></div>
-<div class="section"><h2 class="section-title">제약 분야별 구분</h2>
-<div class="grid">
-<div class="card"><div class="card-title">💊 합성신약</div><div class="card-text">화학물질 기반. 복제약 경쟁 치열. 특허 만료 = 매출 절벽.</div></div>
-<div class="card"><div class="card-title">🧬 바이오의약품</div><div class="card-text">생물체 기반. 고가, 고마진. 바이오시밀러 = 복제 바이오.</div></div>
-<div class="card"><div class="card-title">💉 위탁생산(CMO)</div><div class="card-text">삼성바이오로직스, 셀트리온. 빅파마 대신 생산. 안정적.</div></div>
-<div class="card"><div class="card-title">🔬 플랫폼</div><div class="card-text">mRNA, 유전자치료, 세포치료. 차세대 기술. 아직 초기.</div></div>
-</div></div>
-<div class="insight"><div class="insight-title">🎯 투자자가 봐야 할 것</div><div class="insight-text">• <strong>파이프라인:</strong> 임상 단계별 후보 물질 개수<br>• <strong>기술수출:</strong> 빅파마에 라이선스 = 기술력 인정<br>• <strong>FDA 일정:</strong> 승인 여부에 주가 50%+ 등락<br>• <strong>현금:</strong> 바이오는 적자 많음. 자금 소진 속도</div></div>
-</div>
-
-<div class="content" id="auto">
-<div class="section"><h2 class="section-title">전기차 밸류체인</h2>
-<div class="flow"><div class="flow-box"><div class="flow-icon">⛏️</div><div class="flow-label">원자재</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🔋</div><div class="flow-label">배터리</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">⚙️</div><div class="flow-label">부품</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🚗</div><div class="flow-label">완성차</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">⚡</div><div class="flow-label">충전인프라</div></div></div>
-<div class="tip"><div class="tip-title">💡 EV의 핵심 = 배터리</div><div class="tip-text">배터리가 EV 원가의 30~40%. 배터리 가격 하락 = EV 보급 확대. 리튬/코발트/니켈 가격이 배터리 가격 결정.</div></div></div>
-<div class="section"><h2 class="section-title">배터리 공급망</h2>
-<table><thead><tr><th>단계</th><th>주요 기업</th><th>비고</th></tr></thead><tbody>
-<tr><td><strong>원자재</strong></td><td>앨버말, SQM, 화유코발트</td><td>리튬, 코발트</td></tr>
-<tr><td><strong>양극재</strong></td><td>에코프로비엠, 포스코퓨처엠</td><td>핵심 소재</td></tr>
-<tr><td><strong>배터리셀</strong></td><td>CATL, LG에너지, 삼성SDI</td><td>최종 조립</td></tr>
+<div class="flow"><div class="flow-box"><div class="flow-icon">💡</div><div class="flow-label">설계</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏭</div><div class="flow-label">파운드리</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📦</div><div class="flow-label">패키징</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📱</div><div class="flow-label">완제품</div></div></div></div>
+<div class="section"><h2 class="section-title">분야별</h2>
+<table><thead><tr><th>구분</th><th>기업</th><th>점유율</th></tr></thead><tbody>
+<tr><td>팹리스</td><td>Nvidia, AMD, Apple</td><td>설계만</td></tr>
+<tr><td>파운드리</td><td>TSMC, 삼성</td><td>TSMC 55%</td></tr>
+<tr><td>메모리</td><td>삼성, SK하이닉스</td><td>삼성 40%</td></tr>
+<tr><td>장비</td><td>ASML</td><td>EUV 독점</td></tr>
 </tbody></table></div>
-<div class="section"><h2 class="section-title">완성차 경쟁 구도</h2>
+<div class="section"><h2 class="section-title">미중 전쟁</h2>
 <div class="grid">
-<div class="card"><div class="card-title">🇺🇸 테슬라</div><div class="card-text">EV 1위. 소프트웨어 + 자율주행. 수직계열화.</div></div>
-<div class="card"><div class="card-title">🇨🇳 BYD</div><div class="card-text">중국 1위. 배터리 자체 생산. 가격 경쟁력.</div></div>
-<div class="card"><div class="card-title">🇰🇷 현대기아</div><div class="card-text">아이오닉/EV6. E-GMP 플랫폼. 글로벌 3위 목표.</div></div>
-<div class="card"><div class="card-title">🇩🇪 독일 3사</div><div class="card-text">VW, BMW, 벤츠. 전환 늦었지만 자금력.</div></div>
+<div class="card"><div class="card-title">🇺🇸 미국</div><div class="card-text">CHIPS Act $520억. 대중 수출 통제.</div></div>
+<div class="card"><div class="card-title">🇨🇳 중국</div><div class="card-text">SMIC 자급자족. 5년+ 격차.</div></div>
+<div class="card"><div class="card-title">🇹🇼 대만</div><div class="card-text">TSMC 첨단 90%. 지정학 리스크.</div></div>
+<div class="card"><div class="card-title">🇰🇷 한국</div><div class="card-text">샌드위치. HBM 강세.</div></div>
 </div></div>
-<div class="insight"><div class="insight-title">🎯 투자자가 봐야 할 것</div><div class="insight-text">• <strong>배터리 가격:</strong> kWh당 가격 하락 추세<br>• <strong>보조금:</strong> IRA (미국), 유럽 보조금 정책<br>• <strong>원자재:</strong> 리튬/코발트 가격 → 배터리주 실적<br>• <strong>침투율:</strong> EV 판매 비중 (현재 ~15%)</div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• 메모리 가격(DRAM/NAND) • AI 수요(HBM) • 실리콘 사이클 위치</div></div>
 </div>
 
+<!-- 제약 -->
+<div class="content" id="pharma">
+<div class="section"><h2 class="section-title">신약 개발</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">🔬</div><div class="flow-label">연구</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🧪</div><div class="flow-label">전임상</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">👤</div><div class="flow-label">1상</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">👥</div><div class="flow-label">2상</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">👨‍👩‍👧</div><div class="flow-label">3상</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">✅</div><div class="flow-label">FDA</div></div></div>
+<div class="tip"><div class="tip-title">💡 현실</div><div class="tip-text">10~15년, $1~3B, 성공률 5~10%. 하이리스크 하이리턴.</div></div>
+<div class="stats"><div class="stat"><div class="stat-value">65%</div><div class="stat-label">1→2상</div></div><div class="stat"><div class="stat-value">30%</div><div class="stat-label">2→3상</div></div><div class="stat"><div class="stat-value">60%</div><div class="stat-label">3→승인</div></div><div class="stat"><div class="stat-value">~10%</div><div class="stat-label">전체</div></div></div></div>
+<div class="section"><h2 class="section-title">분야</h2>
+<div class="grid">
+<div class="card"><div class="card-title">💊 합성신약</div><div class="card-text">화학물질 기반. 특허만료=절벽</div></div>
+<div class="card"><div class="card-title">🧬 바이오</div><div class="card-text">항체, 세포. 고가 고마진.</div></div>
+<div class="card"><div class="card-title">💉 CMO</div><div class="card-text">삼바, 셀트리온. 위탁생산.</div></div>
+<div class="card"><div class="card-title">🔬 플랫폼</div><div class="card-text">mRNA, 유전자치료. 차세대.</div></div>
+</div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• 파이프라인 단계 • 기술수출 • FDA 일정 • 현금 보유량</div></div>
+</div>
+
+<!-- 자동차 -->
+<div class="content" id="auto">
+<div class="section"><h2 class="section-title">EV 밸류체인</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">⛏️</div><div class="flow-label">원자재</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🔋</div><div class="flow-label">배터리</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">⚙️</div><div class="flow-label">부품</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🚗</div><div class="flow-label">완성차</div></div></div>
+<div class="tip"><div class="tip-title">💡 핵심</div><div class="tip-text">배터리 = EV 원가 30~40%. 리튬/코발트 가격이 핵심.</div></div></div>
+<div class="section"><h2 class="section-title">경쟁 구도</h2>
+<div class="grid">
+<div class="card"><div class="card-title">🇺🇸 테슬라</div><div class="card-text">EV 1위. SW+자율주행.</div></div>
+<div class="card"><div class="card-title">🇨🇳 BYD</div><div class="card-text">중국 1위. 배터리 자체생산.</div></div>
+<div class="card"><div class="card-title">🇰🇷 현대기아</div><div class="card-text">E-GMP. 글로벌 3위 목표.</div></div>
+<div class="card"><div class="card-title">🇩🇪 독일</div><div class="card-text">VW, BMW. 전환 중.</div></div>
+</div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• 배터리 가격(kWh) • IRA 보조금 • 리튬 가격 • EV 침투율</div></div>
+</div>
+
+<!-- 유통 -->
 <div class="content" id="retail">
-<div class="section"><h2 class="section-title">유통 채널 변화</h2>
-<div class="flow"><div class="flow-box"><div class="flow-icon">🏭</div><div class="flow-label">제조사</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📦</div><div class="flow-label">물류센터</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🛒</div><div class="flow-label">이커머스</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🚚</div><div class="flow-label">라스트마일</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">👤</div><div class="flow-label">소비자</div></div></div>
-<div class="tip"><div class="tip-title">💡 유통의 변화</div><div class="tip-text">오프라인 → 온라인 → 퀵커머스. 핵심은 "얼마나 빨리" 배송하냐. 새벽배송, 당일배송이 기본. 물류 인프라 = 경쟁력.</div></div></div>
-<div class="section"><h2 class="section-title">채널별 특징</h2>
+<div class="section"><h2 class="section-title">유통 변화</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">🏭</div><div class="flow-label">제조</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📦</div><div class="flow-label">물류</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🛒</div><div class="flow-label">이커머스</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🚚</div><div class="flow-label">배송</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">👤</div><div class="flow-label">소비자</div></div></div>
+<div class="tip"><div class="tip-title">💡 변화</div><div class="tip-text">오프라인 → 온라인 → 퀵커머스. 새벽배송이 기본. 물류=경쟁력.</div></div></div>
+<div class="section"><h2 class="section-title">채널별</h2>
 <div class="grid">
-<div class="card"><div class="card-title">🏬 백화점</div><div class="card-text">신세계, 현대백, 롯데. 고급화, 명품 비중↑. 생존 중.</div></div>
-<div class="card"><div class="card-title">🛒 대형마트</div><div class="card-text">이마트, 홈플러스. 이커머스에 밀림. 창고형 전환.</div></div>
-<div class="card"><div class="card-title">📱 이커머스</div><div class="card-text">쿠팡 1위 독주. 물류가 핵심. 적자→흑자 전환.</div></div>
-<div class="card"><div class="card-title">🏪 편의점</div><div class="card-text">GS25, CU. 포화 상태. 1인 가구 증가 수혜.</div></div>
+<div class="card"><div class="card-title">🏬 백화점</div><div class="card-text">신세계, 현대백. 명품 집중.</div></div>
+<div class="card"><div class="card-title">🛒 마트</div><div class="card-text">이마트. 창고형 전환.</div></div>
+<div class="card"><div class="card-title">📱 이커머스</div><div class="card-text">쿠팡 1위. 물류 인프라.</div></div>
+<div class="card"><div class="card-title">🏪 편의점</div><div class="card-text">GS25, CU. 포화.</div></div>
 </div></div>
-<div class="insight"><div class="insight-title">🎯 투자자가 봐야 할 것</div><div class="insight-text">• <strong>GMV:</strong> 총 거래액 성장률<br>• <strong>물류비:</strong> 매출 대비 물류비 비중<br>• <strong>객단가:</strong> 건당 구매 금액<br>• <strong>흑자전환:</strong> 대부분 적자. 흑자전환 시점</div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• GMV 성장률 • 물류비 비중 • 객단가 • 흑자전환 시점</div></div>
 </div>
 
+<!-- 보험 -->
 <div class="content" id="insurance">
-<div class="section"><h2 class="section-title">보험 비즈니스 모델</h2>
-<div class="flow"><div class="flow-box"><div class="flow-icon">👤</div><div class="flow-label">가입자</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">💵</div><div class="flow-label">보험료</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏦</div><div class="flow-label">보험사</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📈</div><div class="flow-label">자산운용</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">💰</div><div class="flow-label">투자수익</div></div></div>
-<div class="tip"><div class="tip-title">💡 보험사 수익구조</div><div class="tip-text">보험료 - 보험금 = 언더라이팅 이익. 보통 적자. 진짜 수익은 "보험료 받아서 투자". 금리↑ → 투자수익↑ → 보험사 이익↑</div></div></div>
-<div class="section"><h2 class="section-title">보험 종류</h2>
+<div class="section"><h2 class="section-title">보험 수익구조</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">👤</div><div class="flow-label">가입자</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">💵</div><div class="flow-label">보험료</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏦</div><div class="flow-label">보험사</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📈</div><div class="flow-label">투자</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">💰</div><div class="flow-label">수익</div></div></div>
+<div class="tip"><div class="tip-title">💡 수익구조</div><div class="tip-text">언더라이팅은 보통 적자. 진짜 수익 = 보험료 투자수익. 금리↑→보험사↑</div></div></div>
+<div class="section"><h2 class="section-title">지표</h2>
+<table><thead><tr><th>지표</th><th>의미</th><th>기준</th></tr></thead><tbody>
+<tr><td>손해율</td><td>보험금/보험료</td><td>80% 이하</td></tr>
+<tr><td>합산비율</td><td>손해율+사업비</td><td>100% 이하</td></tr>
+<tr><td>RBC</td><td>지급여력</td><td>150%↑</td></tr>
+</tbody></table></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• 금리 방향 • 손해율 추이 • CSM(IFRS17) • 고배당 4~6%</div></div>
+</div>
+
+<!-- 해운 -->
+<div class="content" id="shipping">
+<div class="section"><h2 class="section-title">해운 구조</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">🏭</div><div class="flow-label">수출국</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🚢</div><div class="flow-label">컨테이너</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🌊</div><div class="flow-label">항로</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">⚓</div><div class="flow-label">항만</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏭</div><div class="flow-label">수입국</div></div></div>
+<div class="tip"><div class="tip-title">💡 BDI 지수</div><div class="tip-text">발틱운임지수. 글로벌 교역량 선행지표. BDI↑ = 경기↑</div></div></div>
+<div class="section"><h2 class="section-title">분야별</h2>
 <div class="grid">
-<div class="card"><div class="card-title">❤️ 생명보험</div><div class="card-text">삼성생명, 한화생명. 사망/연금 보장. 장기계약. 금리 영향 큼.</div></div>
-<div class="card"><div class="card-title">🚗 손해보험</div><div class="card-text">삼성화재, DB손보. 자동차/화재/건강. 손해율 관리가 핵심.</div></div>
-<div class="card"><div class="card-title">🏥 건강/실손</div><div class="card-text">실손보험이 핵심. 손해율 100% 넘기도. 보험료 인상 지속.</div></div>
-<div class="card"><div class="card-title">💼 퇴직연금</div><div class="card-text">DB/DC/IRP. 시장 급성장. 수수료 경쟁.</div></div>
+<div class="card"><div class="card-title">📦 컨테이너</div><div class="card-text">HMM, 머스크, MSC. 정기선.</div></div>
+<div class="card"><div class="card-title">🛢️ 벌크</div><div class="card-text">철광석, 곡물. 부정기선.</div></div>
+<div class="card"><div class="card-title">⛽ 탱커</div><div class="card-text">원유, LNG. 유가 연동.</div></div>
+<div class="card"><div class="card-title">🔧 조선</div><div class="card-text">HD현대, 삼성중공업, 한화오션</div></div>
+</div></div>
+<div class="section"><h2 class="section-title">핵심 변수</h2>
+<div class="stats"><div class="stat"><div class="stat-value">SCFI</div><div class="stat-label">상하이운임</div></div><div class="stat"><div class="stat-value">BDI</div><div class="stat-label">벌크운임</div></div><div class="stat"><div class="stat-value">선박량</div><div class="stat-label">공급</div></div><div class="stat"><div class="stat-value">물동량</div><div class="stat-label">수요</div></div></div>
+<div class="warn"><div class="warn-title">⚠️ 2021~22 해운 슈퍼사이클</div><div class="warn-text">코로나 물류대란 → 운임 10배 → HMM 영업이익 10조 → 이후 정상화.</div></div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• BDI/SCFI 운임지수 • 선박 수주잔량 • 물동량 추이 • 유가(연료비)</div></div>
+</div>
+
+<!-- 항공 -->
+<div class="content" id="airline">
+<div class="section"><h2 class="section-title">항공 수익구조</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">👤</div><div class="flow-label">승객</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">✈️</div><div class="flow-label">항공사</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">⛽</div><div class="flow-label">연료비</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🛫</div><div class="flow-label">운항</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📦</div><div class="flow-label">화물</div></div></div>
+<div class="tip"><div class="tip-title">💡 핵심 비용</div><div class="tip-text">연료비 30~40%, 인건비 20%, 정비/리스 20%. 유가 민감 산업.</div></div></div>
+<div class="section"><h2 class="section-title">유형별</h2>
+<div class="grid">
+<div class="card"><div class="card-title">🛫 FSC</div><div class="card-text">대한항공, 아시아나. 풀서비스.</div></div>
+<div class="card"><div class="card-title">✈️ LCC</div><div class="card-text">제주항공, 진에어. 저가.</div></div>
+<div class="card"><div class="card-title">📦 화물</div><div class="card-text">대한항공 화물 세계 1위.</div></div>
+<div class="card"><div class="card-title">🌍 글로벌</div><div class="card-text">델타, 유나이티드, 루프트한자</div></div>
 </div></div>
 <div class="section"><h2 class="section-title">핵심 지표</h2>
-<table><thead><tr><th>지표</th><th>의미</th><th>기준</th></tr></thead><tbody>
-<tr><td><strong>손해율</strong></td><td>보험금 ÷ 보험료</td><td>80% 이하 양호</td></tr>
-<tr><td><strong>사업비율</strong></td><td>운영비 ÷ 보험료</td><td>20% 이하 양호</td></tr>
-<tr><td><strong>합산비율</strong></td><td>손해율 + 사업비율</td><td>100% 이하 = 이익</td></tr>
-<tr><td><strong>RBC 비율</strong></td><td>지급여력</td><td>150% 이상 의무</td></tr>
+<div class="stats"><div class="stat"><div class="stat-value">탑승률</div><div class="stat-label">좌석 효율</div></div><div class="stat"><div class="stat-value">Yield</div><div class="stat-label">km당 수익</div></div><div class="stat"><div class="stat-value">CASK</div><div class="stat-label">km당 비용</div></div><div class="stat"><div class="stat-value">유가</div><div class="stat-label">30~40%</div></div></div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• 유가 방향 • 환율(비용 달러) • 여행 수요 회복 • 대한항공-아시아나 합병</div></div>
+</div>
+
+<!-- 통신 -->
+<div class="content" id="telecom">
+<div class="section"><h2 class="section-title">통신 구조</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">📡</div><div class="flow-label">인프라</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📶</div><div class="flow-label">네트워크</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📱</div><div class="flow-label">단말</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">👤</div><div class="flow-label">가입자</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">💵</div><div class="flow-label">요금</div></div></div>
+<div class="tip"><div class="tip-title">💡 특징</div><div class="tip-text">규제 산업. ARPU(가입자당 매출) 정체. 5G 투자 부담. 안정적 배당.</div></div></div>
+<div class="section"><h2 class="section-title">한국 빅3</h2>
+<div class="grid">
+<div class="card"><div class="card-title">SK텔레콤</div><div class="card-text">점유율 1위. AI 투자(SKT AI).</div></div>
+<div class="card"><div class="card-title">KT</div><div class="card-text">유선 강자. B2B, 클라우드.</div></div>
+<div class="card"><div class="card-title">LG유플러스</div><div class="card-text">콘텐츠 차별화. IPTV.</div></div>
+</div></div>
+<div class="section"><h2 class="section-title">성장동력</h2>
+<div class="grid">
+<div class="card"><div class="card-title">📶 5G</div><div class="card-text">B2B, 스마트팩토리.</div></div>
+<div class="card"><div class="card-title">☁️ 클라우드</div><div class="card-text">AWS, Azure 경쟁.</div></div>
+<div class="card"><div class="card-title">🤖 AI</div><div class="card-text">AI 서비스, 데이터센터.</div></div>
+<div class="card"><div class="card-title">📺 미디어</div><div class="card-text">OTT, 콘텐츠.</div></div>
+</div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• ARPU 추이 • 5G 가입자 • 배당수익률(4~5%) • 신사업 성과</div></div>
+</div>
+
+<!-- 철강 -->
+<div class="content" id="steel">
+<div class="section"><h2 class="section-title">철강 구조</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">⛏️</div><div class="flow-label">철광석</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🔥</div><div class="flow-label">제철</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🔩</div><div class="flow-label">압연</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏗️</div><div class="flow-label">건설/자동차</div></div></div>
+<div class="tip"><div class="tip-title">💡 특징</div><div class="tip-text">경기 후행 산업. 중국이 전 세계 50%+ 생산. 탄소 배출 규제 심화.</div></div></div>
+<div class="section"><h2 class="section-title">주요 기업</h2>
+<div class="grid">
+<div class="card"><div class="card-title">🇰🇷 포스코</div><div class="card-text">세계 6위. 2차전지 소재 진출.</div></div>
+<div class="card"><div class="card-title">🇨🇳 바오우</div><div class="card-text">세계 1위. 중국 국영.</div></div>
+<div class="card"><div class="card-title">🇯🇵 신일본제철</div><div class="card-text">고급강 기술력.</div></div>
+<div class="card"><div class="card-title">🇱🇺 ArcelorMittal</div><div class="card-text">글로벌 최대 민간.</div></div>
+</div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• 철광석/원료탄 가격 • 중국 수요 • 탄소중립(친환경 제철) • 열연/냉연 스프레드</div></div>
+</div>
+
+<!-- 화학 -->
+<div class="content" id="chemical">
+<div class="section"><h2 class="section-title">화학 구조</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">🛢️</div><div class="flow-label">납사</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🔬</div><div class="flow-label">NCC</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">⚗️</div><div class="flow-label">에틸렌</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📦</div><div class="flow-label">합성수지</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏭</div><div class="flow-label">제품</div></div></div>
+<div class="tip"><div class="tip-title">💡 에틸렌 스프레드</div><div class="tip-text">에틸렌 가격 - 납사 가격 = 마진. $300+ 정상. 석유화학 실적 결정.</div></div></div>
+<div class="section"><h2 class="section-title">분야별</h2>
+<div class="grid">
+<div class="card"><div class="card-title">🧪 석유화학</div><div class="card-text">LG화학, 롯데케미칼. 범용.</div></div>
+<div class="card"><div class="card-title">🔋 2차전지</div><div class="card-text">LG에너지, 삼성SDI. 성장.</div></div>
+<div class="card"><div class="card-title">⚗️ 정밀화학</div><div class="card-text">SKC, 솔브레인. 반도체 소재.</div></div>
+<div class="card"><div class="card-title">🌱 친환경</div><div class="card-text">바이오플라스틱, 수소.</div></div>
+</div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• 유가/납사 가격 • 에틸렌 스프레드 • 중국 증설 • 2차전지 소재</div></div>
+</div>
+
+<!-- 식품 -->
+<div class="content" id="food">
+<div class="section"><h2 class="section-title">식품 구조</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">🌾</div><div class="flow-label">원자재</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏭</div><div class="flow-label">가공</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📦</div><div class="flow-label">포장</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🛒</div><div class="flow-label">유통</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">👤</div><div class="flow-label">소비자</div></div></div>
+<div class="tip"><div class="tip-title">💡 특징</div><div class="tip-text">필수소비재 = 경기 방어적. 원자재 가격 전가 능력이 핵심. 인플레 수혜.</div></div></div>
+<div class="section"><h2 class="section-title">한국 주요</h2>
+<div class="grid">
+<div class="card"><div class="card-title">🍜 CJ제일제당</div><div class="card-text">식품 1위. 바이오도 강세.</div></div>
+<div class="card"><div class="card-title">🍪 오리온</div><div class="card-text">중국/베트남 성공. 초코파이.</div></div>
+<div class="card"><div class="card-title">🍺 하이트진로</div><div class="card-text">소주 1위. 해외 수출.</div></div>
+<div class="card"><div class="card-title">🥛 농심</div><div class="card-text">라면 1위. 미국 성장.</div></div>
+</div></div>
+<div class="section"><h2 class="section-title">글로벌</h2>
+<div class="grid">
+<div class="card"><div class="card-title">🇨🇭 네슬레</div><div class="card-text">세계 1위. 커피, 유아식.</div></div>
+<div class="card"><div class="card-title">🇺🇸 PepsiCo</div><div class="card-text">음료+스낵. 프리토레이.</div></div>
+<div class="card"><div class="card-title">🇳🇱 하이네켄</div><div class="card-text">맥주 2위.</div></div>
+<div class="card"><div class="card-title">🇧🇷 JBS</div><div class="card-text">세계 최대 육류 가공.</div></div>
+</div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• 원자재(밀, 설탕, 원유) 가격 • 가격 전가력 • 해외 매출 비중 • 건강/친환경 트렌드</div></div>
+</div>
+
+<!-- PE/VC -->
+<div class="content" id="pe">
+<div class="section"><h2 class="section-title">PE/VC 구조</h2>
+<div class="flow"><div class="flow-box"><div class="flow-icon">🏦</div><div class="flow-label">LP (출자)</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">💼</div><div class="flow-label">GP (운용)</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">🏢</div><div class="flow-label">투자</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">📈</div><div class="flow-label">가치제고</div></div><span class="flow-arrow">→</span><div class="flow-box"><div class="flow-icon">💰</div><div class="flow-label">Exit</div></div></div>
+<div class="tip"><div class="tip-title">💡 수익구조</div><div class="tip-text">관리보수 2% + 성과보수 20%. LP = 연기금, 보험사. GP = 운용사.</div></div></div>
+<div class="section"><h2 class="section-title">유형별</h2>
+<div class="grid">
+<div class="card"><div class="card-title">💼 바이아웃</div><div class="card-text">기업 인수 후 구조조정. MBK, 한앤컴퍼니.</div></div>
+<div class="card"><div class="card-title">🌱 그로스</div><div class="card-text">성장기업 투자. IMM, 스틱.</div></div>
+<div class="card"><div class="card-title">🚀 VC</div><div class="card-text">스타트업 투자. 소프트뱅크벤처스.</div></div>
+<div class="card"><div class="card-title">🏗️ 인프라</div><div class="card-text">도로, 발전소. 맥쿼리.</div></div>
+</div></div>
+<div class="section"><h2 class="section-title">글로벌 Top</h2>
+<table><thead><tr><th>회사</th><th>AUM</th><th>특징</th></tr></thead><tbody>
+<tr><td>블랙스톤</td><td>$1조</td><td>세계 1위. 부동산 강세.</td></tr>
+<tr><td>KKR</td><td>$5,000억</td><td>LBO 원조. 다각화.</td></tr>
+<tr><td>칼라일</td><td>$4,000억</td><td>방산, 항공.</td></tr>
+<tr><td>아폴로</td><td>$5,000억</td><td>크레딧 강세.</td></tr>
 </tbody></table></div>
-<div class="insight"><div class="insight-title">🎯 투자자가 봐야 할 것</div><div class="insight-text">• <strong>금리:</strong> 금리 상승 = 투자수익↑, 보험부채↓ → 이중 호재<br>• <strong>손해율:</strong> 자동차보험, 실손 손해율 추이<br>• <strong>CSM:</strong> 미래 이익 가시성 (IFRS17 도입)<br>• <strong>배당:</strong> 보험사는 고배당주 (4~6%)</div></div>
+<div class="insight"><div class="insight-title">🎯 체크포인트</div><div class="insight-text">• 금리 환경(LBO 비용) • 밸류에이션 멀티플 • Exit 환경(IPO/M&A) • 드라이파우더(미투자 자금)</div></div>
 </div>
 
 </div></main>

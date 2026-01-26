@@ -1,280 +1,190 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>세계 자원 지도 - Capital Map</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --bg-primary: #0a0a0f; --bg-secondary: #0f0f1a; --bg-card: #1a1a2e; --border: #252540;
-            --text-primary: #e0e0e0; --text-secondary: #888;
-            --accent-gold: #ffd700; --accent-cyan: #00d9ff; --positive: #00d26a; --negative: #ff4757;
-        }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
-        .nav { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: rgba(15,15,26,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; }
-        .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .nav-logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent-gold), #ff9f43); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-        .nav-logo-text { font-size: 20px; font-weight: 700; background: linear-gradient(90deg, var(--accent-gold), var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .nav-links { display: flex; gap: 8px; }
-        .nav-link { padding: 8px 16px; border-radius: 8px; text-decoration: none; color: var(--text-secondary); font-size: 14px; font-weight: 500; transition: all 0.2s; }
-        .nav-link:hover { color: var(--text-primary); background: var(--bg-card); }
-        .nav-link.active { color: var(--accent-gold); background: rgba(255,215,0,0.1); }
-        .main { padding-top: 80px; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 30px; }
-        .page-header { text-align: center; padding: 30px 0; }
-        .page-title { font-size: 36px; font-weight: 700; margin-bottom: 12px; }
-        .page-subtitle { color: var(--text-secondary); font-size: 16px; }
-
-        .resource-filter { display: flex; justify-content: center; gap: 10px; margin: 30px 0; flex-wrap: wrap; }
-        .filter-btn { padding: 10px 20px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-secondary); font-size: 13px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
-        .filter-btn:hover { border-color: var(--accent-cyan); color: var(--text-primary); }
-        .filter-btn.active { border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(255,215,0,0.1); }
-
-        .map-container { display: grid; grid-template-columns: 1fr 400px; gap: 30px; margin-top: 20px; }
-        .map-wrapper { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 30px; position: relative; min-height: 500px; }
-        .map-note { text-align: center; color: var(--text-secondary); font-size: 14px; margin-bottom: 20px; }
-
-        .country-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
-        .country-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; text-align: center; cursor: pointer; transition: all 0.3s; }
-        .country-card:hover { border-color: var(--accent-cyan); transform: translateY(-4px); }
-        .country-card.active { border-color: var(--accent-gold); background: rgba(255,215,0,0.05); }
-        .country-flag { font-size: 32px; margin-bottom: 8px; }
-        .country-name { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
-        .country-resource { font-size: 10px; color: var(--text-secondary); }
-
-        .detail-panel { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 24px; height: fit-content; }
-        .detail-placeholder { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
-        .detail-placeholder-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
-        .detail-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-        .detail-flag { font-size: 48px; }
-        .detail-title { font-size: 22px; font-weight: 700; }
-        .detail-subtitle { color: var(--text-secondary); font-size: 13px; }
-        .detail-section { margin-bottom: 20px; }
-        .detail-section-title { font-size: 11px; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; font-weight: 600; }
-        .resource-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--bg-card); border-radius: 8px; margin-bottom: 8px; }
-        .resource-name { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; }
-        .resource-icon { font-size: 18px; }
-        .resource-stats { text-align: right; }
-        .resource-share { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 700; color: var(--accent-gold); }
-        .resource-rank { font-size: 11px; color: var(--text-secondary); }
-        .detail-text { color: var(--text-secondary); font-size: 13px; line-height: 1.7; }
-        .history-box { background: var(--bg-card); border-left: 3px solid var(--accent-gold); border-radius: 0 8px 8px 0; padding: 14px; margin-top: 12px; }
-        .history-text { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
-
-        .resource-legend { margin-top: 40px; padding: 30px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; }
-        .legend-title { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
-        .legend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-        .legend-item { display: flex; gap: 12px; padding: 16px; background: var(--bg-card); border-radius: 10px; }
-        .legend-icon { font-size: 28px; }
-        .legend-content { flex: 1; }
-        .legend-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-        .legend-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
-        .legend-countries { font-size: 11px; color: var(--accent-cyan); margin-top: 6px; }
-
-        @media (max-width: 1000px) { .map-container { grid-template-columns: 1fr; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>세계 자원 지도 - Capital Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#0a0a0f;--bg2:#0f0f1a;--card:#1a1a2e;--border:#252540;--text:#e0e0e0;--text2:#888;--gold:#ffd700;--cyan:#00d9ff;--green:#00d26a;--red:#ff4757;--orange:#ff9f43}body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text)}.nav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(15,15,26,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:1000}.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}.nav-logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}.nav-links{display:flex;gap:8px}.nav-link{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:500}.nav-link:hover{color:var(--text);background:var(--card)}.nav-link.active{color:var(--gold);background:rgba(255,215,0,.1)}
+.main{padding-top:80px}.container{max-width:1400px;margin:0 auto;padding:0 20px 60px}.page-header{text-align:center;padding:20px 0}.page-title{font-size:32px;font-weight:700;margin-bottom:8px}.page-subtitle{color:var(--text2);font-size:14px}
+.filters{display:flex;justify-content:center;gap:8px;margin:20px 0;flex-wrap:wrap}.filter{padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;transition:.2s}.filter:hover{border-color:var(--cyan)}.filter.active{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.1)}
+.map-container{display:flex;gap:20px;margin-top:20px}
+.map-wrap{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:20px;min-height:500px}
+.map-svg{width:100%;height:auto}
+.map-svg path{fill:var(--card);stroke:var(--border);stroke-width:0.5;cursor:pointer;transition:.2s}
+.map-svg path:hover{fill:var(--cyan);fill-opacity:0.3}
+.map-svg path.active{fill:var(--gold);fill-opacity:0.5}
+.map-svg path.has-oil{fill:#1a1a1a}.map-svg path.has-gas{fill:#2d4a3e}.map-svg path.has-lithium{fill:#1a3a4a}.map-svg path.has-copper{fill:#4a2a1a}.map-svg path.has-rare{fill:#3a1a4a}.map-svg path.has-uranium{fill:#4a4a1a}.map-svg path.has-cobalt{fill:#1a2a4a}
+.panel{width:360px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:20px;max-height:600px;overflow-y:auto}
+.panel-title{font-size:18px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.panel-country{font-size:28px;margin-bottom:4px}
+.panel-name{font-size:20px;font-weight:600;margin-bottom:12px}
+.resource-list{display:flex;flex-direction:column;gap:10px}
+.resource-item{background:var(--card);border-radius:8px;padding:12px}
+.resource-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.resource-name{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+.resource-share{font-size:14px;font-weight:700;color:var(--gold)}
+.resource-rank{font-size:11px;color:var(--text2)}
+.resource-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:6px}
+.resource-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--orange));border-radius:3px}
+.panel-note{margin-top:16px;padding:12px;background:var(--card);border-radius:8px;font-size:12px;color:var(--text2);line-height:1.6;border-left:3px solid var(--cyan)}
+.legend{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:20px;padding:16px;background:var(--card);border-radius:10px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2)}
+.legend-color{width:14px;height:14px;border-radius:3px}
+.no-select{text-align:center;color:var(--text2);padding:40px 20px}
+.no-select-icon{font-size:48px;margin-bottom:12px}
+@media(max-width:900px){.map-container{flex-direction:column}.panel{width:100%}}
+</style>
 </head>
 <body>
-    <nav class="nav">
-        <a href="index.html" class="nav-logo"><div class="nav-logo-icon">💰</div><span class="nav-logo-text">CAPITAL MAP</span></a>
-        <div class="nav-links">
-            <a href="index.html" class="nav-link">대시보드</a>
-            <a href="flow.html" class="nav-link">연결관계</a>
-            <a href="map.html" class="nav-link active">세계지도</a>
-            <a href="industry.html" class="nav-link">산업해부</a>
-            <a href="timeline.html" class="nav-link">역사</a>
-            <a href="dealers.html" class="nav-link">딜러구조</a>
-        </div>
-    </nav>
+<nav class="nav"><a href="index.html" class="nav-logo"><div class="nav-logo-icon">💰</div><span class="nav-logo-text">CAPITAL MAP</span></a><div class="nav-links"><a href="index.html" class="nav-link">대시보드</a><a href="flow.html" class="nav-link">연결관계</a><a href="map.html" class="nav-link active">세계지도</a><a href="industry.html" class="nav-link">산업해부</a><a href="timeline.html" class="nav-link">역사</a><a href="dealers.html" class="nav-link">딜러구조</a></div></nav>
+<main class="main"><div class="container">
+<div class="page-header"><h1 class="page-title">🌍 세계 자원 지도</h1><p class="page-subtitle">누가 뭘 가졌나 — 자원이 지정학을 결정한다</p></div>
+<div class="filters">
+<button class="filter active" data-resource="all">🌐 전체</button>
+<button class="filter" data-resource="oil">🛢️ 원유</button>
+<button class="filter" data-resource="gas">🔥 천연가스</button>
+<button class="filter" data-resource="lithium">🔋 리튬</button>
+<button class="filter" data-resource="cobalt">⚡ 코발트</button>
+<button class="filter" data-resource="rare">💎 희토류</button>
+<button class="filter" data-resource="uranium">☢️ 우라늄</button>
+<button class="filter" data-resource="copper">🔶 구리</button>
+</div>
+<div class="map-container">
+<div class="map-wrap">
+<svg class="map-svg" viewBox="0 0 1000 500" id="worldMap">
+<!-- 간소화된 세계지도 SVG -->
+<path id="US" d="M165,bindValue35 L270,bindValue35 L280,bindValue65 L285,200 L230,210 L180,195 L150,170 L140,145 Z" data-name="미국"/>
+<path id="CA" d="M150,bindValue0 L280,bindValue5 L290,bindValue30 L270,bindValue35 L165,bindValue35 L140,bindValue0 Z" data-name="캐나다"/>
+<path id="MX" d="M150,200 L180,195 L200,220 L180,250 L150,240 Z" data-name="멕시코"/>
+<path id="BR" d="M270,bindValue70 L320,240 L340,320 L300,360 L250,340 L240,280 Z" data-name="브라질"/>
+<path id="AR" d="M260,360 L300,360 L290,430 L260,440 Z" data-name="아르헨티나"/>
+<path id="CL" d="M250,320 L260,320 L260,440 L250,440 Z" data-name="칠레"/>
+<path id="RU" d="M480,bindValue0 L750,bindValue0 L780,bindValue40 L800,bindValue80 L750,150 L600,140 L500,bindValue00 L460,bindValue50 Z" data-name="러시아"/>
+<path id="CN" d="M700,150 L780,160 L800,200 L780,250 L720,260 L680,230 L660,180 Z" data-name="중국"/>
+<path id="IN" d="M640,220 L680,230 L680,290 L650,310 L620,280 L620,240 Z" data-name="인도"/>
+<path id="SA" d="M540,220 L580,210 L600,250 L580,280 L540,270 L530,240 Z" data-name="사우디"/>
+<path id="IR" d="M560,180 L600,175 L620,200 L600,230 L560,220 Z" data-name="이란"/>
+<path id="IQ" d="M540,190 L560,180 L560,220 L540,220 Z" data-name="이라크"/>
+<path id="AE" d="M580,250 L600,250 L600,265 L580,265 Z" data-name="UAE"/>
+<path id="AU" d="M760,bindValue20 L850,310 L860,380 L800,400 L740,370 L730,330 Z" data-name="호주"/>
+<path id="ID" d="M720,290 L780,280 L800,300 L760,320 L720,310 Z" data-name="인도네시아"/>
+<path id="ZA" d="M500,bindValue80 L540,370 L540,410 L500,420 L480,400 L480,370 Z" data-name="남아공"/>
+<path id="CD" d="M500,290 L540,280 L550,320 L530,350 L500,340 Z" data-name="콩고"/>
+<path id="NG" d="M460,270 L490,265 L500,290 L480,310 L455,300 Z" data-name="나이지리아"/>
+<path id="KZ" d="M580,120 L650,115 L670,150 L630,170 L580,160 Z" data-name="카자흐스탄"/>
+<path id="DE" d="M470,135 L490,130 L495,155 L475,160 Z" data-name="독일"/>
+<path id="GB" d="M440,120 L455,115 L460,140 L445,145 Z" data-name="영국"/>
+<path id="FR" d="M450,145 L475,140 L480,170 L455,175 Z" data-name="프랑스"/>
+<path id="NO" d="M470,bindValue0 L490,bindValue5 L495,115 L475,120 Z" data-name="노르웨이"/>
+<path id="JP" d="M820,170 L840,165 L845,200 L825,205 Z" data-name="일본"/>
+<path id="KR" d="M795,185 L810,180 L815,200 L800,205 Z" data-name="한국"/>
+<path id="VE" d="M240,240 L270,235 L280,260 L255,270 Z" data-name="베네수엘라"/>
+<path id="QA" d="M575,240 L585,238 L586,252 L576,254 Z" data-name="카타르"/>
+<path id="KW" d="M560,215 L570,213 L572,225 L562,227 Z" data-name="쿠웨이트"/>
+</svg>
+<div class="legend">
+<div class="legend-item"><div class="legend-color" style="background:#1a1a1a"></div>원유</div>
+<div class="legend-item"><div class="legend-color" style="background:#2d4a3e"></div>천연가스</div>
+<div class="legend-item"><div class="legend-color" style="background:#1a3a4a"></div>리튬</div>
+<div class="legend-item"><div class="legend-color" style="background:#4a2a1a"></div>구리</div>
+<div class="legend-item"><div class="legend-color" style="background:#3a1a4a"></div>희토류</div>
+<div class="legend-item"><div class="legend-color" style="background:#4a4a1a"></div>우라늄</div>
+<div class="legend-item"><div class="legend-color" style="background:#1a2a4a"></div>코발트</div>
+<div class="legend-item"><div class="legend-color" style="background:var(--gold)"></div>선택됨</div>
+</div>
+</div>
+<div class="panel">
+<div id="countryInfo">
+<div class="no-select">
+<div class="no-select-icon">🗺️</div>
+<p>지도에서 국가를 클릭하세요</p>
+<p style="margin-top:8px;font-size:12px">자원 보유 현황을 확인할 수 있습니다</p>
+</div>
+</div>
+</div>
+</div>
+</div></main>
+<script>
+const countryData = {
+SA: {flag:"🇸🇦",name:"사우디아라비아",resources:[{name:"원유",icon:"🛢️",share:17,rank:2}],note:"OPEC 주도국. 페트로달러 체제의 핵심. 아람코 = 세계 최대 기업."},
+RU: {flag:"🇷🇺",name:"러시아",resources:[{name:"천연가스",icon:"🔥",share:24,rank:1},{name:"원유",icon:"🛢️",share:6,rank:3}],note:"유럽 가스 의존도가 지정학 무기. 우크라이나 전쟁으로 에너지 지도 재편."},
+CN: {flag:"🇨🇳",name:"중국",resources:[{name:"희토류",icon:"💎",share:60,rank:1},{name:"리튬 정제",icon:"🔋",share:65,rank:1}],note:"희토류 무기화 가능. 배터리 공급망 지배. 미중 갈등의 핵심."},
+AU: {flag:"🇦🇺",name:"호주",resources:[{name:"리튬",icon:"🔋",share:47,rank:1},{name:"철광석",icon:"�ite", share:28,rank:1}],note:"중국 의존 탈피 시도. 서방 핵심 자원 공급국."},
+CL: {flag:"🇨🇱",name:"칠레",resources:[{name:"구리",icon:"🔶",share:27,rank:1},{name:"리튬",icon:"🔋",share:22,rank:2}],note:"구리 = 경기 선행지표. 전기차 시대 핵심 국가."},
+CD: {flag:"🇨🇩",name:"콩고민주공화국",resources:[{name:"코발트",icon:"⚡",share:70,rank:1}],note:"코발트 70% 독점. 아동노동 이슈, ESG 리스크."},
+KZ: {flag:"🇰🇿",name:"카자흐스탄",resources:[{name:"우라늄",icon:"☢️",share:43,rank:1}],note:"세계 우라늄 43% 생산. 원전 르네상스의 핵심."},
+US: {flag:"🇺🇸",name:"미국",resources:[{name:"원유",icon:"🛢️",share:15,rank:1},{name:"천연가스",icon:"🔥",share:23,rank:1}],note:"셰일혁명으로 에너지 자립. LNG 수출국 전환."},
+IR: {flag:"🇮🇷",name:"이란",resources:[{name:"원유",icon:"🛢️",share:9,rank:4},{name:"천연가스",icon:"🔥",share:17,rank:2}],note:"제재로 수출 제한. 제재 해제 시 공급 급증 가능."},
+QA: {flag:"🇶🇦",name:"카타르",resources:[{name:"천연가스",icon:"🔥",share:13,rank:3}],note:"LNG 수출 1위. 북부가스전 = 세계 최대 가스전."},
+BR: {flag:"🇧🇷",name:"브라질",resources:[{name:"철광석",icon:"⛏️",share:17,rank:2},{name:"원유",icon:"🛢️",share:4,rank:7}],note:"프리솔트 유전. 농업 강국. 글로벌 곡물 공급."},
+ZA: {flag:"🇿🇦",name:"남아공",resources:[{name:"백금",icon:"💎",share:70,rank:1},{name:"망간",icon:"⚙️",share:30,rank:1}],note:"백금족 금속 70%. 수소경제 핵심 소재."},
+ID: {flag:"🇮🇩",name:"인도네시아",resources:[{name:"니켈",icon:"🔩",share:37,rank:1},{name:"주석",icon:"📦",share:30,rank:1}],note:"니켈 수출 금지로 배터리 산업 유치. 가공 의무화."},
+VE: {flag:"🇻🇪",name:"베네수엘라",resources:[{name:"원유 매장량",icon:"🛢️",share:18,rank:1}],note:"매장량 세계 1위지만 생산 능력 붕괴. 제재 상태."},
+CA: {flag:"🇨🇦",name:"캐나다",resources:[{name:"우라늄",icon:"☢️",share:15,rank:2},{name:"원유",icon:"🛢️",share:5,rank:4}],note:"오일샌드 매장량 막대. 미국 주요 에너지 공급국."},
+NO: {flag:"🇳🇴",name:"노르웨이",resources:[{name:"천연가스",icon:"🔥",share:3,rank:7},{name:"원유",icon:"🛢️",share:2,rank:15}],note:"유럽 가스 공급 대안. 국부펀드 $1.4조."},
+MX: {flag:"🇲🇽",name:"멕시코",resources:[{name:"은",icon:"🥈",share:23,rank:1},{name:"원유",icon:"🛢️",share:2,rank:12}],note:"은 생산 1위. 미국 인접 = 니어쇼어링 수혜."},
+IN: {flag:"🇮🇳",name:"인도",resources:[{name:"철광석",icon:"⛏️",share:8,rank:4},{name:"석탄",icon:"ite",share:10,rank:2}],note:"인구 1위. 제조업 부상. 에너지 수요 급증."}
+};
 
-    <main class="main">
-        <div class="container">
-            <div class="page-header">
-                <h1 class="page-title">🗺️ 세계 자원 지도</h1>
-                <p class="page-subtitle">누가 뭘 가졌나 — 자원이 곧 권력이다</p>
-            </div>
+const resourceColors = {oil:'#1a1a1a',gas:'#2d4a3e',lithium:'#1a3a4a',copper:'#4a2a1a',rare:'#3a1a4a',uranium:'#4a4a1a',cobalt:'#1a2a4a'};
+const resourceMap = {oil:['SA','RU','US','IR','VE','CA','BR','NO','MX','IQ','KW','AE','NG'],gas:['RU','IR','QA','US','SA','NO'],lithium:['AU','CL','CN'],cobalt:['CD'],rare:['CN'],uranium:['KZ','CA'],copper:['CL','CD','CN']};
 
-            <div class="resource-filter">
-                <button class="filter-btn active" data-filter="all">🌍 전체</button>
-                <button class="filter-btn" data-filter="oil">🛢️ 원유</button>
-                <button class="filter-btn" data-filter="gas">🔥 천연가스</button>
-                <button class="filter-btn" data-filter="lithium">🔋 리튬</button>
-                <button class="filter-btn" data-filter="cobalt">⚡ 코발트</button>
-                <button class="filter-btn" data-filter="rare">💎 희토류</button>
-                <button class="filter-btn" data-filter="uranium">☢️ 우라늄</button>
-                <button class="filter-btn" data-filter="copper">🔶 구리</button>
-            </div>
+let selectedCountry = null;
 
-            <div class="map-container">
-                <div class="map-wrapper">
-                    <div class="map-note">국가를 클릭하면 상세 정보가 표시됩니다</div>
-                    <div class="country-grid" id="countryGrid"></div>
-                </div>
-                <div class="detail-panel">
-                    <div class="detail-placeholder" id="detailPlaceholder">
-                        <div class="detail-placeholder-icon">🌍</div>
-                        <p>국가를 선택하면<br>자원 정보가 표시됩니다</p>
-                    </div>
-                    <div id="detailContent" style="display:none;"></div>
-                </div>
-            </div>
+document.querySelectorAll('.filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const res = btn.dataset.resource;
+        document.querySelectorAll('.map-svg path').forEach(p => {
+            p.style.fill = '';
+            p.classList.remove('has-oil','has-gas','has-lithium','has-copper','has-rare','has-uranium','has-cobalt');
+        });
+        if(res !== 'all') {
+            const countries = resourceMap[res] || [];
+            countries.forEach(code => {
+                const el = document.getElementById(code);
+                if(el) el.classList.add('has-' + res);
+            });
+        }
+    });
+});
 
-            <div class="resource-legend">
-                <h2 class="legend-title">주요 원자재 가이드</h2>
-                <div class="legend-grid">
-                    <div class="legend-item">
-                        <div class="legend-icon">🛢️</div>
-                        <div class="legend-content">
-                            <div class="legend-name">원유 (Crude Oil)</div>
-                            <div class="legend-desc">에너지의 왕. 모든 경제 활동의 기반. 석유화학, 운송, 발전의 핵심.</div>
-                            <div class="legend-countries">주요국: 사우디, 러시아, 미국, 이란, 이라크</div>
-                        </div>
+document.querySelectorAll('.map-svg path').forEach(path => {
+    path.addEventListener('click', () => {
+        document.querySelectorAll('.map-svg path').forEach(p => p.classList.remove('active'));
+        path.classList.add('active');
+        const code = path.id;
+        const data = countryData[code];
+        const panel = document.getElementById('countryInfo');
+        if(data) {
+            let resourcesHtml = data.resources.map(r => `
+                <div class="resource-item">
+                    <div class="resource-header">
+                        <span class="resource-name">${r.icon} ${r.name}</span>
+                        <span class="resource-share">${r.share}%</span>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-icon">🔥</div>
-                        <div class="legend-content">
-                            <div class="legend-name">천연가스 (Natural Gas)</div>
-                            <div class="legend-desc">청정 에너지 전환의 핵심. 발전, 난방, 석유화학 원료.</div>
-                            <div class="legend-countries">주요국: 러시아, 이란, 카타르, 미국</div>
-                        </div>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-icon">🔋</div>
-                        <div class="legend-content">
-                            <div class="legend-name">리튬 (Lithium)</div>
-                            <div class="legend-desc">2차전지의 핵심. 전기차, ESS 시대의 "하얀 석유".</div>
-                            <div class="legend-countries">주요국: 호주, 칠레, 아르헨티나, 중국</div>
-                        </div>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-icon">⚡</div>
-                        <div class="legend-content">
-                            <div class="legend-name">코발트 (Cobalt)</div>
-                            <div class="legend-desc">배터리 양극재 필수. 콩고가 70% 독점. 아동노동 이슈.</div>
-                            <div class="legend-countries">주요국: 콩고(70%), 러시아, 호주</div>
-                        </div>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-icon">💎</div>
-                        <div class="legend-content">
-                            <div class="legend-name">희토류 (Rare Earth)</div>
-                            <div class="legend-desc">첨단 산업의 비타민. 스마트폰, 전기차, 방산에 필수.</div>
-                            <div class="legend-countries">주요국: 중국(60%), 미국, 미얀마, 호주</div>
-                        </div>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-icon">☢️</div>
-                        <div class="legend-content">
-                            <div class="legend-name">우라늄 (Uranium)</div>
-                            <div class="legend-desc">원자력 발전 연료. 탄소중립 시대 재조명.</div>
-                            <div class="legend-countries">주요국: 카자흐스탄(43%), 캐나다, 호주, 나미비아</div>
-                        </div>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-icon">🔶</div>
-                        <div class="legend-content">
-                            <div class="legend-name">구리 (Copper)</div>
-                            <div class="legend-desc">"닥터 코퍼" - 경기 선행지표. 전기차, 신재생에 필수.</div>
-                            <div class="legend-countries">주요국: 칠레, 페루, 중국, 콩고</div>
-                        </div>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-icon">🥇</div>
-                        <div class="legend-content">
-                            <div class="legend-name">금 (Gold)</div>
-                            <div class="legend-desc">영원한 안전자산. 인플레 헤지, 중앙은행 보유.</div>
-                            <div class="legend-countries">주요국: 중국, 러시아, 호주, 미국, 캐나다</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <script>
-        const countries = [
-            { code: 'SA', flag: '🇸🇦', name: '사우디', resources: [{ type: 'oil', icon: '🛢️', name: '원유', share: '17%', rank: 2 }], history: '1938년 유전 발견. OPEC 주도국. 페트로달러 체제의 핵심.', importance: '세계 2위 원유 매장량. OPEC+ 감산 결정권. 미국과 동맹이지만 중국과도 거래.' },
-            { code: 'RU', flag: '🇷🇺', name: '러시아', resources: [{ type: 'oil', icon: '🛢️', name: '원유', share: '6%', rank: 3 }, { type: 'gas', icon: '🔥', name: '천연가스', share: '24%', rank: 1 }], history: '소련 붕괴 후 자원 수출 의존 경제. 유럽 가스 지배 → 우크라이나 전쟁으로 제재.', importance: '에너지로 유럽 압박. 우크라이나 전쟁으로 글로벌 공급망 재편.' },
-            { code: 'US', flag: '🇺🇸', name: '미국', resources: [{ type: 'oil', icon: '🛢️', name: '셰일오일', share: '15%', rank: 1 }, { type: 'gas', icon: '🔥', name: '셰일가스', share: '23%', rank: 1 }], history: '2010년대 셰일 혁명으로 에너지 순수출국 전환.', importance: '에너지 독립 달성. LNG 수출로 유럽 러시아 의존 대체.' },
-            { code: 'CN', flag: '🇨🇳', name: '중국', resources: [{ type: 'rare', icon: '💎', name: '희토류', share: '60%', rank: 1 }, { type: 'lithium', icon: '🔋', name: '리튬 정제', share: '65%', rank: 1 }], history: '90년대부터 희토류 산업 육성. 가공/정제 독점.', importance: '희토류 무기화 가능. 배터리 공급망 지배. 미중 갈등의 핵심 변수.' },
-            { code: 'AU', flag: '🇦🇺', name: '호주', resources: [{ type: 'lithium', icon: '🔋', name: '리튬', share: '47%', rank: 1 }, { type: 'iron', icon: '�ite', name: '철광석', share: '28%', rank: 1 }], history: '광업 대국. 중국 의존도 높았으나 다변화 추진.', importance: '중국 철강산업의 핏줄. 리튬 최대 생산국.' },
-            { code: 'CL', flag: '🇨🇱', name: '칠레', resources: [{ type: 'copper', icon: '🔶', name: '구리', share: '27%', rank: 1 }, { type: 'lithium', icon: '🔋', name: '리튬', share: '22%', rank: 2 }], history: '세계 최대 구리 생산국. 아타카마 사막에 리튬 호수.', importance: '전기차 시대의 핵심 공급국.' },
-            { code: 'CD', flag: '🇨🇩', name: '콩고', resources: [{ type: 'cobalt', icon: '⚡', name: '코발트', share: '70%', rank: 1 }], history: '벨기에 식민지배 → 독립 후 자원 쟁탈 내전. 중국 기업 대거 진출.', importance: '배터리 핵심 원료 독점. 아동노동, 인권 이슈로 ESG 리스크.' },
-            { code: 'KZ', flag: '🇰🇿', name: '카자흐스탄', resources: [{ type: 'uranium', icon: '☢️', name: '우라늄', share: '43%', rank: 1 }], history: '소련 핵실험장 → 독립 후 우라늄 수출국으로 전환.', importance: '세계 최대 우라늄 생산국. 원전 르네상스의 수혜.' },
-            { code: 'QA', flag: '🇶🇦', name: '카타르', resources: [{ type: 'gas', icon: '🔥', name: 'LNG', share: '21%', rank: 3 }], history: '북부 가스전 세계 최대. LNG 수출 1위.', importance: '유럽 가스 다변화의 핵심. 아시아 LNG 공급.' },
-            { code: 'IR', flag: '🇮🇷', name: '이란', resources: [{ type: 'oil', icon: '🛢️', name: '원유', share: '9%', rank: 4 }, { type: 'gas', icon: '🔥', name: '천연가스', share: '17%', rank: 2 }], history: '1979년 혁명 후 미국 제재. 석유 수출 제한.', importance: '제재 해제 시 원유 공급 증가 가능성. 중동 지정학 핵심.' },
-            { code: 'ID', flag: '🇮🇩', name: '인도네시아', resources: [{ type: 'nickel', icon: '🔩', name: '니켈', share: '37%', rank: 1 }], history: '세계 최대 니켈 생산국. 원광 수출 금지로 가공산업 육성.', importance: '스테인리스, 배터리 니켈 핵심 공급.' },
-            { code: 'BR', flag: '🇧🇷', name: '브라질', resources: [{ type: 'iron', icon: '⛏️', name: '철광석', share: '17%', rank: 2 }], history: '발레(Vale) 세계 최대 철광석 기업. 아마존 광산 개발 논란.', importance: '중국 철강산업 주요 공급국.' }
-        ];
-
-        function renderCountries(filter = 'all') {
-            const grid = document.getElementById('countryGrid');
-            const filtered = filter === 'all' ? countries : countries.filter(c => c.resources.some(r => r.type === filter));
-            grid.innerHTML = filtered.map(c => `
-                <div class="country-card" data-code="${c.code}">
-                    <div class="country-flag">${c.flag}</div>
-                    <div class="country-name">${c.name}</div>
-                    <div class="country-resource">${c.resources.map(r => r.icon).join(' ')}</div>
+                    <div class="resource-rank">세계 ${r.rank}위</div>
+                    <div class="resource-bar"><div class="resource-bar-fill" style="width:${r.share}%"></div></div>
                 </div>
             `).join('');
-            document.querySelectorAll('.country-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    document.querySelectorAll('.country-card').forEach(c => c.classList.remove('active'));
-                    card.classList.add('active');
-                    showDetail(card.dataset.code);
-                });
-            });
-        }
-
-        function showDetail(code) {
-            const c = countries.find(x => x.code === code);
-            document.getElementById('detailPlaceholder').style.display = 'none';
-            document.getElementById('detailContent').style.display = 'block';
-            document.getElementById('detailContent').innerHTML = `
-                <div class="detail-header">
-                    <div class="detail-flag">${c.flag}</div>
-                    <div>
-                        <div class="detail-title">${c.name}</div>
-                        <div class="detail-subtitle">${c.resources.length}개 주요 자원 보유</div>
-                    </div>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-section-title">보유 자원</div>
-                    ${c.resources.map(r => `
-                        <div class="resource-item">
-                            <div class="resource-name"><span class="resource-icon">${r.icon}</span> ${r.name}</div>
-                            <div class="resource-stats">
-                                <div class="resource-share">${r.share}</div>
-                                <div class="resource-rank">세계 ${r.rank}위</div>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-                <div class="detail-section">
-                    <div class="detail-section-title">전략적 중요성</div>
-                    <p class="detail-text">${c.importance}</p>
-                </div>
-                <div class="detail-section">
-                    <div class="detail-section-title">역사적 맥락</div>
-                    <div class="history-box">
-                        <p class="history-text">${c.history}</p>
-                    </div>
-                </div>
+            panel.innerHTML = `
+                <div class="panel-country">${data.flag}</div>
+                <div class="panel-name">${data.name}</div>
+                <div class="resource-list">${resourcesHtml}</div>
+                <div class="panel-note">${data.note}</div>
+            `;
+        } else {
+            panel.innerHTML = `
+                <div class="panel-country">🏳️</div>
+                <div class="panel-name">${path.dataset.name || '정보 없음'}</div>
+                <div class="panel-note">이 국가의 주요 자원 데이터가 아직 없습니다.</div>
             `;
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderCountries();
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    renderCountries(btn.dataset.filter);
-                });
-            });
-        });
-    </script>
+    });
+});
+</script>
 </body>
 </html>
