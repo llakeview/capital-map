@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0a0f;--bg2:#12121a;--card:#1a1a2e;--border:#2a2a40;--text:#e8e8e8;--text2:#999;--gold:#ffd700;--cyan:#00d4ff;--green:#00d26a;--red:#ff4757;--orange:#ff9f43}
+:root{--bg:#0a0a0f;--bg2:#12121a;--card:#1a1a2e;--border:#2a2a40;--text:#e8e8e8;--text2:#999;--gold:#ffd700;--cyan:#00d4ff;--green:#00d26a;--red:#ff4757;--orange:#ff9f43;--purple:#9b59b6}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
 .nav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(15,15,26,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:1000}
 .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
@@ -18,34 +18,43 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .nav-link{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:500;transition:.2s}
 .nav-link:hover{color:var(--text);background:var(--card)}
 .nav-link.active{color:var(--gold);background:rgba(255,215,0,.1)}
-.main{padding-top:60px}
-.map-container{width:100%;height:calc(100vh - 60px);position:relative}
+.main{padding-top:60px;display:flex;height:calc(100vh - 60px)}
+.sidebar{width:380px;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;padding:20px}
+.map-area{flex:1;position:relative}
 #map{width:100%;height:100%;background:#1a1a2e}
-.map-controls{position:absolute;top:20px;left:20px;z-index:500;display:flex;flex-direction:column;gap:8px}
-.layer-btn{padding:10px 16px;border-radius:8px;border:1px solid var(--border);background:rgba(26,26,46,.95);color:var(--text);font-size:12px;font-weight:500;cursor:pointer;transition:.2s;backdrop-filter:blur(10px)}
-.layer-btn:hover{border-color:var(--cyan)}
-.layer-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.1)}
-.info-panel{position:absolute;top:20px;right:20px;width:320px;max-height:calc(100vh - 120px);overflow-y:auto;z-index:500;background:rgba(26,26,46,.95);border:1px solid var(--border);border-radius:12px;padding:20px;backdrop-filter:blur(10px)}
-.info-title{font-size:18px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:10px}
-.info-subtitle{font-size:12px;color:var(--text2);margin-bottom:16px}
-.info-section{margin-bottom:16px}
-.info-section-title{font-size:11px;color:var(--cyan);font-weight:600;margin-bottom:8px}
-.info-item{font-size:12px;color:var(--text2);line-height:1.8}
-.info-tag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600;margin-right:4px;margin-bottom:4px}
-.tag-oil{background:rgba(255,159,67,.2);color:var(--orange)}
-.tag-gas{background:rgba(0,212,255,.2);color:var(--cyan)}
-.tag-lithium{background:rgba(0,210,106,.2);color:var(--green)}
-.tag-rare{background:rgba(255,71,87,.2);color:var(--red)}
-.tag-uranium{background:rgba(255,215,0,.2);color:var(--gold)}
-.tag-copper{background:rgba(205,127,50,.2);color:#cd7f32}
-.legend{position:absolute;bottom:30px;left:20px;z-index:500;background:rgba(26,26,46,.95);border:1px solid var(--border);border-radius:12px;padding:16px;backdrop-filter:blur(10px)}
-.legend-title{font-size:12px;font-weight:600;margin-bottom:10px}
-.legend-item{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text2);margin-bottom:6px}
-.legend-dot{width:12px;height:12px;border-radius:50%}
-.leaflet-popup-content-wrapper{background:var(--card);color:var(--text);border-radius:8px}
+.section-title{font-size:16px;font-weight:700;margin-bottom:16px;padding-left:12px;border-left:3px solid var(--gold)}
+.resource-list{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.resource-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:.2s}
+.resource-item:hover{border-color:var(--cyan)}
+.resource-item.active{border-color:var(--gold);background:rgba(255,215,0,.05)}
+.resource-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.resource-icon{font-size:24px}
+.resource-name{font-size:14px;font-weight:700}
+.resource-share{font-size:11px;color:var(--cyan)}
+.resource-desc{font-size:11px;color:var(--text2);line-height:1.7;margin-bottom:8px}
+.resource-use{font-size:10px;color:var(--gold);line-height:1.6}
+.resource-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.tag{padding:3px 8px;border-radius:4px;font-size:9px;font-weight:600}
+.tag-country{background:var(--bg2);color:var(--text2)}
+.filter-btns{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.filter-btn{padding:8px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:11px;cursor:pointer;transition:.2s}
+.filter-btn:hover{border-color:var(--cyan)}
+.filter-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.1)}
+.info-panel{position:absolute;bottom:20px;left:20px;right:20px;background:rgba(26,26,46,.95);border:1px solid var(--border);border-radius:12px;padding:16px;backdrop-filter:blur(10px);display:none}
+.info-panel.active{display:block}
+.info-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.info-content{font-size:12px;color:var(--text2);line-height:1.7}
+.legend{position:absolute;top:20px;right:20px;background:rgba(26,26,46,.95);border:1px solid var(--border);border-radius:10px;padding:14px;backdrop-filter:blur(10px)}
+.legend-title{font-size:11px;font-weight:600;margin-bottom:10px;color:var(--text2)}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:10px;color:var(--text2);margin-bottom:5px}
+.legend-dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.3)}
+.leaflet-popup-content-wrapper{background:var(--card);color:var(--text);border-radius:10px;padding:4px}
 .leaflet-popup-tip{background:var(--card)}
-.popup-title{font-size:14px;font-weight:700;margin-bottom:8px}
+.leaflet-popup-content{margin:12px}
+.popup-title{font-size:14px;font-weight:700;margin-bottom:6px}
+.popup-type{font-size:10px;color:var(--cyan);margin-bottom:8px}
 .popup-content{font-size:11px;color:var(--text2);line-height:1.6}
+.popup-company{font-size:10px;color:var(--gold);margin-top:8px}
 </style>
 </head>
 <body>
@@ -62,189 +71,309 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 </div>
 </nav>
 <main class="main">
-<div class="map-container">
+<div class="sidebar">
+<h2 class="section-title">🗺️ 자원별 필터</h2>
+<div class="filter-btns">
+<button class="filter-btn active" data-filter="all">전체</button>
+<button class="filter-btn" data-filter="oil">🛢️ 원유</button>
+<button class="filter-btn" data-filter="gas">🔥 천연가스</button>
+<button class="filter-btn" data-filter="coal">�ite>⬛ 석탄</button>
+<button class="filter-btn" data-filter="uranium">☢️ 우라늄</button>
+<button class="filter-btn" data-filter="lithium">🔋 리튬</button>
+<button class="filter-btn" data-filter="cobalt">💎 코발트</button>
+<button class="filter-btn" data-filter="rare">⚡ 희토류</button>
+<button class="filter-btn" data-filter="copper">🔶 구리</button>
+<button class="filter-btn" data-filter="nickel">🥈 니켈</button>
+<button class="filter-btn" data-filter="iron">🔩 철광석</button>
+<button class="filter-btn" data-filter="gold">🥇 금</button>
+<button class="filter-btn" data-filter="silver">⚪ 은</button>
+<button class="filter-btn" data-filter="aluminum">🔘 알루미늄</button>
+<button class="filter-btn" data-filter="grain">🌾 곡물</button>
+</div>
+
+<h2 class="section-title">📚 자원 해설</h2>
+<div class="resource-list" id="resourceList">
+
+<div class="resource-item" data-type="oil">
+<div class="resource-header"><span class="resource-icon">🛢️</span><span class="resource-name">원유 (Crude Oil)</span></div>
+<div class="resource-desc">"검은 황금". 세계 에너지의 30%. 모든 운송과 석유화학의 기반. OPEC+가 가격 결정.</div>
+<div class="resource-use">🔧 휘발유, 경유, 항공유, 플라스틱, 아스팔트, 합성섬유</div>
+<div class="resource-tags"><span class="tag tag-country">🇸🇦 사우디 17%</span><span class="tag tag-country">🇺🇸 미국 15%</span><span class="tag tag-country">🇷🇺 러시아 12%</span></div>
+</div>
+
+<div class="resource-item" data-type="gas">
+<div class="resource-header"><span class="resource-icon">🔥</span><span class="resource-name">천연가스 (Natural Gas)</span></div>
+<div class="resource-desc">발전과 난방의 핵심. LNG로 액화해 수출. 러시아-유럽 가스관이 지정학 핵심.</div>
+<div class="resource-use">🔧 발전, 난방, 비료(암모니아), 수소 생산, 석유화학</div>
+<div class="resource-tags"><span class="tag tag-country">🇺🇸 미국 23%</span><span class="tag tag-country">🇷🇺 러시아 17%</span><span class="tag tag-country">🇮🇷 이란 6%</span></div>
+</div>
+
+<div class="resource-item" data-type="coal">
+<div class="resource-header"><span class="resource-icon">⬛</span><span class="resource-name">석탄 (Coal)</span></div>
+<div class="resource-desc">가장 오래된 화석연료. 발전과 철강 생산에 필수. 탄소 배출로 퇴출 압박.</div>
+<div class="resource-use">🔧 화력발전, 제철(코크스), 시멘트, 난방</div>
+<div class="resource-tags"><span class="tag tag-country">🇨🇳 중국 50%</span><span class="tag tag-country">🇮🇳 인도 10%</span><span class="tag tag-country">🇮🇩 인니 8%</span></div>
+</div>
+
+<div class="resource-item" data-type="uranium">
+<div class="resource-header"><span class="resource-icon">☢️</span><span class="resource-name">우라늄 (Uranium)</span></div>
+<div class="resource-desc">원자력 발전의 연료. 탄소중립으로 원전 르네상스. SMR(소형모듈원전) 주목.</div>
+<div class="resource-use">🔧 원자력 발전, SMR, 핵무기, 의료용 동위원소</div>
+<div class="resource-tags"><span class="tag tag-country">🇰🇿 카자흐 43%</span><span class="tag tag-country">🇨🇦 캐나다 15%</span><span class="tag tag-country">🇦🇺 호주 8%</span></div>
+</div>
+
+<div class="resource-item" data-type="lithium">
+<div class="resource-header"><span class="resource-icon">🔋</span><span class="resource-name">리튬 (Lithium)</span></div>
+<div class="resource-desc">"하얀 석유". EV 배터리의 핵심. 2030년까지 수요 4배 전망. 채굴은 호주, 정제는 중국.</div>
+<div class="resource-use">🔧 EV 배터리, ESS, 스마트폰, 노트북, 유리/세라믹</div>
+<div class="resource-tags"><span class="tag tag-country">🇦🇺 호주 47%</span><span class="tag tag-country">🇨🇱 칠레 22%</span><span class="tag tag-country">🇨🇳 정제 65%</span></div>
+</div>
+
+<div class="resource-item" data-type="cobalt">
+<div class="resource-header"><span class="resource-icon">💎</span><span class="resource-name">코발트 (Cobalt)</span></div>
+<div class="resource-desc">배터리 양극재 핵심. 콩고가 70% 독점. 아동노동 ESG 리스크로 "코발트 프리" 개발 중.</div>
+<div class="resource-use">🔧 배터리 양극재(NCM, NCA), 슈퍼합금(항공엔진), 촉매</div>
+<div class="resource-tags"><span class="tag tag-country">🇨🇩 콩고 70%</span><span class="tag tag-country">🇨🇳 정제 70%</span></div>
+</div>
+
+<div class="resource-item" data-type="rare">
+<div class="resource-header"><span class="resource-icon">⚡</span><span class="resource-name">희토류 (Rare Earth)</span></div>
+<div class="resource-desc">17개 원소. 영구자석, 첨단무기, 전자제품에 필수. 중국이 채굴 60%, 가공 90% 독점.</div>
+<div class="resource-use">🔧 EV 모터, 풍력터빈, F-35, 미사일 유도장치, 스마트폰</div>
+<div class="resource-tags"><span class="tag tag-country">🇨🇳 중국 60%</span><span class="tag tag-country">🇲🇲 미얀마 12%</span><span class="tag tag-country">🇺🇸 미국 14%</span></div>
+</div>
+
+<div class="resource-item" data-type="copper">
+<div class="resource-header"><span class="resource-icon">🔶</span><span class="resource-name">구리 (Copper)</span></div>
+<div class="resource-desc">"닥터 코퍼" 경기 선행지표. 전기 전도성 최고. EV에 기존차 4배(80kg) 사용.</div>
+<div class="resource-use">🔧 전선/케이블, EV 모터/배터리, 건축 배관, 재생에너지</div>
+<div class="resource-tags"><span class="tag tag-country">🇨🇱 칠레 27%</span><span class="tag tag-country">🇵🇪 페루 10%</span><span class="tag tag-country">🇨🇩 콩고 8%</span></div>
+</div>
+
+<div class="resource-item" data-type="nickel">
+<div class="resource-header"><span class="resource-icon">🥈</span><span class="resource-name">니켈 (Nickel)</span></div>
+<div class="resource-desc">스테인리스강 + 배터리 양극재. 인도네시아가 37% 1위. 원광 수출 금지로 가공산업 육성.</div>
+<div class="resource-use">🔧 스테인리스강(70%), 하이니켈 배터리, 합금(항공우주)</div>
+<div class="resource-tags"><span class="tag tag-country">🇮🇩 인니 37%</span><span class="tag tag-country">🇵🇭 필리핀 10%</span><span class="tag tag-country">🇷🇺 러시아 6%</span></div>
+</div>
+
+<div class="resource-item" data-type="iron">
+<div class="resource-header"><span class="resource-icon">🔩</span><span class="resource-name">철광석 (Iron Ore)</span></div>
+<div class="resource-desc">철강의 원료. 건설/자동차/조선의 기초. 호주-브라질이 양분. 중국이 70% 수입.</div>
+<div class="resource-use">🔧 철강(건설, 자동차, 조선, 기계), 시멘트</div>
+<div class="resource-tags"><span class="tag tag-country">🇦🇺 호주 37%</span><span class="tag tag-country">🇧🇷 브라질 17%</span><span class="tag tag-country">🇨🇳 수입 70%</span></div>
+</div>
+
+<div class="resource-item" data-type="gold">
+<div class="resource-header"><span class="resource-icon">🥇</span><span class="resource-name">금 (Gold)</span></div>
+<div class="resource-desc">대표 안전자산. 인플레 헤지, 지정학 위기 시 상승. 중앙은행들 매수 중.</div>
+<div class="resource-use">🔧 투자/보유, 보석, 전자제품, 의료기기, 중앙은행 준비자산</div>
+<div class="resource-tags"><span class="tag tag-country">🇨🇳 중국 10%</span><span class="tag tag-country">🇦🇺 호주 9%</span><span class="tag tag-country">🇷🇺 러시아 9%</span></div>
+</div>
+
+<div class="resource-item" data-type="silver">
+<div class="resource-header"><span class="resource-icon">⚪</span><span class="resource-name">은 (Silver)</span></div>
+<div class="resource-desc">귀금속이자 산업금속. 태양광 패널, 전자제품에 필수. 금보다 변동성 큼.</div>
+<div class="resource-use">🔧 태양광 패널, 전자제품, 보석, 의료(항균), 사진</div>
+<div class="resource-tags"><span class="tag tag-country">🇲🇽 멕시코 24%</span><span class="tag tag-country">🇨🇳 중국 13%</span><span class="tag tag-country">🇵🇪 페루 12%</span></div>
+</div>
+
+<div class="resource-item" data-type="aluminum">
+<div class="resource-header"><span class="resource-icon">🔘</span><span class="resource-name">알루미늄 (Aluminum)</span></div>
+<div class="resource-desc">가볍고 강한 금속. 보크사이트에서 정제. 전력 집약 산업으로 전기료가 경쟁력.</div>
+<div class="resource-use">🔧 항공기, 자동차(경량화), 건축, 포장재(캔), 전선</div>
+<div class="resource-tags"><span class="tag tag-country">🇨🇳 중국 57%</span><span class="tag tag-country">🇮🇳 인도 6%</span><span class="tag tag-country">🇷🇺 러시아 5%</span></div>
+</div>
+
+<div class="resource-item" data-type="grain">
+<div class="resource-header"><span class="resource-icon">🌾</span><span class="resource-name">곡물 (Grain)</span></div>
+<div class="resource-desc">밀, 옥수수, 대두. 식량 안보의 핵심. 우크라이나 전쟁으로 공급 불안.</div>
+<div class="resource-use">🔧 식량, 사료, 바이오연료, 식용유, 전분</div>
+<div class="resource-tags"><span class="tag tag-country">🇺🇸 미국</span><span class="tag tag-country">🇧🇷 브라질</span><span class="tag tag-country">🇺🇦 우크라이나</span></div>
+</div>
+
+</div>
+</div>
+
+<div class="map-area">
 <div id="map"></div>
-
-<div class="map-controls">
-<button class="layer-btn active" data-layer="all">🌍 전체</button>
-<button class="layer-btn" data-layer="oil">🛢️ 원유</button>
-<button class="layer-btn" data-layer="gas">🔥 천연가스</button>
-<button class="layer-btn" data-layer="lithium">🔋 리튬</button>
-<button class="layer-btn" data-layer="rare">⚡ 희토류</button>
-<button class="layer-btn" data-layer="uranium">☢️ 우라늄</button>
-<button class="layer-btn" data-layer="copper">🔶 구리</button>
-</div>
-
-<div class="info-panel" id="infoPanel">
-<div class="info-title">🗺️ 세계 자원 지도</div>
-<div class="info-subtitle">마커를 클릭하면 상세 정보가 표시됩니다</div>
-<div class="info-section">
-<div class="info-section-title">📊 자원 분포 요약</div>
-<div class="info-item">
-• 원유: 중동 47%, 북미 20%<br>
-• 천연가스: 러시아 24%, 중동 40%<br>
-• 리튬: 호주 47%, 칠레 22%<br>
-• 희토류: 중국 60% (가공 90%)<br>
-• 우라늄: 카자흐스탄 43%<br>
-• 구리: 칠레 27%, 페루 10%
-</div>
-</div>
-<div class="info-section">
-<div class="info-section-title">💡 활용 팁</div>
-<div class="info-item">
-• 레이어 버튼으로 자원별 필터<br>
-• 마커 클릭 시 상세 정보<br>
-• 마우스 휠로 확대/축소<br>
-• 드래그로 이동
-</div>
-</div>
-</div>
-
 <div class="legend">
-<div class="legend-title">범례</div>
-<div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div>원유</div>
-<div class="legend-item"><div class="legend-dot" style="background:var(--cyan)"></div>천연가스</div>
-<div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>리튬</div>
-<div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>희토류</div>
-<div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>우라늄</div>
-<div class="legend-item"><div class="legend-dot" style="background:#cd7f32"></div>구리</div>
+<div class="legend-title">자원 유형</div>
+<div class="legend-item"><div class="legend-dot" style="background:#ff9f43"></div>원유/가스</div>
+<div class="legend-item"><div class="legend-dot" style="background:#ffd700"></div>우라늄/금</div>
+<div class="legend-item"><div class="legend-dot" style="background:#00d26a"></div>리튬/배터리</div>
+<div class="legend-item"><div class="legend-dot" style="background:#ff4757"></div>희토류</div>
+<div class="legend-item"><div class="legend-dot" style="background:#cd7f32"></div>구리/철광석</div>
+<div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div>코발트/니켈</div>
 </div>
 </div>
 </main>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-// 지도 초기화
-const map = L.map('map', {
-    center: [20, 0],
-    zoom: 2,
-    minZoom: 2,
-    maxZoom: 8,
-    worldCopyJump: true
-});
+const map = L.map('map', {center: [20, 20], zoom: 2, minZoom: 2, maxZoom: 8});
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {attribution: '© CARTO'}).addTo(map);
 
-// 다크 타일
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap, © CARTO'
-}).addTo(map);
+const colors = {
+    oil:'#ff9f43', gas:'#ff9f43', coal:'#555', uranium:'#ffd700',
+    lithium:'#00d26a', cobalt:'#9b59b6', rare:'#ff4757',
+    copper:'#cd7f32', nickel:'#9b59b6', iron:'#cd7f32',
+    gold:'#ffd700', silver:'#c0c0c0', aluminum:'#aaa', grain:'#8bc34a'
+};
 
-// 자원 데이터
-const resourceData = [
+const resources = [
     // 원유
-    {lat:24.7,lng:46.7,name:'사우디아라비아',type:'oil',share:'17%',desc:'세계 최대 수출국. Aramco. 생산원가 $10 이하.',company:'Saudi Aramco'},
-    {lat:61.5,lng:105,name:'러시아',type:'oil',share:'12%',desc:'제재로 아시아 수출 전환. 시베리아 유전.',company:'Rosneft, Gazprom'},
-    {lat:31.9,lng:-99.9,name:'미국 (텍사스)',type:'oil',share:'15%',desc:'셰일 혁명. 퍼미안 분지. 순수출국 전환.',company:'ExxonMobil, Chevron'},
-    {lat:56.1,lng:-106,name:'캐나다',type:'oil',share:'5%',desc:'앨버타 오일샌드. 세계 3위 매장량.',company:'Suncor'},
-    {lat:32.4,lng:53.7,name:'이란',type:'oil',share:'4%',desc:'제재 하 자원대국. 중국 수출.',company:'NIOC'},
+    {lat:24.7,lng:46.7,name:'사우디아라비아',type:'oil',share:'17%',desc:'세계 최대 수출국. 생산원가 $10 이하.',company:'Saudi Aramco (시총 $2조)'},
+    {lat:61.5,lng:105,name:'러시아 (시베리아)',type:'oil',share:'12%',desc:'제재로 아시아 수출 전환.',company:'Rosneft, Lukoil'},
+    {lat:31.9,lng:-99.9,name:'미국 (텍사스)',type:'oil',share:'15%',desc:'셰일혁명. 퍼미안분지. 순수출국.',company:'ExxonMobil, Chevron'},
+    {lat:56.1,lng:-106,name:'캐나다 (앨버타)',type:'oil',share:'5%',desc:'오일샌드. 세계 3위 매장량.',company:'Suncor, CNRL'},
+    {lat:32.4,lng:53.7,name:'이란',type:'oil',share:'4%',desc:'제재 중. 중국에 우회 수출.',company:'NIOC'},
+    {lat:10.5,lng:-66.9,name:'베네수엘라',type:'oil',share:'매장1위',desc:'세계 최대 매장량. 경제 붕괴.',company:'PDVSA'},
+    {lat:4.6,lng:-74.1,name:'콜롬비아',type:'oil',share:'1%',desc:'중남미 4위 생산국.',company:'Ecopetrol'},
+    {lat:62,lng:10.7,name:'노르웨이',type:'oil',share:'2%',desc:'국부펀드 $1.4조. 북해유전.',company:'Equinor'},
     {lat:25.3,lng:51.2,name:'카타르',type:'gas',share:'LNG 1위',desc:'노스필드 세계 최대 가스전.',company:'QatarEnergy'},
-    {lat:62,lng:10.7,name:'노르웨이',type:'oil',share:'2%',desc:'국부펀드 $1.4조. 북해 유전.',company:'Equinor'},
-    {lat:-3.4,lng:-65,name:'브라질',type:'oil',share:'3%',desc:'심해 유전 개발.',company:'Petrobras'},
+    {lat:29.8,lng:-95.4,name:'미국 (LNG)',type:'gas',share:'23%',desc:'셰일가스. LNG 수출 1위.',company:'Cheniere'},
     
-    // 천연가스
-    {lat:55.7,lng:37.6,name:'러시아 (모스크바)',type:'gas',share:'17%',desc:'유럽 공급 40%→10%. 노르드스트림.',company:'Gazprom'},
-    {lat:29.8,lng:-95.4,name:'미국 (텍사스)',type:'gas',share:'23%',desc:'셰일가스. LNG 수출 1위.',company:'Cheniere'},
-    
-    // 리튬
-    {lat:-23.8,lng:133.8,name:'호주',type:'lithium',share:'47%',desc:'세계 최대 생산국. 스포듀민 광산.',company:'Pilbara Minerals'},
-    {lat:-23.6,lng:-68.5,name:'칠레 (아타카마)',type:'lithium',share:'22%',desc:'리튬 삼각지대. 염호 추출.',company:'SQM, Albemarle'},
-    {lat:-22.9,lng:-67.8,name:'아르헨티나',type:'lithium',share:'8%',desc:'리튬 삼각지대. 개발 중.',company:'Livent'},
-    {lat:35.9,lng:104.2,name:'중국',type:'lithium',share:'정제 65%',desc:'원자재 수입 후 가공 독점.',company:'Ganfeng, Tianqi'},
-    
-    // 희토류
-    {lat:40.4,lng:109.8,name:'중국 (내몽골)',type:'rare',share:'60%',desc:'희토류 채굴+가공 90% 독점. 지정학 무기.',company:'Northern Rare Earth'},
-    {lat:21.9,lng:96,name:'미얀마',type:'rare',share:'12%',desc:'중국 의존도 낮추려는 대안.',company:''},
-    {lat:34.1,lng:-118.2,name:'미국 (캘리포니아)',type:'rare',share:'14%',desc:'마운틴패스 광산 재가동.',company:'MP Materials'},
+    // 석탄
+    {lat:35,lng:105,name:'중국 (산시성)',type:'coal',share:'50%',desc:'세계 최대 생산/소비국.',company:'China Shenhua'},
+    {lat:22,lng:83,name:'인도',type:'coal',share:'10%',desc:'화력발전 의존. 수입국.',company:'Coal India'},
+    {lat:-2,lng:116,name:'인도네시아',type:'coal',share:'수출1위',desc:'석탄 수출 1위.',company:'Adaro, Bumi'},
+    {lat:-26,lng:29,name:'남아프리카',type:'coal',share:'수출국',desc:'수출용 고품질탄.',company:'Thungela'},
     
     // 우라늄
     {lat:51.2,lng:71.4,name:'카자흐스탄',type:'uranium',share:'43%',desc:'세계 최대 우라늄 생산국.',company:'Kazatomprom'},
     {lat:52.9,lng:-106.5,name:'캐나다',type:'uranium',share:'15%',desc:'사스카츄완 고품위 광산.',company:'Cameco'},
-    {lat:-25.3,lng:131,name:'호주',type:'uranium',share:'8%',desc:'매장량 1위. 생산은 제한적.',company:'BHP'},
+    {lat:-25.3,lng:131,name:'호주',type:'uranium',share:'8%',desc:'매장량 1위. 수출 제한.',company:'BHP (Olympic Dam)'},
+    {lat:18.5,lng:-99,name:'멕시코',type:'uranium',share:'',desc:'매장량 보유.',company:''},
+    
+    // 리튬
+    {lat:-23.8,lng:133.8,name:'호주 (서부)',type:'lithium',share:'47%',desc:'스포듀민 광산. 최대 생산국.',company:'Pilbara, IGO'},
+    {lat:-23.6,lng:-68.5,name:'칠레 (아타카마)',type:'lithium',share:'22%',desc:'염호 추출. 리튬삼각지대.',company:'SQM, Albemarle'},
+    {lat:-22.9,lng:-67.8,name:'아르헨티나',type:'lithium',share:'8%',desc:'리튬 삼각지대. 개발 중.',company:'Livent'},
+    {lat:-19.5,lng:-65.3,name:'볼리비아',type:'lithium',share:'매장1위',desc:'세계 최대 매장량. 미개발.',company:'YLB (국영)'},
+    {lat:35.9,lng:104.2,name:'중국',type:'lithium',share:'정제65%',desc:'수입 후 가공 독점.',company:'Ganfeng, Tianqi'},
+    
+    // 코발트
+    {lat:-4.3,lng:27.5,name:'콩고민주공화국',type:'cobalt',share:'70%',desc:'세계 코발트 70%. ESG 리스크.',company:'Glencore, CMOC'},
+    
+    // 희토류
+    {lat:40.4,lng:109.8,name:'중국 (내몽골)',type:'rare',share:'60%',desc:'희토류 채굴+가공 90% 독점.',company:'Northern Rare Earth'},
+    {lat:21.9,lng:96,name:'미얀마',type:'rare',share:'12%',desc:'중국 대안. 정치 불안.',company:''},
+    {lat:34.1,lng:-118.2,name:'미국 (캘리포니아)',type:'rare',share:'14%',desc:'마운틴패스 광산 재가동.',company:'MP Materials'},
+    {lat:-23,lng:-43,name:'브라질',type:'rare',share:'',desc:'니오븀 세계 90%.',company:'CBMM'},
     
     // 구리
-    {lat:-23.6,lng:-70.4,name:'칠레',type:'copper',share:'27%',desc:'세계 구리 생산 1위. 국영 Codelco.',company:'Codelco, Antofagasta'},
-    {lat:-12,lng:-77,name:'페루',type:'copper',share:'10%',desc:'구리 생산 2위. 정치 불안 리스크.',company:'Antamina'},
-    {lat:-6,lng:23.6,name:'콩고민주공화국',type:'copper',share:'8%',desc:'구리+코발트. ESG 리스크.',company:'Glencore, CMOC'},
+    {lat:-23.6,lng:-70.4,name:'칠레',type:'copper',share:'27%',desc:'세계 구리 1위. 국영 Codelco.',company:'Codelco, Antofagasta'},
+    {lat:-12,lng:-77,name:'페루',type:'copper',share:'10%',desc:'구리 2위. 정치 불안.',company:'Antamina, Cerro Verde'},
+    {lat:-6,lng:23.6,name:'콩고민주공화국',type:'copper',share:'8%',desc:'구리+코발트 복합광산.',company:'Ivanhoe'},
+    {lat:-33,lng:-70,name:'칠레 (산티아고)',type:'copper',share:'',desc:'구리 가공/수출.',company:''},
     
-    // 니켈/코발트
-    {lat:-2.5,lng:118,name:'인도네시아',type:'copper',share:'니켈 37%',desc:'니켈 원광 수출 금지. 배터리 허브.',company:'MIND ID, Tsingshan'},
-    {lat:-4.3,lng:27.5,name:'콩고 (코발트)',type:'rare',share:'코발트 70%',desc:'배터리 양극재 핵심. 아동노동 이슈.',company:'Glencore'}
+    // 니켈
+    {lat:-2.5,lng:118,name:'인도네시아',type:'nickel',share:'37%',desc:'원광 수출 금지. 배터리 허브.',company:'MIND ID, Tsingshan'},
+    {lat:7,lng:125,name:'필리핀',type:'nickel',share:'10%',desc:'니켈 2위.',company:'Nickel Asia'},
+    {lat:61.5,lng:90,name:'러시아 (노릴스크)',type:'nickel',share:'6%',desc:'니켈+팔라듐.',company:'Norilsk Nickel'},
+    {lat:-22,lng:-44,name:'뉴칼레도니아',type:'nickel',share:'',desc:'프랑스령. 니켈 생산.',company:''},
+    
+    // 철광석
+    {lat:-23,lng:119,name:'호주 (필바라)',type:'iron',share:'37%',desc:'세계 최대 철광석 수출.',company:'BHP, Rio Tinto'},
+    {lat:-19.9,lng:-43.9,name:'브라질',type:'iron',share:'17%',desc:'Vale. 철광석 2위.',company:'Vale'},
+    {lat:67,lng:20.5,name:'스웨덴',type:'iron',share:'',desc:'유럽 철광석.',company:'LKAB'},
+    
+    // 금
+    {lat:36.8,lng:104.1,name:'중국',type:'gold',share:'10%',desc:'최대 금 생산국.',company:'Zijin Mining'},
+    {lat:-25,lng:135,name:'호주',type:'gold',share:'9%',desc:'금 생산 2위.',company:'Newcrest'},
+    {lat:62,lng:100,name:'러시아',type:'gold',share:'9%',desc:'금 생산 3위.',company:'Polyus'},
+    {lat:-6,lng:107,name:'인도네시아',type:'gold',share:'',desc:'그라스버그 광산.',company:'Freeport'},
+    {lat:-26,lng:28,name:'남아프리카',type:'gold',share:'',desc:'역사적 금 생산국.',company:'AngloGold'},
+    
+    // 은
+    {lat:23.6,lng:-102.5,name:'멕시코',type:'silver',share:'24%',desc:'세계 최대 은 생산국.',company:'Fresnillo'},
+    {lat:-12,lng:-76,name:'페루',type:'silver',share:'12%',desc:'은 생산 2위.',company:'Buenaventura'},
+    
+    // 알루미늄
+    {lat:23,lng:113,name:'중국',type:'aluminum',share:'57%',desc:'최대 알루미늄 생산.',company:'Chalco'},
+    {lat:20,lng:78,name:'인도',type:'aluminum',share:'6%',desc:'알루미늄 성장.',company:'Hindalco'},
+    {lat:5,lng:-60,name:'기니',type:'aluminum',share:'보크사이트',desc:'보크사이트 매장량.',company:''},
+    
+    // 곡물
+    {lat:41,lng:-100,name:'미국 (중서부)',type:'grain',share:'옥수수1위',desc:'옥수수, 대두 최대 생산/수출.',company:'Cargill, ADM'},
+    {lat:-15,lng:-55,name:'브라질',type:'grain',share:'대두1위',desc:'대두 최대 생산국.',company:'JBS, BRF'},
+    {lat:49,lng:32,name:'우크라이나',type:'grain',share:'밀 수출',desc:'유럽의 빵바구니. 전쟁 영향.',company:''},
+    {lat:55,lng:73,name:'러시아',type:'grain',share:'밀1위',desc:'밀 최대 수출국.',company:''},
+    {lat:-34,lng:-58,name:'아르헨티나',type:'grain',share:'',desc:'대두, 밀 수출.',company:''}
 ];
 
-// 마커 색상
-const colors = {
-    oil: '#ff9f43',
-    gas: '#00d4ff',
-    lithium: '#00d26a',
-    rare: '#ff4757',
-    uranium: '#ffd700',
-    copper: '#cd7f32'
-};
+let markers = [];
 
-// 마커 그룹
-const markerGroups = {
-    all: L.layerGroup(),
-    oil: L.layerGroup(),
-    gas: L.layerGroup(),
-    lithium: L.layerGroup(),
-    rare: L.layerGroup(),
-    uranium: L.layerGroup(),
-    copper: L.layerGroup()
-};
-
-// 마커 생성
-resourceData.forEach(r => {
+function createMarker(r) {
+    const size = 28;
     const icon = L.divIcon({
         className: 'custom-marker',
-        html: `<div style="width:16px;height:16px;background:${colors[r.type]};border-radius:50%;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>`,
-        iconSize: [16, 16],
-        iconAnchor: [8, 8]
+        html: `<div style="width:${size}px;height:${size}px;background:${colors[r.type]};border-radius:50%;border:3px solid rgba(255,255,255,.8);box-shadow:0 3px 12px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;font-size:14px"></div>`,
+        iconSize: [size, size],
+        iconAnchor: [size/2, size/2]
     });
     
     const marker = L.marker([r.lat, r.lng], {icon}).bindPopup(`
         <div class="popup-title">${r.name}</div>
-        <div class="popup-content">
-            <strong>점유율:</strong> ${r.share}<br>
-            ${r.desc}<br>
-            ${r.company ? `<strong>주요 기업:</strong> ${r.company}` : ''}
-        </div>
+        <div class="popup-type">${r.type.toUpperCase()} ${r.share ? '| '+r.share : ''}</div>
+        <div class="popup-content">${r.desc}</div>
+        ${r.company ? `<div class="popup-company">🏢 ${r.company}</div>` : ''}
     `);
     
-    marker.on('click', () => {
-        document.getElementById('infoPanel').innerHTML = `
-            <div class="info-title">${r.name}</div>
-            <div class="info-subtitle">점유율: ${r.share}</div>
-            <div class="info-section">
-                <div class="info-section-title">📋 상세 정보</div>
-                <div class="info-item">${r.desc}</div>
-            </div>
-            ${r.company ? `
-            <div class="info-section">
-                <div class="info-section-title">🏢 주요 기업</div>
-                <div class="info-item">${r.company}</div>
-            </div>
-            ` : ''}
-            <div class="info-section">
-                <span class="info-tag tag-${r.type}">${r.type.toUpperCase()}</span>
-            </div>
-        `;
-    });
-    
-    markerGroups.all.addLayer(marker);
-    markerGroups[r.type].addLayer(marker);
+    marker.resourceType = r.type;
+    return marker;
+}
+
+resources.forEach(r => {
+    const marker = createMarker(r);
+    marker.addTo(map);
+    markers.push(marker);
 });
 
-// 기본 레이어
-markerGroups.all.addTo(map);
-
-// 레이어 전환
-document.querySelectorAll('.layer-btn').forEach(btn => {
+// 필터
+document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-        document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
+        const filter = btn.dataset.filter;
         
-        const layer = btn.dataset.layer;
-        Object.values(markerGroups).forEach(g => map.removeLayer(g));
-        markerGroups[layer].addTo(map);
+        markers.forEach(m => {
+            if (filter === 'all' || m.resourceType === filter) {
+                m.addTo(map);
+            } else {
+                map.removeLayer(m);
+            }
+        });
+        
+        // 사이드바 하이라이트
+        document.querySelectorAll('.resource-item').forEach(item => {
+            if (filter === 'all' || item.dataset.type === filter) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+});
+
+// 사이드바 클릭
+document.querySelectorAll('.resource-item').forEach(item => {
+    item.addEventListener('click', () => {
+        document.querySelectorAll('.resource-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        const type = item.dataset.type;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector(`[data-filter="${type}"]`)?.classList.add('active');
+        
+        markers.forEach(m => {
+            if (m.resourceType === type) {
+                m.addTo(map);
+            } else {
+                map.removeLayer(m);
+            }
+        });
     });
 });
 </script>
