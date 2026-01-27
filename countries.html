@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>국가별 경제지표 - Capital Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--bg2:#12121a;--card:#1a1a2e;--border:#2a2a40;--text:#e8e8e8;--text2:#999;--gold:#ffd700;--cyan:#00d4ff;--green:#00d26a;--red:#ff4757;--orange:#ff9f43}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.nav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(15,15,26,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;z-index:1000}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.nav-logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:8px}
+.nav-link{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:500;transition:.2s}
+.nav-link:hover{color:var(--text);background:var(--card)}
+.nav-link.active{color:var(--gold);background:rgba(255,215,0,.1)}
+.main{padding-top:80px}
+.container{max-width:1400px;margin:0 auto;padding:0 20px 60px}
+.page-header{text-align:center;padding:20px 0}
+.page-title{font-size:28px;font-weight:700;margin-bottom:8px}
+.page-subtitle{color:var(--text2);font-size:14px}
+.country-tabs{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:24px 0}
+.country-tab{padding:12px 20px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:8px}
+.country-tab:hover{border-color:var(--cyan)}
+.country-tab.active{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.1)}
+.country-tab .flag{font-size:20px}
+.panel{display:none}
+.panel.active{display:block}
+.section{margin-bottom:32px}
+.section-title{font-size:16px;font-weight:700;margin-bottom:16px;padding-left:12px;border-left:3px solid var(--gold);display:flex;align-items:center;gap:8px}
+.section-desc{font-size:11px;color:var(--text2);margin-bottom:16px}
+.indicator-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.indicator{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;transition:.2s}
+.indicator:hover{border-color:var(--cyan)}
+.indicator-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.indicator-name{font-size:14px;font-weight:700}
+.indicator-badge{padding:3px 8px;border-radius:4px;font-size:9px;font-weight:600}
+.badge-monthly{background:rgba(0,212,255,.15);color:var(--cyan)}
+.badge-weekly{background:rgba(0,210,106,.15);color:var(--green)}
+.badge-daily{background:rgba(255,215,0,.15);color:var(--gold)}
+.badge-quarterly{background:rgba(255,159,67,.15);color:var(--orange)}
+.indicator-value{font-size:24px;font-weight:700;margin-bottom:6px}
+.indicator-change{font-size:12px;margin-bottom:10px}
+.indicator-change.up{color:var(--green)}
+.indicator-change.down{color:var(--red)}
+.indicator-change.neutral{color:var(--text2)}
+.indicator-desc{font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:10px}
+.indicator-interpret{background:var(--card);border-radius:6px;padding:10px;font-size:10px;color:var(--text2);line-height:1.6;margin-bottom:10px}
+.indicator-interpret b{color:var(--cyan)}
+.indicator-source{display:flex;gap:6px;flex-wrap:wrap}
+.source-link{padding:4px 10px;background:var(--card);border-radius:5px;font-size:10px;color:var(--cyan);text-decoration:none;transition:.2s}
+.source-link:hover{background:var(--border)}
+.warning-box{background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.3);border-radius:10px;padding:16px;margin-bottom:20px}
+.warning-box-title{font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px}
+.warning-box-text{font-size:11px;color:var(--text2);line-height:1.7}
+.info-box{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);border-radius:10px;padding:16px;margin-bottom:20px}
+.info-box-title{font-size:13px;font-weight:700;color:var(--cyan);margin-bottom:8px}
+.info-box-text{font-size:11px;color:var(--text2);line-height:1.7}
+</style>
+</head>
+<body>
+<nav class="nav">
+<a href="index.html" class="nav-logo"><div class="nav-logo-icon">💰</div><span class="nav-logo-text">CAPITAL MAP</span></a>
+<div class="nav-links">
+<a href="index.html" class="nav-link">대시보드</a>
+<a href="flow.html" class="nav-link">연결관계</a>
+<a href="map.html" class="nav-link">세계지도</a>
+<a href="countries.html" class="nav-link active">국가지표</a>
+<a href="industry.html" class="nav-link">산업해부</a>
+<a href="institutions.html" class="nav-link">기관/제도</a>
+<a href="news.html" class="nav-link">뉴스</a>
+</div>
+</nav>
+<main class="main">
+<div class="container">
+<div class="page-header">
+<h1 class="page-title">🌍 국가별 경제지표</h1>
+<p class="page-subtitle">각국 경제의 맥박을 읽는다 — 핵심 지표와 해석법</p>
+</div>
+
+<div class="country-tabs">
+<button class="country-tab active" data-country="korea"><span class="flag">🇰🇷</span>한국</button>
+<button class="country-tab" data-country="usa"><span class="flag">🇺🇸</span>미국</button>
+<button class="country-tab" data-country="china"><span class="flag">🇨🇳</span>중국</button>
+<button class="country-tab" data-country="japan"><span class="flag">🇯🇵</span>일본</button>
+<button class="country-tab" data-country="europe"><span class="flag">🇪🇺</span>유럽</button>
+</div>
+
+<!-- 한국 -->
+<div class="panel active" id="korea">
+<div class="info-box">
+<div class="info-box-title">📊 한국 경제 읽는 법</div>
+<div class="info-box-text">수출 의존 경제 → 반도체/자동차 수출, 중국 경기, 환율이 핵심. 가계부채 세계 최고 수준 → 금리/부동산 민감. Fed 금리에 따라가는 구조.</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">📈 실물경제</h2>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">GDP 성장률</span><span class="indicator-badge badge-quarterly">분기</span></div>
+<div class="indicator-desc">국내총생산 증가율. 경제 전체 건강 상태.</div>
+<div class="indicator-interpret"><b>해석:</b> 2% 이상 양호 | 0~2% 둔화 | 마이너스 = 침체</div>
+<div class="indicator-source">
+<a href="https://ecos.bok.or.kr" target="_blank" class="source-link">한국은행 ECOS</a>
+<a href="https://kosis.kr" target="_blank" class="source-link">KOSIS</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">실업률</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">경제활동인구 중 실업자 비율.</div>
+<div class="indicator-interpret"><b>해석:</b> 3% 이하 완전고용 | 4%+ 주의 | 청년실업률 별도 확인</div>
+<div class="indicator-source">
+<a href="https://kostat.go.kr" target="_blank" class="source-link">통계청</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">수출입 동향</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">무역수지. 한국 경제의 바로미터.</div>
+<div class="indicator-interpret"><b>해석:</b> 반도체 수출 비중 20%+ | 대중 수출 25% | 무역적자 지속 시 경고</div>
+<div class="indicator-source">
+<a href="https://tradedata.go.kr" target="_blank" class="source-link">관세청</a>
+<a href="https://www.kita.net" target="_blank" class="source-link">KITA</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">산업생산지수</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">제조업 생산 활동 수준.</div>
+<div class="indicator-interpret"><b>해석:</b> 전년비 +5% 이상 호황 | 마이너스 지속 시 경기침체 신호</div>
+<div class="indicator-source">
+<a href="https://kostat.go.kr" target="_blank" class="source-link">통계청</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">💰 물가/금리</h2>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">소비자물가 (CPI)</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">서민 체감 물가. 한은 목표 2%.</div>
+<div class="indicator-interpret"><b>해석:</b> 2% 목표 | 3%+ 금리인상 압력 | 5%+ 고물가 경고</div>
+<div class="indicator-source">
+<a href="https://kostat.go.kr" target="_blank" class="source-link">통계청</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">한국은행 기준금리</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">모든 금리의 기준. 금통위 연 8회 결정.</div>
+<div class="indicator-interpret"><b>해석:</b> 인상 = 긴축(주식↓부동산↓) | 인하 = 완화(자산↑)</div>
+<div class="indicator-source">
+<a href="https://www.bok.or.kr" target="_blank" class="source-link">한국은행</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">국고채 3년/10년</span><span class="indicator-badge badge-daily">일간</span></div>
+<div class="indicator-desc">시장금리. 대출금리 기준.</div>
+<div class="indicator-interpret"><b>해석:</b> 장단기 역전(10년<3년) = 침체 신호 | 급등 = 긴축</div>
+<div class="indicator-source">
+<a href="https://www.kofiabond.or.kr" target="_blank" class="source-link">금융투자협회</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">🏠 부동산/가계</h2>
+<div class="warning-box">
+<div class="warning-box-title">⚠️ 한국 가계부채 경고</div>
+<div class="warning-box-text">GDP 대비 가계부채 100%+ (세계 최고 수준). 금리 1%p 상승 시 이자부담 연 10조원 증가. 부동산 가격과 직결.</div>
+</div>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">🔥 경매 건수</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">법원 부동산 경매 신청 건수. 급매 압력 지표.</div>
+<div class="indicator-interpret"><b>해석:</b> 급증 = 부실↑ 급매↑ 가격하락 신호 | 금리인상기 주목</div>
+<div class="indicator-source">
+<a href="https://www.courtauction.go.kr" target="_blank" class="source-link">대법원 경매정보</a>
+<a href="http://www.ggi.co.kr" target="_blank" class="source-link">지지옥션</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">🔥 공매 건수</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">세금 체납, 금융권 부실 자산 공매.</div>
+<div class="indicator-interpret"><b>해석:</b> 체납↑ = 가계/기업 현금흐름 악화 | 경매와 함께 봐야</div>
+<div class="indicator-source">
+<a href="https://www.onbid.co.kr" target="_blank" class="source-link">온비드 (캠코)</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">미분양 주택</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">준공 후 미분양 + 분양 후 미계약.</div>
+<div class="indicator-interpret"><b>해석:</b> 6만호+ 경고 | 지방 악성 미분양 주목 | 건설사 유동성 위험</div>
+<div class="indicator-source">
+<a href="https://stat.molit.go.kr" target="_blank" class="source-link">국토부 통계누리</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">주택가격지수</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">아파트/주택 매매가격 변동.</div>
+<div class="indicator-interpret"><b>해석:</b> 서울 vs 지방 괴리 | 전세가율 70%+ = 갭투자 위험</div>
+<div class="indicator-source">
+<a href="https://kbland.kr" target="_blank" class="source-link">KB부동산</a>
+<a href="https://www.r-one.co.kr" target="_blank" class="source-link">한국부동산원</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">가계부채</span><span class="indicator-badge badge-quarterly">분기</span></div>
+<div class="indicator-desc">가계대출 + 판매신용 총액.</div>
+<div class="indicator-interpret"><b>해석:</b> 1,900조원+ | 증가속도 > GDP성장 = 위험 | DSR 규제 영향</div>
+<div class="indicator-source">
+<a href="https://ecos.bok.or.kr" target="_blank" class="source-link">한국은행</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">주담대 연체율</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">주택담보대출 연체 비율.</div>
+<div class="indicator-interpret"><b>해석:</b> 0.5% 이상 주의 | 1%+ 위험 | 금리인상 후 시차 발생</div>
+<div class="indicator-source">
+<a href="https://www.fss.or.kr" target="_blank" class="source-link">금융감독원</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">📊 심리/선행</h2>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">소비자심리지수 (CSI)</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">소비자 경기 체감. 100 기준.</div>
+<div class="indicator-interpret"><b>해석:</b> 100+ 낙관 | 100- 비관 | 80 이하 심각한 위축</div>
+<div class="indicator-source">
+<a href="https://ecos.bok.or.kr" target="_blank" class="source-link">한국은행</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">기업경기실사지수 (BSI)</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">기업 체감 경기. 100 기준.</div>
+<div class="indicator-interpret"><b>해석:</b> 제조업/비제조업 분리 | 전망치가 실적치보다 중요</div>
+<div class="indicator-source">
+<a href="https://ecos.bok.or.kr" target="_blank" class="source-link">한국은행</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">경기선행지수</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">6~9개월 후 경기 예측.</div>
+<div class="indicator-interpret"><b>해석:</b> 전월비 상승 = 경기 회복 | 3개월 연속 하락 = 침체 경고</div>
+<div class="indicator-source">
+<a href="https://kostat.go.kr" target="_blank" class="source-link">통계청</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">💱 대외</h2>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">원/달러 환율</span><span class="indicator-badge badge-daily">일간</span></div>
+<div class="indicator-desc">원화 가치. 수출/수입 경쟁력.</div>
+<div class="indicator-interpret"><b>해석:</b> 1,300원+ 원화약세 | 1,400원+ 위기 수준 | 외국인 자금 유출입</div>
+<div class="indicator-source">
+<a href="https://finance.yahoo.com/quote/KRW=X" target="_blank" class="source-link">Yahoo Finance</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">외환보유고</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">위기 대응 능력. $4,000억+ 유지 중.</div>
+<div class="indicator-interpret"><b>해석:</b> 급감 = 환율방어 개입 | 3개월 수입액 이상 필요</div>
+<div class="indicator-source">
+<a href="https://ecos.bok.or.kr" target="_blank" class="source-link">한국은행</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">경상수지</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">무역+서비스+소득수지 합계.</div>
+<div class="indicator-interpret"><b>해석:</b> 흑자 지속 = 건전 | 적자 전환 = 원화약세 압력</div>
+<div class="indicator-source">
+<a href="https://ecos.bok.or.kr" target="_blank" class="source-link">한국은행</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 미국 -->
+<div class="panel" id="usa">
+<div class="info-box">
+<div class="info-box-title">📊 미국 경제 읽는 법</div>
+<div class="info-box-text">세계 경제의 엔진. Fed 정책이 전 세계 영향. 고용→소비→GDP 선순환 구조. 고용보고서(매월 첫째 금요일)가 가장 중요.</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">📈 실물경제</h2>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">GDP 성장률</span><span class="indicator-badge badge-quarterly">분기</span></div>
+<div class="indicator-desc">미국 경제 규모 $27조. 세계 GDP 25%.</div>
+<div class="indicator-interpret"><b>해석:</b> 2~3% 건전 | 0% 이하 2분기 연속 = 공식 침체</div>
+<div class="indicator-source">
+<a href="https://www.bea.gov" target="_blank" class="source-link">BEA</a>
+<a href="https://fred.stlouisfed.org/series/GDP" target="_blank" class="source-link">FRED</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">🔥 고용보고서 (NFP)</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">비농업 고용자수 변화. 가장 중요한 지표.</div>
+<div class="indicator-interpret"><b>해석:</b> +20만명 이상 호황 | +10만명 이하 둔화 | 마이너스 = 침체</div>
+<div class="indicator-source">
+<a href="https://www.bls.gov/news.release/empsit.toc.htm" target="_blank" class="source-link">BLS 고용보고서</a>
+<a href="https://fred.stlouisfed.org/series/PAYEMS" target="_blank" class="source-link">FRED</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">실업률</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">Fed 이중책무 중 하나.</div>
+<div class="indicator-interpret"><b>해석:</b> 4% 이하 완전고용 | 5%+ 침체 신호 | U6(광의) 함께 확인</div>
+<div class="indicator-source">
+<a href="https://fred.stlouisfed.org/series/UNRATE" target="_blank" class="source-link">FRED</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">ISM 제조업 PMI</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">제조업 구매관리자지수. 선행지표.</div>
+<div class="indicator-interpret"><b>해석:</b> 50+ 확장 | 50- 수축 | 신규주문, 고용 세부항목 중요</div>
+<div class="indicator-source">
+<a href="https://www.ismworld.org" target="_blank" class="source-link">ISM</a>
+<a href="https://fred.stlouisfed.org/series/MANEMP" target="_blank" class="source-link">FRED</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">소매판매</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">소비 = 미국 GDP 70%. 핵심 지표.</div>
+<div class="indicator-interpret"><b>해석:</b> 전월비 +0.5% 이상 건전 | 마이너스 지속 = 소비 위축</div>
+<div class="indicator-source">
+<a href="https://fred.stlouisfed.org/series/RSAFS" target="_blank" class="source-link">FRED</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">💰 물가/금리</h2>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">🔥 CPI (소비자물가)</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">헤드라인 + 근원(식품/에너지 제외).</div>
+<div class="indicator-interpret"><b>해석:</b> Fed 목표 2% | 3%+ 금리인상 압력 | 근원CPI가 더 중요</div>
+<div class="indicator-source">
+<a href="https://www.bls.gov/cpi/" target="_blank" class="source-link">BLS CPI</a>
+<a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank" class="source-link">FRED</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">PCE 물가지수</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">Fed가 실제로 보는 물가지표.</div>
+<div class="indicator-interpret"><b>해석:</b> CPI보다 낮게 나옴 | Fed 정책 결정에 직접 영향</div>
+<div class="indicator-source">
+<a href="https://fred.stlouisfed.org/series/PCEPI" target="_blank" class="source-link">FRED</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">🔥 Fed 기준금리</span><span class="indicator-badge badge-monthly">FOMC</span></div>
+<div class="indicator-desc">연방기금금리. 전 세계 금리의 기준.</div>
+<div class="indicator-interpret"><b>해석:</b> 인상 = 달러강세, 신흥국 자금유출 | 인하 = 위험자산 상승</div>
+<div class="indicator-source">
+<a href="https://www.federalreserve.gov" target="_blank" class="source-link">Fed</a>
+<a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank" class="source-link">CME FedWatch</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">🔥 10년물 국채금리</span><span class="indicator-badge badge-daily">일간</span></div>
+<div class="indicator-desc">장기금리. 모기지, 회사채 기준.</div>
+<div class="indicator-interpret"><b>해석:</b> 5%+ 긴축 | 2년물과 역전 = 침체 신호 (역사적 정확도 높음)</div>
+<div class="indicator-source">
+<a href="https://finance.yahoo.com/quote/%5ETNX" target="_blank" class="source-link">Yahoo Finance</a>
+<a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" class="source-link">FRED</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">하이일드 스프레드</span><span class="indicator-badge badge-daily">일간</span></div>
+<div class="indicator-desc">정크본드 - 국채 금리차. 신용위험 지표.</div>
+<div class="indicator-interpret"><b>해석:</b> 3% 이하 안정 | 5%+ 스트레스 | 8%+ 위기</div>
+<div class="indicator-source">
+<a href="https://fred.stlouisfed.org/series/BAMLH0A0HYM2" target="_blank" class="source-link">FRED</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">🏠 부동산</h2>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">케이스-쉴러 주택가격</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">20개 대도시 주택가격지수.</div>
+<div class="indicator-interpret"><b>해석:</b> 전년비 +5% 이상 과열 | 마이너스 = 조정</div>
+<div class="indicator-source">
+<a href="https://fred.stlouisfed.org/series/CSUSHPINSA" target="_blank" class="source-link">FRED</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">주택착공/허가</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">신규 주택 건설. 선행지표.</div>
+<div class="indicator-interpret"><b>해석:</b> 연율 150만호+ 호황 | 100만호 이하 침체</div>
+<div class="indicator-source">
+<a href="https://fred.stlouisfed.org/series/HOUST" target="_blank" class="source-link">FRED</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">30년 모기지 금리</span><span class="indicator-badge badge-weekly">주간</span></div>
+<div class="indicator-desc">주택담보대출 금리. 주택 수요 영향.</div>
+<div class="indicator-interpret"><b>해석:</b> 7%+ = 수요 급감 | 5% 이하 = 수요 회복</div>
+<div class="indicator-source">
+<a href="https://fred.stlouisfed.org/series/MORTGAGE30US" target="_blank" class="source-link">FRED</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">📊 심리/선행</h2>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">컨퍼런스보드 소비자신뢰</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">소비자 경기 전망.</div>
+<div class="indicator-interpret"><b>해석:</b> 100+ 낙관 | 80 이하 비관 | 기대지수가 선행</div>
+<div class="indicator-source">
+<a href="https://www.conference-board.org" target="_blank" class="source-link">Conference Board</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">미시간 소비자심리</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">미시간대 조사. 인플레 기대 포함.</div>
+<div class="indicator-interpret"><b>해석:</b> 인플레 기대치를 Fed가 주목</div>
+<div class="indicator-source">
+<a href="http://www.sca.isr.umich.edu" target="_blank" class="source-link">미시간대</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">신규실업수당청구</span><span class="indicator-badge badge-weekly">주간</span></div>
+<div class="indicator-desc">해고 추세. 가장 빠른 고용 신호.</div>
+<div class="indicator-interpret"><b>해석:</b> 20만 이하 건전 | 30만+ 고용 악화 | 4주 평균 확인</div>
+<div class="indicator-source">
+<a href="https://fred.stlouisfed.org/series/ICSA" target="_blank" class="source-link">FRED</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 중국 -->
+<div class="panel" id="china">
+<div class="warning-box">
+<div class="warning-box-title">⚠️ 중국 데이터 신뢰성 주의</div>
+<div class="warning-box-text">공식 통계 신뢰도 논란. GDP는 과대평가 가능성. 리커창 지수(전력/철도화물/대출)를 대안으로 참고. 부동산/지방정부 부채 리스크 주목.</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">📈 실물경제</h2>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">GDP 성장률</span><span class="indicator-badge badge-quarterly">분기</span></div>
+<div class="indicator-desc">공식 목표 5% 내외. 신뢰성 논란.</div>
+<div class="indicator-interpret"><b>해석:</b> 실제는 공식치보다 1~2%p 낮을 수 있음 | 추세가 중요</div>
+<div class="indicator-source">
+<a href="http://www.stats.gov.cn" target="_blank" class="source-link">국가통계국</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">제조업 PMI</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">공식 PMI + 차이신 PMI(민간).</div>
+<div class="indicator-interpret"><b>해석:</b> 차이신 PMI가 더 신뢰 | 50 기준 확장/수축</div>
+<div class="indicator-source">
+<a href="https://www.pmi.spglobal.com" target="_blank" class="source-link">S&P Global PMI</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">수출입</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">세계의 공장. 글로벌 수요 바로미터.</div>
+<div class="indicator-interpret"><b>해석:</b> 대미 수출 감소 = 무역갈등 | 대한 수입 = 한국 수출 선행</div>
+<div class="indicator-source">
+<a href="http://www.customs.gov.cn" target="_blank" class="source-link">해관총서</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">소매판매</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">내수 소비. 리오프닝 이후 회복세.</div>
+<div class="indicator-interpret"><b>해석:</b> +8% 이상 건전 | 둔화 시 경기부양 기대</div>
+<div class="indicator-source">
+<a href="http://www.stats.gov.cn" target="_blank" class="source-link">국가통계국</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">🏠 부동산 위기</h2>
+<div class="warning-box">
+<div class="warning-box-title">🔥 중국 부동산 리스크</div>
+<div class="warning-box-text">GDP 30% 의존. 헝다/비구이위안 디폴트. 선분양 중단 사태. 지방정부 토지수입 급감. 시스템 리스크 우려.</div>
+</div>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">신규주택가격</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">70개 도시 주택가격 동향.</div>
+<div class="indicator-interpret"><b>해석:</b> 하락 도시 수 증가 = 침체 확산 | 1선 vs 3선 도시 차별화</div>
+<div class="indicator-source">
+<a href="http://www.stats.gov.cn" target="_blank" class="source-link">국가통계국</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">부동산 투자</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">개발업체 투자 규모.</div>
+<div class="indicator-interpret"><b>해석:</b> 마이너스 지속 = 구조적 침체 | 착공면적 함께 확인</div>
+<div class="indicator-source">
+<a href="http://www.stats.gov.cn" target="_blank" class="source-link">국가통계국</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">부동산 판매</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">주택 판매 면적/금액.</div>
+<div class="indicator-interpret"><b>해석:</b> -20% 이상 급감 시 유동성 위기 | 개발업체 자금난</div>
+<div class="indicator-source">
+<a href="http://www.stats.gov.cn" target="_blank" class="source-link">국가통계국</a>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">💰 금융/통화</h2>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">LPR (대출우대금리)</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">사실상 기준금리. 1년/5년물.</div>
+<div class="indicator-interpret"><b>해석:</b> 5년 LPR = 주담대 기준 | 인하 = 부동산 부양 신호</div>
+<div class="indicator-source">
+<a href="http://www.pbc.gov.cn" target="_blank" class="source-link">인민은행</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">위안화 환율</span><span class="indicator-badge badge-daily">일간</span></div>
+<div class="indicator-desc">USD/CNY. 관리변동환율제.</div>
+<div class="indicator-interpret"><b>해석:</b> 7.3+ 약세 압력 | 외자 유출 | 수출 경쟁력 vs 자본유출</div>
+<div class="indicator-source">
+<a href="https://finance.yahoo.com/quote/CNY=X" target="_blank" class="source-link">Yahoo Finance</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">사회융자총량</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">실물경제 자금 공급. 광의의 신용.</div>
+<div class="indicator-interpret"><b>해석:</b> 증가 = 경기부양 | 둔화 = 긴축 또는 수요 부진</div>
+<div class="indicator-source">
+<a href="http://www.pbc.gov.cn" target="_blank" class="source-link">인민은행</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 일본 -->
+<div class="panel" id="japan">
+<div class="info-box">
+<div class="info-box-title">📊 일본 경제 읽는 법</div>
+<div class="info-box-text">30년 디플레 탈출 시도 중. 엔저 정책 → 수출 호조. BOJ 정책 전환(YCC 폐지, 마이너스금리 탈출) 주목. 인구감소/고령화 구조적 문제.</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">📈 핵심 지표</h2>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">GDP 성장률</span><span class="indicator-badge badge-quarterly">분기</span></div>
+<div class="indicator-desc">세계 4위 경제. $4조+.</div>
+<div class="indicator-interpret"><b>해석:</b> 1% 성장도 양호 | 인구감소로 잠재성장률 낮음</div>
+<div class="indicator-source">
+<a href="https://www.esri.cao.go.jp" target="_blank" class="source-link">내각부</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">CPI</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">30년 만에 2%+ 달성. BOJ 목표.</div>
+<div class="indicator-interpret"><b>해석:</b> 2% 지속 = 정책 정상화 | 일시적이면 다시 디플레</div>
+<div class="indicator-source">
+<a href="https://www.stat.go.jp" target="_blank" class="source-link">총무성</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">🔥 엔/달러 환율</span><span class="indicator-badge badge-daily">일간</span></div>
+<div class="indicator-desc">엔저 = 수출↑ 수입물가↑.</div>
+<div class="indicator-interpret"><b>해석:</b> 150엔+ 극단적 엔저 | 개입 가능성 | 한국 수출 경쟁</div>
+<div class="indicator-source">
+<a href="https://finance.yahoo.com/quote/JPY=X" target="_blank" class="source-link">Yahoo Finance</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">BOJ 정책금리</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">2024년 마이너스금리 탈출.</div>
+<div class="indicator-interpret"><b>해석:</b> 추가 인상 = 엔화 강세 | 글로벌 유동성에 영향</div>
+<div class="indicator-source">
+<a href="https://www.boj.or.jp" target="_blank" class="source-link">일본은행</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">닛케이225</span><span class="indicator-badge badge-daily">일간</span></div>
+<div class="indicator-desc">34년 만에 사상최고. 버핏 투자.</div>
+<div class="indicator-interpret"><b>해석:</b> 엔저 + 기업지배구조 개선 + 외국인 매수</div>
+<div class="indicator-source">
+<a href="https://finance.yahoo.com/quote/%5EN225" target="_blank" class="source-link">Yahoo Finance</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">일본 국채 10년</span><span class="indicator-badge badge-daily">일간</span></div>
+<div class="indicator-desc">YCC 폐지 후 시장금리.</div>
+<div class="indicator-interpret"><b>해석:</b> 1%+ = 긴축 | 급등 시 글로벌 채권시장 영향</div>
+<div class="indicator-source">
+<a href="https://www.mof.go.jp" target="_blank" class="source-link">재무성</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 유럽 -->
+<div class="panel" id="europe">
+<div class="info-box">
+<div class="info-box-title">📊 유럽 경제 읽는 법</div>
+<div class="info-box-text">20개국 통화동맹. ECB가 금리 결정. 독일 = 제조업 엔진. 에너지 위기(러시아 가스 의존) 경험. 재정 규율 vs 성장 딜레마.</div>
+</div>
+
+<div class="section">
+<h2 class="section-title">📈 유로존 핵심</h2>
+<div class="indicator-grid">
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">유로존 GDP</span><span class="indicator-badge badge-quarterly">분기</span></div>
+<div class="indicator-desc">20개국 합계. 미국과 비슷한 규모.</div>
+<div class="indicator-interpret"><b>해석:</b> 독일 침체 시 전체 타격 | 남유럽 vs 북유럽 차별화</div>
+<div class="indicator-source">
+<a href="https://ec.europa.eu/eurostat" target="_blank" class="source-link">Eurostat</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">유로존 CPI (HICP)</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">통합소비자물가. ECB 목표 2%.</div>
+<div class="indicator-interpret"><b>해석:</b> 에너지 가격 영향 큼 | 근원물가가 더 중요</div>
+<div class="indicator-source">
+<a href="https://ec.europa.eu/eurostat" target="_blank" class="source-link">Eurostat</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">ECB 기준금리</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">유로존 기준금리.</div>
+<div class="indicator-interpret"><b>해석:</b> Fed와 금리차 = 유로화 영향 | 인하 시 유로 약세</div>
+<div class="indicator-source">
+<a href="https://www.ecb.europa.eu" target="_blank" class="source-link">ECB</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">유로/달러</span><span class="indicator-badge badge-daily">일간</span></div>
+<div class="indicator-desc">세계에서 가장 많이 거래되는 통화쌍.</div>
+<div class="indicator-interpret"><b>해석:</b> 1.10+ 유로 강세 | 패리티(1.00) 접근 = 유럽 위기</div>
+<div class="indicator-source">
+<a href="https://finance.yahoo.com/quote/EURUSD=X" target="_blank" class="source-link">Yahoo Finance</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">독일 IFO 지수</span><span class="indicator-badge badge-monthly">월간</span></div>
+<div class="indicator-desc">독일 기업심리. 유럽 선행지표.</div>
+<div class="indicator-interpret"><b>해석:</b> 현황 vs 기대 | 기대 반등 = 경기 회복 신호</div>
+<div class="indicator-source">
+<a href="https://www.ifo.de" target="_blank" class="source-link">IFO</a>
+</div>
+</div>
+<div class="indicator">
+<div class="indicator-header"><span class="indicator-name">독일 10년 국채 (Bund)</span><span class="indicator-badge badge-daily">일간</span></div>
+<div class="indicator-desc">유럽 안전자산 기준.</div>
+<div class="indicator-interpret"><b>해석:</b> 이탈리아와 스프레드 = 재정위기 지표</div>
+<div class="indicator-source">
+<a href="https://www.investing.com/rates-bonds/germany-10-year-bond-yield" target="_blank" class="source-link">Investing.com</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</main>
+<script>
+document.querySelectorAll('.country-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.country-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.country).classList.add('active');
+    });
+});
+</script>
+</body>
+</html>
