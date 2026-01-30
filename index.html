@@ -97,162 +97,243 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 <p class="page-subtitle">세계 경제를 투명하게 — 클릭하면 차트와 상세 설명</p>
 </div>
 
+<!-- 주요 지수 -->
 <section class="data-section"><h2 class="section-title">📈 주요 지수</h2>
 <div class="data-grid">
 <div class="tv-widget" onclick="showModal('sp500')">
 <div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"FOREXCOM:SPXUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
+{"symbol":"FOREXCOM:SPXUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
 </script>
 </div>
 </div>
 <div class="tv-widget" onclick="showModal('nasdaq')">
 <div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"FOREXCOM:NSXUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
+{"symbol":"FOREXCOM:NSXUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
 </script>
 </div>
 </div>
 <div class="tv-widget" onclick="showModal('dji')">
 <div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"FOREXCOM:DJI","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
-</script>
-</div>
-</div>
-<div class="tv-widget" onclick="showModal('dax')">
-<div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
-<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"FOREXCOM:GRXEUR","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
+{"symbol":"FOREXCOM:DJI","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
 </script>
 </div>
 </div>
 </div>
 </section>
 
+<!-- 환율 -->
 <section class="data-section"><h2 class="section-title">💱 환율</h2>
 <div class="data-grid">
 <div class="tv-widget" onclick="showModal('usdkrw')">
 <div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"FX_IDC:USDKRW","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
+{"symbol":"FX_IDC:USDKRW","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
 </script>
 </div>
 </div>
 <div class="tv-widget" onclick="showModal('usdjpy')">
 <div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"FX_IDC:USDJPY","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
+{"symbol":"FX_IDC:USDJPY","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
 </script>
 </div>
 </div>
 <div class="tv-widget" onclick="showModal('eurusd')">
 <div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"FX_IDC:EURUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
+{"symbol":"FX_IDC:EURUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
 </script>
 </div>
 </div>
 <div class="tv-widget" onclick="showModal('usdcny')">
 <div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"FX_IDC:USDCNY","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
+{"symbol":"FX_IDC:USDCNY","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
 </script>
 </div>
 </div>
 </div>
 </section>
 
-<section class="data-section"><h2 class="section-title">🛢️ 원자재</h2>
+<!-- 원자재 - 귀금속 -->
+<section class="data-section"><h2 class="section-title">🥇 귀금속</h2>
 <div class="data-grid">
 <div class="tv-widget" onclick="showModal('gold')">
 <div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"FOREXCOM:XAUUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
-</script>
-</div>
-</div>
-<div class="tv-widget" onclick="showModal('oil')">
-<div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
-<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"TVC:USOIL","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
+{"symbol":"OANDA:XAUUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
 </script>
 </div>
 </div>
 <div class="tv-widget" onclick="showModal('silver')">
 <div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"FOREXCOM:XAGUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
+{"symbol":"OANDA:XAGUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
+</script>
+</div>
+</div>
+<div class="tv-widget" onclick="showModal('platinum')">
+<div class="tradingview-widget-container" style="height:100%;width:100%">
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+{"symbol":"OANDA:XPTUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
+</script>
+</div>
+</div>
+<div class="tv-widget" onclick="showModal('palladium')">
+<div class="tradingview-widget-container" style="height:100%;width:100%">
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+{"symbol":"OANDA:XPDUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
+</script>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 원자재 - 에너지 -->
+<section class="data-section"><h2 class="section-title">🛢️ 에너지</h2>
+<div class="data-grid">
+<div class="tv-widget" onclick="showModal('oil')">
+<div class="tradingview-widget-container" style="height:100%;width:100%">
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+{"symbol":"OANDA:WTICOUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
+</script>
+</div>
+</div>
+<div class="tv-widget" onclick="showModal('brent')">
+<div class="tradingview-widget-container" style="height:100%;width:100%">
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+{"symbol":"OANDA:BCOUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
 </script>
 </div>
 </div>
 <div class="tv-widget" onclick="showModal('natgas')">
 <div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"TVC:NATURALGAS","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
+{"symbol":"OANDA:NATGASUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
 </script>
 </div>
 </div>
 </div>
 </section>
 
+<!-- 원자재 - 농산물 -->
+<section class="data-section"><h2 class="section-title">🌾 농산물</h2>
+<div class="data-grid">
+<div class="tv-widget" onclick="showModal('wheat')">
+<div class="tradingview-widget-container" style="height:100%;width:100%">
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+{"symbol":"OANDA:WHEATUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
+</script>
+</div>
+</div>
+<div class="tv-widget" onclick="showModal('corn')">
+<div class="tradingview-widget-container" style="height:100%;width:100%">
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+{"symbol":"OANDA:CORNUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
+</script>
+</div>
+</div>
+<div class="tv-widget" onclick="showModal('soybean')">
+<div class="tradingview-widget-container" style="height:100%;width:100%">
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+{"symbol":"OANDA:SOYBNUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
+</script>
+</div>
+</div>
+<div class="tv-widget" onclick="showModal('sugar')">
+<div class="tradingview-widget-container" style="height:100%;width:100%">
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+{"symbol":"OANDA:SUGARUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
+</script>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 원자재 - 산업금속 -->
+<section class="data-section"><h2 class="section-title">🔩 산업금속</h2>
+<div class="data-grid">
+<div class="tv-widget" onclick="showModal('copper')">
+<div class="tradingview-widget-container" style="height:100%;width:100%">
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+{"symbol":"OANDA:XCUUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
+</script>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 암호화폐 -->
 <section class="data-section"><h2 class="section-title">₿ 암호화폐</h2>
 <div class="data-grid">
 <div class="tv-widget" onclick="showModal('bitcoin')">
 <div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"BITSTAMP:BTCUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
+{"symbol":"BITSTAMP:BTCUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
 </script>
 </div>
 </div>
 <div class="tv-widget" onclick="showModal('ethereum')">
 <div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"BITSTAMP:ETHUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
-</script>
-</div>
-</div>
-<div class="tv-widget" onclick="showModal('solana')">
-<div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
-<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"BINANCE:SOLUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
+{"symbol":"BITSTAMP:ETHUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
 </script>
 </div>
 </div>
 <div class="tv-widget" onclick="showModal('xrp')">
 <div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-{"symbol":"BINANCE:XRPUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true,"largeChartUrl":""}
+{"symbol":"BITSTAMP:XRPUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
+</script>
+</div>
+</div>
+<div class="tv-widget" onclick="showModal('solana')">
+<div class="tradingview-widget-container" style="height:100%;width:100%">
+<div class="tradingview-widget-container__widget" style="height:100%;width:100%"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+{"symbol":"COINBASE:SOLUSD","width":"100%","height":"100%","locale":"kr","dateRange":"1M","colorTheme":"dark","isTransparent":true,"autosize":true}
 </script>
 </div>
 </div>
 </div>
 </section>
 
+<!-- 온체인 -->
 <section class="data-section"><h2 class="section-title">⛓️ 비트코인 온체인</h2><div class="data-grid" id="onchainGrid"></div></section>
 
+<!-- 시장 심리 -->
 <section class="data-section"><h2 class="section-title">😱 시장 심리</h2>
 <div class="fg-box" onclick="showModal('feargreed')"><span class="badge badge-live">LIVE</span>
 <div class="fg-header"><div class="fg-title">Crypto Fear & Greed Index</div><div><div class="fg-value" id="fgValue">--</div><div class="fg-label" id="fgLabel">로딩중</div></div></div>
 <div class="fg-bar"><div class="fg-indicator" id="fgIndicator" style="left:50%"></div></div>
 </div></section>
 
+<!-- 출처 -->
 <section class="sources"><h3 class="sources-title">📚 데이터 출처</h3><div class="sources-list">
 <div class="source-tag">지수/환율/원자재/암호화폐: <a href="https://tradingview.com">TradingView</a></div>
 <div class="source-tag">온체인: <a href="https://blockchain.com">Blockchain.com</a></div>
@@ -261,6 +342,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 </div>
 </main>
 
+<!-- 모달 -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
 <div class="modal" onclick="event.stopPropagation()">
 <div class="modal-header"><div class="modal-title" id="modalTitle"></div><button class="modal-close" onclick="closeModal()">&times;</button></div>
@@ -270,29 +352,51 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 
 <script>
 const INFO = {
-sp500:{title:'📈 S&P 500',desc:'미국 대형주 500개 기업 지수. 전 세계 투자의 벤치마크.',details:['시가총액 가중 방식 계산','미국 GDP의 80% 대표','Apple, Microsoft, Nvidia 등 빅테크 비중'],interpret:[['사상최고가 경신','강세장, 투자심리 긍정','good'],['200일선 위','장기 상승 추세','good'],['고점대비 -20%','공식 약세장','bad']],correlation:'S&P500 상승 → 글로벌 위험자산 선호. <b>코스피와 상관계수 0.7+</b>',url:'https://finance.yahoo.com/quote/%5EGSPC',tv:'FOREXCOM:SPXUSD'},
-nasdaq:{title:'💻 나스닥',desc:'기술주 중심 지수. 성장주의 바로미터.',details:['기술/성장주 비중 50% 이상','금리에 민감'],interpret:[['S&P대비 강세','기술주 주도장','good'],['금리 상승기','성장주 가치↓','bad']],correlation:'Fed 금리인상 → 나스닥 약세.',url:'https://finance.yahoo.com/quote/%5EIXIC',tv:'FOREXCOM:NSXUSD'},
-dji:{title:'📊 다우존스',desc:'미국 우량주 30개 기업 지수. 가장 오래된 지수.',details:['가격 가중 방식','전통 산업 비중 높음'],interpret:[['사상최고가','미국 경제 건강','good']],correlation:'S&P500과 높은 상관관계.',url:'https://finance.yahoo.com/quote/%5EDJI',tv:'FOREXCOM:DJI'},
-dax:{title:'🇩🇪 독일 DAX',desc:'독일 대표 지수. 유럽 경제 바로미터.',details:['독일 40대 기업','제조업 비중 높음'],interpret:[['사상최고가','유럽 경기 호조','good']],correlation:'유럽 경기와 동행.',url:'https://finance.yahoo.com/quote/%5EGDAXI',tv:'FOREXCOM:GRXEUR'},
-usdkrw:{title:'💱 달러/원',desc:'한국 경제의 바로미터.',details:['수출기업: 원화약세 유리','수입: 원화강세 유리'],interpret:[['1,200원 이하','원화강세','good'],['1,400원 이상','위기 수준','bad']],correlation:'Fed > 한은 금리 → 원화약세. 코스피와 역상관.',url:'https://www.google.com/finance/quote/USD-KRW',tv:'FX_IDC:USDKRW'},
-usdjpy:{title:'💱 달러/엔',desc:'안전자산 통화. BOJ 정책에 민감.',details:['전통적 안전자산','BOJ 정책에 민감'],interpret:[['150엔 이상','극단적 엔저','bad']],correlation:'BOJ 금리인상 → 엔고.',url:'https://www.google.com/finance/quote/USD-JPY',tv:'FX_IDC:USDJPY'},
-eurusd:{title:'💱 유로/달러',desc:'세계에서 가장 많이 거래되는 통화쌍.',details:['ECB 정책에 민감'],interpret:[['1.10 이상','유로 강세','good']],correlation:'ECB vs Fed 금리차.',url:'https://www.google.com/finance/quote/EUR-USD',tv:'FX_IDC:EURUSD'},
-usdcny:{title:'💱 달러/위안',desc:'중국 위안화. 관리변동환율제.',details:['중국 정부 개입','무역전쟁 영향'],interpret:[['7.3 이상','위안화 약세','bad']],correlation:'미중 관계, 중국 경기.',url:'https://www.google.com/finance/quote/USD-CNY',tv:'FX_IDC:USDCNY'},
-gold:{title:'🥇 금',desc:'대표 안전자산. 인플레이션 헤지.',details:['달러와 역상관','실질금리와 역상관'],interpret:[['실질금리 하락','금 매력↑','good']],correlation:'위기시 안전자산 수요.',url:'https://finance.yahoo.com/quote/GC=F',tv:'FOREXCOM:XAUUSD'},
-oil:{title:'🛢️ WTI 원유',desc:'국제 유가 기준. 경기 선행지표.',details:['OPEC+ 감산에 민감'],interpret:[['$80 이상','공급부족','warn'],['$60 이하','수요부진','bad']],correlation:'유가↑ → 인플레.',url:'https://finance.yahoo.com/quote/CL=F',tv:'TVC:USOIL'},
-silver:{title:'🥈 은',desc:'귀금속 + 산업금속.',details:['금보다 변동성 큼','태양광 수요'],interpret:[['금/은 비율 80+','저평가','good']],correlation:'금과 동행.',url:'https://finance.yahoo.com/quote/SI=F',tv:'FOREXCOM:XAGUSD'},
-natgas:{title:'🔥 천연가스',desc:'에너지 원자재. 계절성 강함.',details:['겨울 난방 수요'],interpret:[['$4 이상','공급부족','warn']],correlation:'유럽 에너지 위기.',url:'https://finance.yahoo.com/quote/NG=F',tv:'TVC:NATURALGAS'},
-bitcoin:{title:'₿ 비트코인',desc:'최초의 암호화폐. 디지털 금.',details:['총 2,100만개 한정','4년마다 반감기','ETF 승인'],interpret:[['사상최고가','강세장','good'],['고점대비 -50%','크립토 윈터','bad']],correlation:'위험자산 → 나스닥과 동행.',url:'https://www.coingecko.com/ko/coins/bitcoin',tv:'BITSTAMP:BTCUSD'},
-ethereum:{title:'Ξ 이더리움',desc:'스마트컨트랙트 플랫폼.',details:['시총 2위','디파이/NFT 기반'],interpret:[['비트코인 대비 강세','알트시즌','good']],correlation:'비트코인과 상관계수 0.9+',url:'https://www.coingecko.com/ko/coins/ethereum',tv:'BITSTAMP:ETHUSD'},
-solana:{title:'◎ 솔라나',desc:'고속 블록체인. 낮은 수수료.',details:['초당 65,000 트랜잭션','디파이/NFT 성장'],interpret:[['생태계 확장','강세','good']],correlation:'비트코인과 동행, 변동성 큼.',url:'https://www.coingecko.com/ko/coins/solana',tv:'BINANCE:SOLUSD'},
-xrp:{title:'✕ XRP',desc:'리플. 국제 송금 특화.',details:['은행 파트너십','SEC 소송 이슈'],interpret:[['규제 명확화','상승 모멘텀','good']],correlation:'규제 뉴스에 민감.',url:'https://www.coingecko.com/ko/coins/ripple',tv:'BINANCE:XRPUSD'},
-hashrate:{title:'⛏️ 해시레이트',desc:'비트코인 네트워크 채굴 연산력.',details:['높을수록 보안 강화'],interpret:[['사상최고','네트워크 건강','good'],['급락','채굴자 이탈','bad']],correlation:'해시레이트↑ → 가격 지지.',url:'https://www.blockchain.com/explorer/charts/hash-rate',tv:''},
-difficulty:{title:'🔧 채굴 난이도',desc:'블록 생성 난이도.',details:['해시레이트 따라 조정'],interpret:[['상승','네트워크 성장','good']],correlation:'난이도↑ → 가격 지지.',url:'https://www.blockchain.com/explorer/charts/difficulty',tv:''},
+// 지수
+sp500:{title:'📈 S&P 500',desc:'미국 대형주 500개 기업 지수. 전 세계 투자의 벤치마크.',details:['시가총액 가중 방식','미국 GDP 80% 대표','빅테크 비중 높음'],interpret:[['사상최고가','강세장','good'],['200일선 아래','약세장 진입','bad']],correlation:'글로벌 위험자산 선호 지표. 코스피와 상관계수 0.7+',url:'https://finance.yahoo.com/quote/%5EGSPC',tv:'FOREXCOM:SPXUSD'},
+nasdaq:{title:'💻 나스닥',desc:'기술주 중심 지수. 성장주 바로미터.',details:['기술주 50%+','금리에 민감'],interpret:[['S&P대비 강세','기술주 주도','good'],['금리 상승기','성장주↓','bad']],correlation:'Fed 금리인상 → 나스닥 약세',url:'https://finance.yahoo.com/quote/%5EIXIC',tv:'FOREXCOM:NSXUSD'},
+dji:{title:'📊 다우존스',desc:'미국 우량주 30개. 가장 오래된 지수.',details:['가격 가중 방식','전통 산업 비중'],interpret:[['사상최고가','미국 경제 건강','good']],correlation:'S&P500과 높은 상관관계',url:'https://finance.yahoo.com/quote/%5EDJI',tv:'FOREXCOM:DJI'},
+
+// 환율
+usdkrw:{title:'💱 달러/원',desc:'한국 경제의 바로미터.',details:['수출: 원화약세 유리','수입: 원화강세 유리'],interpret:[['1,200원 이하','원화강세','good'],['1,400원 이상','위기 수준','bad']],correlation:'Fed > 한은 금리 → 원화약세',url:'https://www.google.com/finance/quote/USD-KRW',tv:'FX_IDC:USDKRW'},
+usdjpy:{title:'💱 달러/엔',desc:'안전자산 통화. BOJ 정책에 민감.',details:['안전자산 통화','BOJ 정책 민감'],interpret:[['150엔 이상','극단적 엔저','bad']],correlation:'BOJ 금리인상 → 엔고',url:'https://www.google.com/finance/quote/USD-JPY',tv:'FX_IDC:USDJPY'},
+eurusd:{title:'💱 유로/달러',desc:'세계 최대 거래량 통화쌍.',details:['ECB 정책 민감'],interpret:[['1.10 이상','유로 강세','good']],correlation:'ECB vs Fed 금리차',url:'https://www.google.com/finance/quote/EUR-USD',tv:'FX_IDC:EURUSD'},
+usdcny:{title:'💱 달러/위안',desc:'중국 위안화. 관리변동환율.',details:['정부 개입','무역전쟁 영향'],interpret:[['7.3 이상','위안화 약세','bad']],correlation:'미중 관계, 중국 경기',url:'https://www.google.com/finance/quote/USD-CNY',tv:'FX_IDC:USDCNY'},
+
+// 귀금속
+gold:{title:'🥇 금 (Gold)',desc:'대표 안전자산. 인플레이션 헤지. 중앙은행 준비자산.',details:['달러와 역상관','실질금리와 역상관','중앙은행 매입 증가','지정학적 위험시 상승'],interpret:[['실질금리 하락','금 매력↑','good'],['달러 약세','금 상승','good'],['위기 상황','안전자산 수요','good']],correlation:'Fed 금리인상 → 금↓. 인플레 우려 → 금↑. 위기시 주식↓ 금↑',url:'https://finance.yahoo.com/quote/GC=F',tv:'OANDA:XAUUSD'},
+silver:{title:'🥈 은 (Silver)',desc:'귀금속 + 산업금속. 태양광 핵심 소재.',details:['금보다 변동성 큼','산업수요 50%+','태양광/전자제품'],interpret:[['금/은 비율 80+','은 저평가','good'],['금/은 비율 60-','은 고평가','bad']],correlation:'금과 동행하나 변동성 큼. 태양광 확대 → 은↑',url:'https://finance.yahoo.com/quote/SI=F',tv:'OANDA:XAGUSD'},
+platinum:{title:'⚪ 백금 (Platinum)',desc:'자동차 촉매제, 수소연료전지 핵심 소재.',details:['디젤차 촉매 수요','수소차 연료전지','공급 제한 (남아공 80%)'],interpret:[['금보다 저렴','역사적 저평가','good'],['수소차 확대','수요 증가','good']],correlation:'자동차 생산, 수소경제 확대와 연관',url:'https://finance.yahoo.com/quote/PL=F',tv:'OANDA:XPTUSD'},
+palladium:{title:'⚫ 팔라듐 (Palladium)',desc:'가솔린차 촉매제. 러시아가 40% 생산.',details:['가솔린차 촉매 필수','러시아 공급 리스크','전기차 전환 영향'],interpret:[['공급 부족','가격 급등','warn'],['전기차 확대','수요 감소','bad']],correlation:'자동차 생산량, 러시아 제재와 연관',url:'https://finance.yahoo.com/quote/PA=F',tv:'OANDA:XPDUSD'},
+
+// 에너지
+oil:{title:'🛢️ WTI 원유',desc:'미국 서부 텍사스산 원유. 국제 유가 기준.',details:['OPEC+ 감산에 민감','글로벌 경기 선행지표','미국 셰일 영향'],interpret:[['$80 이상','공급부족/수요강세','warn'],['$60~80','적정 수준','good'],['$60 이하','수요부진/공급과잉','bad']],correlation:'유가↑ → 인플레 → 금리인상. 한국: 순수입국',url:'https://finance.yahoo.com/quote/CL=F',tv:'OANDA:WTICOUSD'},
+brent:{title:'🛢️ 브렌트유',desc:'북해산 원유. 유럽/아시아 기준 유가.',details:['WTI보다 $3~5 높음','글로벌 벤치마크','해상 운송 용이'],interpret:[['$85 이상','글로벌 공급부족','warn'],['$65~85','적정 수준','good']],correlation:'WTI와 동행. 중동/유럽 지정학 민감',url:'https://finance.yahoo.com/quote/BZ=F',tv:'OANDA:BCOUSD'},
+natgas:{title:'🔥 천연가스',desc:'난방/발전 연료. 계절성 강함.',details:['겨울 난방 수요 급증','LNG 수출 영향','재생에너지 보완재'],interpret:[['$4 이상','공급부족','warn'],['$2~4','적정 수준','good']],correlation:'유럽 에너지 위기 영향. 겨울철 급등',url:'https://finance.yahoo.com/quote/NG=F',tv:'OANDA:NATGASUSD'},
+
+// 농산물
+wheat:{title:'🌾 밀 (Wheat)',desc:'세계 3대 곡물. 식량 안보 핵심.',details:['러시아/우크라이나 주요 수출국','기후 변화 민감','식량 위기 지표'],interpret:[['급등','식량 위기 우려','bad'],['안정','글로벌 공급 정상','good']],correlation:'러시아-우크라이나 전쟁 영향. 기후 이변시 급등',url:'https://finance.yahoo.com/quote/ZW=F',tv:'OANDA:WHEATUSD'},
+corn:{title:'🌽 옥수수 (Corn)',desc:'사료/바이오연료 원료. 미국이 최대 생산국.',details:['가축 사료 40%','에탄올 원료','기후 민감'],interpret:[['급등','사료가격↑ → 육류가격↑','warn']],correlation:'유가와 연관 (바이오연료). 기후 이변 민감',url:'https://finance.yahoo.com/quote/ZC=F',tv:'OANDA:CORNUSD'},
+soybean:{title:'🫘 대두 (Soybean)',desc:'식용유/사료 원료. 브라질/미국 주요 생산국.',details:['식용유 원료','가축 사료','바이오디젤'],interpret:[['급등','식품 인플레','warn']],correlation:'중국 수요, 남미 기후 영향',url:'https://finance.yahoo.com/quote/ZS=F',tv:'OANDA:SOYBNUSD'},
+sugar:{title:'🍬 설탕 (Sugar)',desc:'바이오연료 원료로 수요 증가.',details:['브라질 최대 생산국','에탄올 원료','기후 민감'],interpret:[['급등','식품/연료 인플레','warn']],correlation:'유가와 연관 (바이오연료). 브라질 기후 영향',url:'https://finance.yahoo.com/quote/SB=F',tv:'OANDA:SUGARUSD'},
+
+// 산업금속
+copper:{title:'🔶 구리 (Copper)',desc:'경기 선행지표. "닥터 코퍼" 별명.',details:['전기차/재생에너지 필수','건설/제조업 수요','칠레가 최대 생산국'],interpret:[['상승','글로벌 경기 회복','good'],['하락','경기 둔화 신호','bad']],correlation:'중국 경기와 높은 상관. 전기차 확대 → 수요↑',url:'https://finance.yahoo.com/quote/HG=F',tv:'OANDA:XCUUSD'},
+
+// 암호화폐
+bitcoin:{title:'₿ 비트코인',desc:'최초의 암호화폐. 디지털 금.',details:['총 2,100만개 한정','4년마다 반감기','ETF 승인 (2024)'],interpret:[['사상최고가','강세장','good'],['고점대비 -50%','크립토 윈터','bad']],correlation:'위험자산 → 나스닥과 동행',url:'https://www.coingecko.com/ko/coins/bitcoin',tv:'BITSTAMP:BTCUSD'},
+ethereum:{title:'Ξ 이더리움',desc:'스마트컨트랙트 플랫폼.',details:['시총 2위','디파이/NFT 기반','ETF 승인'],interpret:[['비트코인 대비 강세','알트시즌','good']],correlation:'비트코인과 0.9+ 상관',url:'https://www.coingecko.com/ko/coins/ethereum',tv:'BITSTAMP:ETHUSD'},
+xrp:{title:'✕ XRP',desc:'국제 송금 특화. 리플.',details:['은행 파트너십','SEC 소송 진행'],interpret:[['규제 명확화','상승 모멘텀','good']],correlation:'규제 뉴스에 민감',url:'https://www.coingecko.com/ko/coins/ripple',tv:'BITSTAMP:XRPUSD'},
+solana:{title:'◎ 솔라나',desc:'고속 블록체인. 낮은 수수료.',details:['초당 65,000 TPS','디파이/NFT 성장'],interpret:[['생태계 확장','강세','good']],correlation:'비트코인과 동행, 변동성 큼',url:'https://www.coingecko.com/ko/coins/solana',tv:'COINBASE:SOLUSD'},
+
+// 온체인
+hashrate:{title:'⛏️ 해시레이트',desc:'비트코인 네트워크 채굴 연산력.',details:['보안 강도 지표','채굴자 신뢰'],interpret:[['사상최고','네트워크 건강','good'],['급락','채굴자 이탈','bad']],correlation:'해시레이트↑ → 가격 지지',url:'https://www.blockchain.com/explorer/charts/hash-rate',tv:''},
+difficulty:{title:'🔧 채굴 난이도',desc:'블록 생성 난이도.',details:['2주마다 조정'],interpret:[['상승','네트워크 성장','good']],correlation:'난이도↑ → 가격 지지',url:'https://www.blockchain.com/explorer/charts/difficulty',tv:''},
 txcount:{title:'📊 일일 거래수',desc:'비트코인 일일 거래 건수.',details:['네트워크 활동 지표'],interpret:[['40만건+','활발','good']],correlation:'거래↑ → 가치↑',url:'https://www.blockchain.com/explorer/charts/n-transactions',tv:''},
-mvrv:{title:'📈 MVRV Z-Score',desc:'장기 투자 타이밍 지표.',details:['역사적 정확도 높음'],interpret:[['0 이하','매수 적기','good'],['7 이상','매도 신호','bad']],correlation:'MVRV 0 이하 매수 → 큰 수익.',url:'https://www.lookintobitcoin.com/charts/mvrv-zscore/',tv:''},
-puell:{title:'💎 Puell Multiple',desc:'채굴 수익성 지표.',details:['반감기 전후 급변'],interpret:[['0.5 이하','바닥 근접','good'],['4 이상','고점 경고','bad']],correlation:'반감기 후 급락 → 상승 시작.',url:'https://www.lookintobitcoin.com/charts/puell-multiple/',tv:''},
+mvrv:{title:'📈 MVRV Z-Score',desc:'장기 투자 타이밍 지표.',details:['역사적 정확도 높음'],interpret:[['0 이하','매수 적기','good'],['7 이상','매도 신호','bad']],correlation:'0 이하 매수 → 큰 수익',url:'https://www.lookintobitcoin.com/charts/mvrv-zscore/',tv:''},
+puell:{title:'💎 Puell Multiple',desc:'채굴 수익성 지표.',details:['반감기 전후 급변'],interpret:[['0.5 이하','바닥 근접','good'],['4 이상','고점 경고','bad']],correlation:'반감기 후 급락 → 상승',url:'https://www.lookintobitcoin.com/charts/puell-multiple/',tv:''},
 exchange:{title:'🏦 거래소 보유량',desc:'거래소 비트코인 총량.',details:['보유량 = 매도 대기'],interpret:[['감소','장기보유↑','good'],['증가','매도 압력↑','bad']],correlation:'보유량↓ → 가격↑',url:'https://www.coinglass.com/pro/i/bitcoin-exchange-balance',tv:''},
-feargreed:{title:'😱 Crypto Fear & Greed',desc:'공포/탐욕 지수.',details:['0~25: 극단적 공포','75~100: 극단적 탐욕'],interpret:[['0~25','역발상 매수','good'],['75~100','버블 경고','bad']],correlation:'공포에 매수, 탐욕에 매도.',url:'https://alternative.me/crypto/fear-and-greed-index/',tv:''}
+feargreed:{title:'😱 Crypto Fear & Greed',desc:'공포/탐욕 지수.',details:['0~25: 극단적 공포','75~100: 극단적 탐욕'],interpret:[['0~25','역발상 매수','good'],['75~100','버블 경고','bad']],correlation:'공포에 매수, 탐욕에 매도',url:'https://alternative.me/crypto/fear-and-greed-index/',tv:''}
 };
 
 function showModal(key) {
