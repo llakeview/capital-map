@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Capital Map - 세계 경제 실시간 대시보드</title>
+<title>Capital Map - 실시간 대시보드</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -13,7 +13,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
 .nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--orange));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
 .nav-logo-text{font-size:20px;font-weight:700;background:linear-gradient(90deg,var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.nav-links{display:flex;gap:8px}
+.nav-links{display:flex;gap:8px;flex-wrap:wrap}
 .nav-link{padding:8px 16px;border-radius:8px;text-decoration:none;color:var(--text2);font-size:14px;font-weight:500;transition:.2s}
 .nav-link:hover{color:var(--text);background:var(--card)}
 .nav-link.active{color:var(--gold);background:rgba(255,215,0,.1)}
@@ -24,13 +24,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .page-subtitle{color:var(--text2);font-size:14px}
 .update-time{font-size:11px;color:var(--text2);margin-top:8px}
 .update-time span{color:var(--cyan)}
-
-/* 데이터 그리드 */
 .data-section{margin-top:24px}
-.section-title{font-size:16px;font-weight:700;margin-bottom:16px;padding-left:12px;border-left:3px solid var(--gold);display:flex;align-items:center;justify-content:space-between}
-.section-title small{font-size:11px;color:var(--text2);font-weight:400}
+.section-title{font-size:16px;font-weight:700;margin-bottom:16px;padding-left:12px;border-left:3px solid var(--gold)}
 .data-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
-.data-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:.2s;text-decoration:none;color:inherit}
+.data-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:.2s;position:relative}
 .data-card:hover{border-color:var(--cyan);transform:translateY(-2px)}
 .data-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
 .data-card-name{font-size:12px;color:var(--text2)}
@@ -40,33 +37,50 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .data-card-change.up{color:var(--green)}
 .data-card-change.down{color:var(--red)}
 .data-card-change.neutral{color:var(--text2)}
-.data-card-source{font-size:9px;color:var(--text2);margin-top:8px;opacity:.7}
-.loading{color:var(--text2);font-size:12px}
-
-/* Fear & Greed */
-.fear-greed{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:16px}
-.fg-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.data-card-source{font-size:9px;color:var(--text2);margin-top:8px}
+.badge{position:absolute;top:8px;right:8px;padding:2px 6px;border-radius:4px;font-size:8px;font-weight:700}
+.badge-live{background:rgba(0,210,106,.2);color:var(--green)}
+.badge-link{background:rgba(255,159,67,.2);color:var(--orange)}
+.tv-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:.2s}
+.tv-card:hover{border-color:var(--cyan)}
+.tv-card-header{padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.tv-card-name{font-size:13px;font-weight:600}
+.tv-card-flag{font-size:16px}
+.tv-mini{height:80px}
+.fg-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;position:relative}
+.fg-box:hover{border-color:var(--cyan)}
+.fg-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .fg-title{font-size:14px;font-weight:600}
 .fg-value{font-size:36px;font-weight:700}
-.fg-label{font-size:12px;margin-top:4px}
-.fg-bar{height:8px;background:linear-gradient(to right,var(--red),var(--orange),var(--gold),var(--green));border-radius:4px;position:relative;margin-top:12px}
+.fg-label{font-size:12px;color:var(--text2)}
+.fg-bar{height:8px;background:linear-gradient(to right,var(--red),var(--orange),var(--gold),var(--green));border-radius:4px;position:relative}
 .fg-indicator{position:absolute;top:-4px;width:16px;height:16px;background:#fff;border-radius:50%;transform:translateX(-50%);box-shadow:0 2px 8px rgba(0,0,0,.3)}
-
-/* 뉴스 */
-.news-section{margin-top:32px}
-.news-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
-.news-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;text-decoration:none;color:inherit;transition:.2s}
-.news-card:hover{border-color:var(--cyan)}
-.news-source{font-size:10px;color:var(--cyan);font-weight:600;margin-bottom:6px}
-.news-title{font-size:13px;font-weight:600;line-height:1.5;margin-bottom:8px}
-.news-time{font-size:10px;color:var(--text2)}
-
-/* 출처 */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:2000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.active{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:16px;max-width:800px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-header{padding:20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--bg2);z-index:10}
+.modal-title{font-size:18px;font-weight:700}
+.modal-close{background:none;border:none;color:var(--text2);font-size:28px;cursor:pointer;line-height:1}
+.modal-body{padding:20px}
+.m-chart{width:100%;height:400px;border-radius:8px;overflow:hidden;margin-bottom:20px;background:#131722}
+.m-section{margin-bottom:20px}
+.m-section-title{font-size:13px;font-weight:700;color:var(--cyan);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.m-text{font-size:12px;color:var(--text2);line-height:1.8}
+.m-list{list-style:none;font-size:12px;color:var(--text2);line-height:2.2}
+.m-list li:before{content:'•';color:var(--gold);margin-right:8px}
+.m-table{background:var(--card);border-radius:8px;padding:12px;font-size:11px}
+.m-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)}
+.m-row:last-child{border:none}
+.m-row.good{color:var(--green)}
+.m-row.bad{color:var(--red)}
+.m-row.warn{color:var(--orange)}
+.m-link{display:block;margin-top:20px;padding:14px;background:var(--cyan);color:#000;text-align:center;border-radius:8px;text-decoration:none;font-weight:700}
 .sources{margin-top:32px;padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:12px}
 .sources-title{font-size:14px;font-weight:600;margin-bottom:12px}
 .sources-list{display:flex;flex-wrap:wrap;gap:8px}
 .source-tag{padding:6px 12px;background:var(--card);border-radius:6px;font-size:11px;color:var(--text2)}
 .source-tag a{color:var(--cyan);text-decoration:none}
+@media(max-width:768px){.nav-links{display:none}}
 </style>
 </head>
 <body>
@@ -87,301 +101,271 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 <div class="container">
 <div class="page-header">
 <h1 class="page-title">🌐 실시간 글로벌 대시보드</h1>
-<p class="page-subtitle">세계 경제를 투명하게 — 실시간 데이터와 객관적 수치</p>
-<div class="update-time">마지막 업데이트: <span id="lastUpdate">로딩중...</span></div>
+<p class="page-subtitle">세계 경제를 투명하게 — 클릭하면 차트와 상세 설명</p>
+<div class="update-time">실시간 데이터 by <span>TradingView</span></div>
 </div>
 
-<!-- 주요 지수 -->
-<section class="data-section">
-<h2 class="section-title">📈 주요 지수 <small>클릭 시 출처로 이동</small></h2>
-<div class="data-grid" id="indicesGrid">
-<div class="data-card loading">데이터 로딩중...</div>
-</div>
-</section>
-
-<!-- 환율 -->
-<section class="data-section">
-<h2 class="section-title">💱 환율</h2>
-<div class="data-grid" id="forexGrid">
-<div class="data-card loading">데이터 로딩중...</div>
-</div>
-</section>
-
-<!-- 원자재 -->
-<section class="data-section">
-<h2 class="section-title">🛢️ 원자재</h2>
-<div class="data-grid" id="commodityGrid">
-<div class="data-card loading">데이터 로딩중...</div>
-</div>
-</section>
-
-<!-- 암호화폐 -->
-<section class="data-section">
-<h2 class="section-title">₿ 암호화폐</h2>
-<div class="data-grid" id="cryptoGrid">
-<div class="data-card loading">데이터 로딩중...</div>
-</div>
-</section>
-
-<!-- Fear & Greed -->
-<section class="data-section">
-<h2 class="section-title">😱 시장 심리</h2>
-<a href="https://edition.cnn.com/markets/fear-and-greed" target="_blank" class="fear-greed" style="display:block;text-decoration:none;color:inherit">
-<div class="fg-header">
-<div class="fg-title">CNN Fear & Greed Index</div>
-<div><div class="fg-value" id="fgValue">--</div><div class="fg-label" id="fgLabel">로딩중...</div></div>
-</div>
+<section class="data-section"><h2 class="section-title">📈 주요 지수</h2><div class="data-grid" id="indicesGrid"></div></section>
+<section class="data-section"><h2 class="section-title">💱 환율</h2><div class="data-grid" id="forexGrid"></div></section>
+<section class="data-section"><h2 class="section-title">🛢️ 원자재</h2><div class="data-grid" id="commodityGrid"></div></section>
+<section class="data-section"><h2 class="section-title">₿ 암호화폐</h2><div class="data-grid" id="cryptoGrid"></div></section>
+<section class="data-section"><h2 class="section-title">⛓️ 비트코인 온체인</h2><div class="data-grid" id="onchainGrid"></div></section>
+<section class="data-section"><h2 class="section-title">😱 시장 심리</h2>
+<div class="fg-box" onclick="showModal('feargreed')"><span class="badge badge-live">LIVE</span>
+<div class="fg-header"><div class="fg-title">Crypto Fear & Greed Index</div><div><div class="fg-value" id="fgValue">--</div><div class="fg-label" id="fgLabel">로딩중</div></div></div>
 <div class="fg-bar"><div class="fg-indicator" id="fgIndicator" style="left:50%"></div></div>
-<div class="data-card-source" style="margin-top:12px">출처: CNN Business</div>
-</a>
-</section>
+</div></section>
 
-<!-- 데이터 출처 -->
-<section class="sources">
-<h3 class="sources-title">📚 데이터 출처</h3>
-<div class="sources-list">
-<div class="source-tag">주가/지수: <a href="https://finance.yahoo.com" target="_blank">Yahoo Finance</a></div>
-<div class="source-tag">환율: <a href="https://www.exchangerate-api.com" target="_blank">ExchangeRate-API</a></div>
-<div class="source-tag">암호화폐: <a href="https://www.coingecko.com" target="_blank">CoinGecko</a></div>
-<div class="source-tag">시장심리: <a href="https://edition.cnn.com/markets/fear-and-greed" target="_blank">CNN</a></div>
-</div>
-</section>
-
+<section class="sources"><h3 class="sources-title">📚 데이터 출처</h3><div class="sources-list">
+<div class="source-tag">지수/환율/원자재: <a href="https://tradingview.com">TradingView</a></div>
+<div class="source-tag">암호화폐: <a href="https://www.coingecko.com">CoinGecko</a></div>
+<div class="source-tag">온체인: <a href="https://blockchain.com">Blockchain.com</a></div>
+<div class="source-tag">시장심리: <a href="https://alternative.me">Alternative.me</a></div>
+</div></section>
 </div>
 </main>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+<div class="modal" onclick="event.stopPropagation()">
+<div class="modal-header"><div class="modal-title" id="modalTitle"></div><button class="modal-close" onclick="closeModal()">&times;</button></div>
+<div class="modal-body" id="modalBody"></div>
+</div>
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script>
-// API 엔드포인트 (CORS 프록시 사용)
-const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+const INFO = {
+sp500:{title:'📈 S&P 500',desc:'미국 대형주 500개 기업 지수. 전 세계 투자의 벤치마크.',details:['시가총액 가중 방식 계산','미국 GDP의 80% 대표','Apple, Microsoft, Nvidia 등 빅테크 비중'],interpret:[['사상최고가 경신','강세장, 투자심리 긍정','good'],['200일선 위','장기 상승 추세','good'],['200일선 아래','약세장 진입 가능','bad'],['고점대비 -20%','공식 약세장','bad']],correlation:'S&P500 상승 → 글로벌 위험자산 선호. <b>코스피와 상관계수 0.7+</b>',url:'https://finance.yahoo.com/quote/%5EGSPC',tv:'SPX'},
+nasdaq:{title:'💻 나스닥',desc:'기술주 중심 지수. 성장주의 바로미터.',details:['기술/성장주 비중 50% 이상','금리에 민감 (DCF 할인율)'],interpret:[['S&P대비 강세','기술주 주도장','good'],['금리 상승기','성장주 가치↓','bad']],correlation:'Fed 금리인상 → 나스닥 약세. AI/반도체 테마 주도.',url:'https://finance.yahoo.com/quote/%5EIXIC',tv:'IXIC'},
+kospi:{title:'🇰🇷 코스피',desc:'한국 대표 지수. 삼성전자 비중 약 20%.',details:['반도체 25%, 자동차 8%','외국인 지분율 30%+'],interpret:[['3,000pt 이상','호황','good'],['2,500pt 이하','약세, 외국인 이탈','bad']],correlation:'삼성전자 = 코스피. 원화약세 → 외국인 매도.',url:'https://finance.yahoo.com/quote/%5EKS11',tv:'KOSPI'},
+nikkei:{title:'🇯🇵 니케이225',desc:'일본 대표 지수. 34년만에 최고가(2024).',details:['엔저 → 수출기업 실적 개선','버핏 투자로 주목'],interpret:[['엔저 + 상승','수출호조','good'],['엔고 + 하락','경쟁력 약화','bad']],correlation:'엔/달러와 동행. BOJ 금리인상 → 엔고 → 조정.',url:'https://finance.yahoo.com/quote/%5EN225',tv:'NI225'},
+shanghai:{title:'🇨🇳 상해종합',desc:'중국 본토 A주 대표 지수.',details:['정부 정책에 극도로 민감','부동산 리스크'],interpret:[['3,500pt 이상','경기부양 효과','good'],['3,000pt 이하','경기우려','bad']],correlation:'정부 부양책 → 급등. 한국 대중수출과 연관.',url:'https://finance.yahoo.com/quote/000001.SS',tv:'SSE'},
+usdkrw:{title:'💱 달러/원',desc:'한국 경제의 바로미터.',details:['수출기업: 원화약세 유리','수입: 원화강세 유리'],interpret:[['1,200원 이하','원화강세','good'],['1,400원 이상','위기 수준','bad']],correlation:'Fed > 한은 금리 → 원화약세. 코스피와 역상관.',url:'https://www.google.com/finance/quote/USD-KRW',tv:'USDKRW'},
+usdjpy:{title:'💱 달러/엔',desc:'안전자산 통화. BOJ 정책에 민감.',details:['전통적 안전자산','BOJ 정책에 민감'],interpret:[['150엔 이상','극단적 엔저','bad']],correlation:'BOJ 금리인상 → 엔고.',url:'https://www.google.com/finance/quote/USD-JPY',tv:'USDJPY'},
+eurusd:{title:'💱 유로/달러',desc:'세계에서 가장 많이 거래되는 통화쌍.',details:['ECB 정책에 민감','유럽 경기 반영'],interpret:[['1.10 이상','유로 강세','good'],['패리티(1.00)','유럽 위기','bad']],correlation:'ECB vs Fed 금리차가 핵심.',url:'https://www.google.com/finance/quote/EUR-USD',tv:'EURUSD'},
+gold:{title:'🥇 금',desc:'대표 안전자산. 인플레이션 헤지.',details:['달러와 역상관','실질금리와 역상관'],interpret:[['실질금리 하락','금 매력↑','good'],['달러 약세','금 상승','good']],correlation:'위기시 안전자산 수요. 중앙은행 매입 증가.',url:'https://finance.yahoo.com/quote/GC=F',tv:'GOLD'},
+oil:{title:'🛢️ WTI 원유',desc:'국제 유가 기준. 경기 선행지표.',details:['OPEC+ 감산에 민감','글로벌 수요 반영'],interpret:[['$80 이상','공급부족','warn'],['$60 이하','수요부진','bad']],correlation:'유가↑ → 인플레. 한국: 순수입국.',url:'https://finance.yahoo.com/quote/CL=F',tv:'USOIL'},
+silver:{title:'🥈 은',desc:'귀금속 + 산업금속.',details:['금보다 변동성 큼','태양광 수요'],interpret:[['금/은 비율 80+','저평가','good']],correlation:'금과 동행. 태양광 확대 → 수요↑.',url:'https://finance.yahoo.com/quote/SI=F',tv:'SILVER'},
+natgas:{title:'🔥 천연가스',desc:'에너지 원자재. 계절성 강함.',details:['겨울 난방 수요','LNG 수출 영향'],interpret:[['$4 이상','공급부족','warn']],correlation:'유럽 에너지 위기 영향.',url:'https://finance.yahoo.com/quote/NG=F',tv:'NATGAS'},
+bitcoin:{title:'₿ 비트코인',desc:'최초의 암호화폐. 디지털 금.',details:['총 2,100만개 한정','4년마다 반감기','ETF 승인 (2024)'],interpret:[['사상최고가','강세장','good'],['고점대비 -50%','크립토 윈터','bad']],correlation:'위험자산 → 나스닥과 동행.',url:'https://www.coingecko.com/ko/coins/bitcoin',tv:'BTCUSD'},
+ethereum:{title:'Ξ 이더리움',desc:'스마트컨트랙트 플랫폼.',details:['시총 2위','디파이/NFT 기반'],interpret:[['비트코인 대비 강세','알트시즌','good']],correlation:'비트코인과 상관계수 0.9+',url:'https://www.coingecko.com/ko/coins/ethereum',tv:'ETHUSD'},
+hashrate:{title:'⛏️ 해시레이트',desc:'비트코인 네트워크 채굴 연산력.',details:['높을수록 보안 강화','채굴자 신뢰 반영'],interpret:[['사상최고','네트워크 건강','good'],['급락','채굴자 이탈','bad']],correlation:'해시레이트↑ → 가격 지지.',url:'https://www.blockchain.com/explorer/charts/hash-rate',tv:''},
+difficulty:{title:'🔧 채굴 난이도',desc:'블록 생성 난이도. 2주마다 조정.',details:['해시레이트 따라 조정','10분 블록타임 유지'],interpret:[['상승','네트워크 성장','good']],correlation:'난이도↑ → 채굴비용↑ → 가격 지지.',url:'https://www.blockchain.com/explorer/charts/difficulty',tv:''},
+txcount:{title:'📊 일일 거래수',desc:'비트코인 일일 거래 건수.',details:['네트워크 활동 지표'],interpret:[['40만건+','활발','good']],correlation:'거래↑ → 네트워크 가치↑',url:'https://www.blockchain.com/explorer/charts/n-transactions',tv:''},
+mvrv:{title:'📈 MVRV Z-Score',desc:'시장가치 vs 실현가치. 장기 투자 타이밍.',details:['역사적 정확도 높음'],interpret:[['0 이하','저평가, 매수 적기','good'],['7 이상','고평가, 매도 신호','bad']],correlation:'MVRV 0 이하 매수 → 큰 수익.',url:'https://www.lookintobitcoin.com/charts/mvrv-zscore/',tv:''},
+puell:{title:'💎 Puell Multiple',desc:'채굴 수익성 지표.',details:['반감기 전후 급변'],interpret:[['0.5 이하','바닥 근접','good'],['4 이상','고점 경고','bad']],correlation:'반감기 후 급락 → 상승 시작.',url:'https://www.lookintobitcoin.com/charts/puell-multiple/',tv:''},
+exchange:{title:'🏦 거래소 보유량',desc:'거래소 비트코인 총량.',details:['보유량 = 매도 대기'],interpret:[['감소','장기보유↑','good'],['증가','매도 압력↑','bad']],correlation:'보유량↓ → 공급 부족 → 가격↑',url:'https://www.coinglass.com/pro/i/bitcoin-exchange-balance',tv:''},
+feargreed:{title:'😱 Crypto Fear & Greed',desc:'암호화폐 공포/탐욕 지수.',details:['0~25: 극단적 공포','75~100: 극단적 탐욕'],interpret:[['0~25','역발상 매수','good'],['75~100','버블 경고','bad']],correlation:'공포에 매수, 탐욕에 매도.',url:'https://alternative.me/crypto/fear-and-greed-index/',tv:''}
+};
 
-// 데이터 카드 생성
-function createDataCard(name, flag, value, change, changePercent, url, source) {
-    const isUp = change > 0;
-    const isDown = change < 0;
-    const changeClass = isUp ? 'up' : isDown ? 'down' : 'neutral';
-    const changeSign = isUp ? '+' : '';
+function showModal(key) {
+    const info = INFO[key];
+    if (!info) return;
+    document.getElementById('modalTitle').textContent = info.title;
     
-    return `
-        <a href="${url}" target="_blank" class="data-card">
-            <div class="data-card-header">
-                <div class="data-card-name">${name}</div>
-                <div class="data-card-flag">${flag}</div>
-            </div>
-            <div class="data-card-value">${value}</div>
-            <div class="data-card-change ${changeClass}">
-                ${changeSign}${change.toFixed(2)} (${changeSign}${changePercent.toFixed(2)}%)
-            </div>
-            <div class="data-card-source">출처: ${source}</div>
-        </a>
+    let chartHtml = info.tv ? `<div class="m-chart" id="tvchart"></div>` : '';
+    
+    document.getElementById('modalBody').innerHTML = `
+        ${chartHtml}
+        <div class="m-section"><div class="m-section-title">📌 개요</div><div class="m-text">${info.desc}</div></div>
+        <div class="m-section"><div class="m-section-title">📋 상세 정보</div><ul class="m-list">${info.details.map(d=>`<li>${d}</li>`).join('')}</ul></div>
+        <div class="m-section"><div class="m-section-title">🔍 해석 방법</div><div class="m-table">${info.interpret.map(i=>`<div class="m-row ${i[2]}"><span>${i[0]}</span><span>${i[1]}</span></div>`).join('')}</div></div>
+        <div class="m-section"><div class="m-section-title">🔗 시장 상관관계</div><div class="m-text">${info.correlation}</div></div>
+        <a href="${info.url}" target="_blank" class="m-link">📊 데이터 출처로 이동 →</a>
     `;
-}
-
-// 숫자 포맷
-function formatNumber(num, decimals = 2) {
-    if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
-    if (num >= 1000) return num.toLocaleString('ko-KR', {maximumFractionDigits: decimals});
-    return num.toFixed(decimals);
-}
-
-// Yahoo Finance 데이터 (주가/지수/원자재)
-async function fetchYahooData() {
-    const symbols = {
-        // 지수
-        '^GSPC': {name: 'S&P 500', flag: '🇺🇸', url: 'https://finance.yahoo.com/quote/%5EGSPC'},
-        '^DJI': {name: '다우존스', flag: '🇺🇸', url: 'https://finance.yahoo.com/quote/%5EDJI'},
-        '^IXIC': {name: '나스닥', flag: '🇺🇸', url: 'https://finance.yahoo.com/quote/%5EIXIC'},
-        '^KS11': {name: 'KOSPI', flag: '🇰🇷', url: 'https://finance.yahoo.com/quote/%5EKS11'},
-        '^N225': {name: '닛케이225', flag: '🇯🇵', url: 'https://finance.yahoo.com/quote/%5EN225'},
-        '^HSI': {name: '항셍', flag: '🇭🇰', url: 'https://finance.yahoo.com/quote/%5EHSI'},
-        '^FTSE': {name: 'FTSE 100', flag: '🇬🇧', url: 'https://finance.yahoo.com/quote/%5EFTSE'},
-        '^GDAXI': {name: 'DAX', flag: '🇩🇪', url: 'https://finance.yahoo.com/quote/%5EGDAXI'},
-    };
+    document.getElementById('modalOverlay').classList.add('active');
     
-    const commoditySymbols = {
-        'CL=F': {name: 'WTI 원유', flag: '🛢️', url: 'https://finance.yahoo.com/quote/CL=F'},
-        'GC=F': {name: '금', flag: '🥇', url: 'https://finance.yahoo.com/quote/GC=F'},
-        'SI=F': {name: '은', flag: '🥈', url: 'https://finance.yahoo.com/quote/SI=F'},
-        'HG=F': {name: '구리', flag: '🔶', url: 'https://finance.yahoo.com/quote/HG=F'},
-        'NG=F': {name: '천연가스', flag: '🔥', url: 'https://finance.yahoo.com/quote/NG=F'},
-    };
-    
-    try {
-        // 지수 데이터
-        const indicesHtml = [];
-        for (const [symbol, info] of Object.entries(symbols)) {
-            try {
-                const response = await fetch(`${CORS_PROXY}${encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`)}`);
-                const data = await response.json();
-                const meta = data.chart.result[0].meta;
-                const price = meta.regularMarketPrice;
-                const prevClose = meta.chartPreviousClose || meta.previousClose;
-                const change = price - prevClose;
-                const changePercent = (change / prevClose) * 100;
-                
-                indicesHtml.push(createDataCard(info.name, info.flag, formatNumber(price, 2), change, changePercent, info.url, 'Yahoo Finance'));
-            } catch (e) {
-                console.error(`Error fetching ${symbol}:`, e);
-            }
-        }
-        if (indicesHtml.length > 0) {
-            document.getElementById('indicesGrid').innerHTML = indicesHtml.join('');
-        }
-        
-        // 원자재 데이터
-        const commodityHtml = [];
-        for (const [symbol, info] of Object.entries(commoditySymbols)) {
-            try {
-                const response = await fetch(`${CORS_PROXY}${encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`)}`);
-                const data = await response.json();
-                const meta = data.chart.result[0].meta;
-                const price = meta.regularMarketPrice;
-                const prevClose = meta.chartPreviousClose || meta.previousClose;
-                const change = price - prevClose;
-                const changePercent = (change / prevClose) * 100;
-                
-                commodityHtml.push(createDataCard(info.name, info.flag, formatNumber(price, 2), change, changePercent, info.url, 'Yahoo Finance'));
-            } catch (e) {
-                console.error(`Error fetching ${symbol}:`, e);
-            }
-        }
-        if (commodityHtml.length > 0) {
-            document.getElementById('commodityGrid').innerHTML = commodityHtml.join('');
-        }
-        
-    } catch (error) {
-        console.error('Yahoo Finance error:', error);
-        document.getElementById('indicesGrid').innerHTML = '<div class="data-card">데이터를 불러올 수 없습니다</div>';
+    if (info.tv) {
+        setTimeout(() => {
+            new TradingView.widget({
+                container_id: "tvchart",
+                width: "100%",
+                height: 400,
+                symbol: info.tv,
+                interval: "D",
+                timezone: "Asia/Seoul",
+                theme: "dark",
+                style: "1",
+                locale: "kr",
+                enable_publishing: false,
+                hide_top_toolbar: false,
+                hide_legend: false,
+                save_image: false
+            });
+        }, 100);
     }
 }
 
-// 환율 데이터 (ExchangeRate-API 무료)
-async function fetchForexData() {
-    try {
-        const response = await fetch('https://open.er-api.com/v6/latest/USD');
-        const data = await response.json();
-        
-        const rates = [
-            {name: 'USD/KRW', flag: '🇰🇷', rate: data.rates.KRW, url: 'https://www.google.com/finance/quote/USD-KRW'},
-            {name: 'USD/JPY', flag: '🇯🇵', rate: data.rates.JPY, url: 'https://www.google.com/finance/quote/USD-JPY'},
-            {name: 'EUR/USD', flag: '🇪🇺', rate: 1/data.rates.EUR, url: 'https://www.google.com/finance/quote/EUR-USD'},
-            {name: 'GBP/USD', flag: '🇬🇧', rate: 1/data.rates.GBP, url: 'https://www.google.com/finance/quote/GBP-USD'},
-            {name: 'USD/CNY', flag: '🇨🇳', rate: data.rates.CNY, url: 'https://www.google.com/finance/quote/USD-CNY'},
-        ];
-        
-        const html = rates.map(r => `
-            <a href="${r.url}" target="_blank" class="data-card">
-                <div class="data-card-header">
-                    <div class="data-card-name">${r.name}</div>
-                    <div class="data-card-flag">${r.flag}</div>
-                </div>
-                <div class="data-card-value">${r.rate.toFixed(r.rate > 100 ? 2 : 4)}</div>
-                <div class="data-card-change neutral">실시간</div>
-                <div class="data-card-source">출처: ExchangeRate-API</div>
-            </a>
-        `).join('');
-        
-        document.getElementById('forexGrid').innerHTML = html;
-    } catch (error) {
-        console.error('Forex error:', error);
-        document.getElementById('forexGrid').innerHTML = '<div class="data-card">데이터를 불러올 수 없습니다</div>';
-    }
+function closeModal(e) {
+    if (e && e.target !== e.currentTarget) return;
+    document.getElementById('modalOverlay').classList.remove('active');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// TradingView 미니 위젯으로 지수/환율/원자재 표시
+function createTVCard(key, name, flag, symbol) {
+    const id = 'tv_' + key;
+    return `<div class="tv-card" onclick="showModal('${key}')">
+        <div class="tv-card-header"><span class="tv-card-name">${name}</span><span class="tv-card-flag">${flag}</span></div>
+        <div class="tv-mini" id="${id}"></div>
+    </div>`;
 }
 
-// 암호화폐 데이터 (CoinGecko 무료)
-async function fetchCryptoData() {
+function initTVMini(id, symbol) {
+    new TradingView.MediumWidget({
+        symbols: [[symbol]],
+        chartOnly: true,
+        width: "100%",
+        height: "100%",
+        locale: "kr",
+        colorTheme: "dark",
+        isTransparent: true,
+        autosize: true,
+        showVolume: false,
+        hideDateRanges: true,
+        scalePosition: "no",
+        scaleMode: "Normal",
+        fontFamily: "Noto Sans KR",
+        noTimeScale: true,
+        valuesTracking: "0",
+        chartType: "area",
+        lineColor: "#00d4ff",
+        bottomColor: "rgba(0, 212, 255, 0.1)",
+        lineWidth: 2,
+        container_id: id
+    });
+}
+
+function renderIndices() {
+    const items = [
+        ['sp500','S&P 500','🇺🇸','SPX'],
+        ['nasdaq','나스닥','💻','IXIC'],
+        ['kospi','코스피','🇰🇷','KOSPI'],
+        ['nikkei','니케이','🇯🇵','NI225'],
+        ['shanghai','상해종합','🇨🇳','SSE']
+    ];
+    document.getElementById('indicesGrid').innerHTML = items.map(([k,n,f,s])=>createTVCard(k,n,f,s)).join('');
+    setTimeout(()=>items.forEach(([k,n,f,s])=>initTVMini('tv_'+k,s)),100);
+}
+
+function renderForex() {
+    const items = [
+        ['usdkrw','USD/KRW','🇰🇷','USDKRW'],
+        ['usdjpy','USD/JPY','🇯🇵','USDJPY'],
+        ['eurusd','EUR/USD','🇪🇺','EURUSD']
+    ];
+    document.getElementById('forexGrid').innerHTML = items.map(([k,n,f,s])=>createTVCard(k,n,f,s)).join('');
+    setTimeout(()=>items.forEach(([k,n,f,s])=>initTVMini('tv_'+k,s)),200);
+}
+
+function renderCommodities() {
+    const items = [
+        ['gold','금','🥇','GOLD'],
+        ['oil','WTI원유','🛢️','USOIL'],
+        ['silver','은','🥈','SILVER'],
+        ['natgas','천연가스','🔥','NATGAS']
+    ];
+    document.getElementById('commodityGrid').innerHTML = items.map(([k,n,f,s])=>createTVCard(k,n,f,s)).join('');
+    setTimeout(()=>items.forEach(([k,n,f,s])=>initTVMini('tv_'+k,s)),300);
+}
+
+function fmt(n,d=2){return n>=1e9?(n/1e9).toFixed(2)+'B':n>=1e6?(n/1e6).toFixed(2)+'M':n.toLocaleString('en-US',{maximumFractionDigits:d})}
+
+function card(key,name,flag,value,change,pct,src,live=true) {
+    const cls = change>0?'up':change<0?'down':'neutral';
+    const badge = live?'<span class="badge badge-live">LIVE</span>':'<span class="badge badge-link">LINK</span>';
+    return `<div class="data-card" onclick="showModal('${key}')">${badge}
+        <div class="data-card-header"><div class="data-card-name">${name}</div><div class="data-card-flag">${flag}</div></div>
+        <div class="data-card-value">${value}</div>
+        <div class="data-card-change ${cls}">${change>0?'+':''}${typeof pct==='number'?pct.toFixed(2)+'%':pct}</div>
+        <div class="data-card-source">출처: ${src}</div>
+    </div>`;
+}
+
+async function fetchCrypto() {
     try {
-        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,ripple,solana,dogecoin&vs_currencies=usd&include_24hr_change=true');
-        const data = await response.json();
-        
-        const cryptos = [
-            {id: 'bitcoin', name: 'Bitcoin', flag: '₿', symbol: 'BTC'},
-            {id: 'ethereum', name: 'Ethereum', flag: 'Ξ', symbol: 'ETH'},
-            {id: 'ripple', name: 'XRP', flag: '✕', symbol: 'XRP'},
-            {id: 'solana', name: 'Solana', flag: '◎', symbol: 'SOL'},
-            {id: 'dogecoin', name: 'Dogecoin', flag: '🐕', symbol: 'DOGE'},
-        ];
-        
-        const html = cryptos.map(c => {
-            const price = data[c.id].usd;
-            const change = data[c.id].usd_24h_change || 0;
-            const isUp = change > 0;
-            const changeClass = isUp ? 'up' : change < 0 ? 'down' : 'neutral';
-            
-            return `
-                <a href="https://www.coingecko.com/ko/coins/${c.id}" target="_blank" class="data-card">
-                    <div class="data-card-header">
-                        <div class="data-card-name">${c.name}</div>
-                        <div class="data-card-flag">${c.flag}</div>
-                    </div>
-                    <div class="data-card-value">$${formatNumber(price, price > 100 ? 0 : 2)}</div>
-                    <div class="data-card-change ${changeClass}">${change > 0 ? '+' : ''}${change.toFixed(2)}%</div>
-                    <div class="data-card-source">출처: CoinGecko</div>
-                </a>
-            `;
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+        const data = await res.json();
+        const html = [['bitcoin','Bitcoin','₿'],['ethereum','Ethereum','Ξ']].map(([id,name,flag]) => {
+            const price = data[id].usd;
+            const chg = data[id].usd_24h_change || 0;
+            return card(id,name,flag,'$'+fmt(price,price>100?0:2),chg,chg,'CoinGecko');
         }).join('');
-        
         document.getElementById('cryptoGrid').innerHTML = html;
-    } catch (error) {
-        console.error('Crypto error:', error);
-        document.getElementById('cryptoGrid').innerHTML = '<div class="data-card">데이터를 불러올 수 없습니다</div>';
+    } catch(e) {
+        document.getElementById('cryptoGrid').innerHTML = [['bitcoin','Bitcoin','₿','BTCUSD'],['ethereum','Ethereum','Ξ','ETHUSD']].map(([k,n,f,s])=>createTVCard(k,n,f,s)).join('');
     }
 }
 
-// Fear & Greed (CNN 직접 접근 불가로 대체값 사용)
+async function fetchOnchain() {
+    let html = '';
+    try {
+        const res = await fetch('https://api.blockchain.info/charts/hash-rate?timespan=2days&format=json&cors=true');
+        const data = await res.json();
+        const latest = data.values[data.values.length-1];
+        const prev = data.values[data.values.length-2];
+        const hr = latest.y/1e6;
+        const chg = ((latest.y-prev.y)/prev.y)*100;
+        html += card('hashrate','해시레이트','⛏️',hr.toFixed(0)+' EH/s',chg,chg,'Blockchain.com');
+    } catch(e) { html += card('hashrate','해시레이트','⛏️','클릭',0,'차트 확인','Blockchain.com',false); }
+    
+    try {
+        const res = await fetch('https://api.blockchain.info/charts/difficulty?timespan=30days&format=json&cors=true');
+        const data = await res.json();
+        const latest = data.values[data.values.length-1];
+        const prev = data.values[Math.max(0,data.values.length-15)];
+        const diff = latest.y/1e12;
+        const chg = ((latest.y-prev.y)/prev.y)*100;
+        html += card('difficulty','채굴 난이도','🔧',diff.toFixed(2)+'T',chg,chg,'Blockchain.com');
+    } catch(e) { html += card('difficulty','채굴 난이도','🔧','클릭',0,'차트 확인','Blockchain.com',false); }
+    
+    try {
+        const res = await fetch('https://api.blockchain.info/charts/n-transactions?timespan=2days&format=json&cors=true');
+        const data = await res.json();
+        const latest = data.values[data.values.length-1];
+        const prev = data.values[data.values.length-2];
+        const chg = ((latest.y-prev.y)/prev.y)*100;
+        html += card('txcount','일일 거래수','📊',fmt(latest.y,0),chg,chg,'Blockchain.com');
+    } catch(e) { html += card('txcount','일일 거래수','📊','클릭',0,'차트 확인','Blockchain.com',false); }
+    
+    html += `
+        <div class="data-card" onclick="showModal('mvrv')"><span class="badge badge-link">LINK</span>
+            <div class="data-card-header"><div class="data-card-name">MVRV Z-Score</div><div class="data-card-flag">📈</div></div>
+            <div class="data-card-value" style="font-size:14px;color:var(--text2)">클릭하여 확인</div>
+            <div class="data-card-source">출처: LookIntoBitcoin</div>
+        </div>
+        <div class="data-card" onclick="showModal('puell')"><span class="badge badge-link">LINK</span>
+            <div class="data-card-header"><div class="data-card-name">Puell Multiple</div><div class="data-card-flag">💎</div></div>
+            <div class="data-card-value" style="font-size:14px;color:var(--text2)">클릭하여 확인</div>
+            <div class="data-card-source">출처: LookIntoBitcoin</div>
+        </div>
+        <div class="data-card" onclick="showModal('exchange')"><span class="badge badge-link">LINK</span>
+            <div class="data-card-header"><div class="data-card-name">거래소 보유량</div><div class="data-card-flag">🏦</div></div>
+            <div class="data-card-value" style="font-size:14px;color:var(--text2)">클릭하여 확인</div>
+            <div class="data-card-source">출처: CoinGlass</div>
+        </div>`;
+    document.getElementById('onchainGrid').innerHTML = html;
+}
+
 function fetchFearGreed() {
-    // CNN F&G는 직접 API가 없어서 alternative.me 사용
-    fetch('https://api.alternative.me/fng/')
-        .then(res => res.json())
-        .then(data => {
-            const value = parseInt(data.data[0].value);
-            const classification = data.data[0].value_classification;
-            
-            document.getElementById('fgValue').textContent = value;
-            document.getElementById('fgLabel').textContent = classification;
-            document.getElementById('fgIndicator').style.left = value + '%';
-            
-            // 색상
-            const fgValue = document.getElementById('fgValue');
-            if (value <= 25) fgValue.style.color = 'var(--red)';
-            else if (value <= 45) fgValue.style.color = 'var(--orange)';
-            else if (value <= 55) fgValue.style.color = 'var(--gold)';
-            else fgValue.style.color = 'var(--green)';
-        })
-        .catch(err => {
-            console.error('F&G error:', err);
-            document.getElementById('fgValue').textContent = '--';
-            document.getElementById('fgLabel').textContent = '데이터 없음';
-        });
+    fetch('https://api.alternative.me/fng/').then(r=>r.json()).then(data=>{
+        const v = parseInt(data.data[0].value);
+        document.getElementById('fgValue').textContent = v;
+        document.getElementById('fgLabel').textContent = data.data[0].value_classification;
+        document.getElementById('fgIndicator').style.left = v+'%';
+        const el = document.getElementById('fgValue');
+        el.style.color = v<=25?'var(--red)':v<=45?'var(--orange)':v<=55?'var(--gold)':'var(--green)';
+    }).catch(e=>console.error(e));
 }
 
-// 업데이트 시간
-function updateTime() {
-    const now = new Date();
-    document.getElementById('lastUpdate').textContent = now.toLocaleString('ko-KR');
-}
-
-// 초기화
-async function init() {
-    updateTime();
-    
-    // 병렬 로딩
-    await Promise.all([
-        fetchYahooData(),
-        fetchForexData(),
-        fetchCryptoData(),
-    ]);
-    
+function init() {
+    renderIndices();
+    renderForex();
+    renderCommodities();
+    fetchCrypto();
+    fetchOnchain();
     fetchFearGreed();
-    
-    // 5분마다 자동 갱신
-    setInterval(() => {
-        updateTime();
-        fetchYahooData();
-        fetchForexData();
-        fetchCryptoData();
-        fetchFearGreed();
-    }, 300000);
 }
-
 init();
 </script>
 </body>
