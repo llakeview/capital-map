@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏭 국내 철강산업 구조 마인드맵</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --steel-dark: #1a1d23;
+            --steel-gray: #2d3139;
+            --steel-light: #4a5162;
+            --metal-silver: #8892a0;
+            --spark-orange: #ff6b35;
+            --spark-yellow: #ffc857;
+            --molten-red: #e63946;
+            --cool-blue: #4895ef;
+            --forge-purple: #7b2cbf;
+            --electric-cyan: #00f5d4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--steel-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #e8e8e8;
+        }
+
+        /* 배경 그라데이션 */
+        .bg-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(255, 107, 53, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(72, 149, 239, 0.08) 0%, transparent 50%),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255,255,255,0.01) 2px,
+                    rgba(255,255,255,0.01) 4px
+                );
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* 헤더 */
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--spark-orange), var(--spark-yellow), var(--spark-orange), transparent);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #fff 0%, var(--metal-silver) 50%, #fff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px rgba(255,255,255,0.1);
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: var(--metal-silver);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* 메인 컨테이너 */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* 섹션 스타일 */
+        .section {
+            margin-bottom: 60px;
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.3s; }
+        .section:nth-child(3) { animation-delay: 0.5s; }
+        .section:nth-child(4) { animation-delay: 0.7s; }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--spark-orange);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--spark-orange), var(--spark-yellow));
+        }
+
+        /* 마인드맵 노드 */
+        .mindmap-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .level-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        /* 중앙 노드 */
+        .central-node {
+            background: linear-gradient(145deg, var(--steel-gray), var(--steel-dark));
+            border: 2px solid var(--spark-orange);
+            border-radius: 20px;
+            padding: 30px 50px;
+            text-align: center;
+            box-shadow: 
+                0 0 30px rgba(255, 107, 53, 0.3),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .central-node::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255,255,255,0.05) 50%,
+                transparent 70%
+            );
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .central-node h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: #fff;
+            position: relative;
+        }
+
+        /* 제조방식 카드 */
+        .method-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .method-card {
+            background: linear-gradient(145deg, var(--steel-gray), var(--steel-dark));
+            border-radius: 16px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+        }
+
+        .method-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .method-card.goro {
+            border-top: 4px solid var(--molten-red);
+        }
+
+        .method-card.goro::after {
+            content: '🔥';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+        }
+
+        .method-card.electric {
+            border-top: 4px solid var(--electric-cyan);
+        }
+
+        .method-card.electric::after {
+            content: '⚡';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+        }
+
+        .method-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .method-card.goro h3 { color: var(--molten-red); }
+        .method-card.electric h3 { color: var(--electric-cyan); }
+
+        .method-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+
+        .info-label {
+            font-weight: 700;
+            color: var(--spark-yellow);
+            min-width: 70px;
+            font-size: 0.9rem;
+        }
+
+        .info-value {
+            color: var(--metal-silver);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* 반제품 플로우 */
+        .semi-products {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            padding: 40px 0;
+        }
+
+        .semi-product {
+            background: linear-gradient(145deg, var(--steel-light), var(--steel-gray));
+            border-radius: 12px;
+            padding: 25px 35px;
+            text-align: center;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .semi-product:hover {
+            transform: scale(1.08);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .semi-product h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--spark-yellow);
+            margin-bottom: 8px;
+        }
+
+        .semi-product p {
+            font-size: 0.85rem;
+            color: var(--metal-silver);
+        }
+
+        .arrow {
+            font-size: 2rem;
+            color: var(--spark-orange);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* 제품별 트리 */
+        .product-tree {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .product-branch {
+            background: linear-gradient(145deg, var(--steel-gray), var(--steel-dark));
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .product-branch:hover {
+            border-color: var(--cool-blue);
+            box-shadow: 0 0 25px rgba(72, 149, 239, 0.2);
+        }
+
+        .branch-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .branch-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .branch-header h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: #fff;
+        }
+
+        .branch-header small {
+            display: block;
+            color: var(--metal-silver);
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
+        .branch-content {
+            padding: 20px;
+        }
+
+        .use-case {
+            font-size: 0.85rem;
+            color: var(--metal-silver);
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 2px solid var(--spark-orange);
+        }
+
+        .companies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .company-tag {
+            background: rgba(72, 149, 239, 0.15);
+            color: var(--cool-blue);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid rgba(72, 149, 239, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .company-tag:hover {
+            background: rgba(72, 149, 239, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .company-tag.major {
+            background: rgba(255, 107, 53, 0.15);
+            color: var(--spark-orange);
+            border-color: rgba(255, 107, 53, 0.3);
+        }
+
+        .company-tag.major:hover {
+            background: rgba(255, 107, 53, 0.3);
+        }
+
+        /* 색상 구분 */
+        .icon-hot { background: linear-gradient(135deg, var(--molten-red), #ff8c69); }
+        .icon-cold { background: linear-gradient(135deg, var(--cool-blue), #00d4ff); }
+        .icon-thick { background: linear-gradient(135deg, var(--forge-purple), #9d4edd); }
+        .icon-pipe { background: linear-gradient(135deg, var(--electric-cyan), #00e0b8); }
+        .icon-wire { background: linear-gradient(135deg, var(--spark-yellow), #ffd700); }
+        .icon-rebar { background: linear-gradient(135deg, #6c757d, #adb5bd); }
+        .icon-shape { background: linear-gradient(135deg, #20c997, #40e0d0); }
+
+        /* 추가 설명 섹션 */
+        .additional-section {
+            background: linear-gradient(145deg, rgba(123, 44, 191, 0.1), rgba(72, 149, 239, 0.1));
+            border: 1px solid rgba(123, 44, 191, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 60px;
+        }
+
+        .additional-section .section-title {
+            color: var(--forge-purple);
+        }
+
+        .additional-section .section-title::before {
+            background: linear-gradient(90deg, var(--forge-purple), var(--cool-blue));
+        }
+
+        .additional-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .additional-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 16px;
+            padding: 25px;
+            border-left: 4px solid var(--forge-purple);
+        }
+
+        .additional-card h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--spark-yellow);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .additional-card p {
+            color: var(--metal-silver);
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .additional-card ul {
+            list-style: none;
+            margin-top: 12px;
+        }
+
+        .additional-card li {
+            color: var(--metal-silver);
+            font-size: 0.85rem;
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .additional-card li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--spark-orange);
+        }
+
+        /* 핵심 포인트 박스 */
+        .key-insight {
+            background: linear-gradient(145deg, rgba(255, 107, 53, 0.1), rgba(255, 200, 87, 0.1));
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .key-insight h4 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--spark-orange);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .key-insight p {
+            color: var(--metal-silver);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        /* 푸터 */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        footer p {
+            color: var(--steel-light);
+            font-size: 0.85rem;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .method-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .semi-products {
+                flex-direction: column;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+
+            .central-node {
+                padding: 20px 30px;
+            }
+
+            .additional-section {
+                padding: 25px;
+            }
+        }
+
+        /* 툴팁 */
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted var(--spark-yellow);
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--steel-dark);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 100;
+            border: 1px solid var(--spark-orange);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-texture"></div>
+
+    <header>
+        <h1>🏭 STEEL INDUSTRY</h1>
+        <p class="subtitle">국내 철강산업 구조 완벽 가이드</p>
+    </header>
+
+    <div class="container">
+        <!-- 섹션 1: 산업 중심 -->
+        <section class="section">
+            <div class="section-title">STEP 1. 철강산업의 시작점</div>
+            <div class="mindmap-container">
+                <div class="level-row">
+                    <div class="central-node">
+                        <h2>🏭 철강산업</h2>
+                        <p style="color: var(--metal-silver); margin-top: 10px;">제조 방식에 따라 크게 2가지로 분류</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 2: 제조방식 -->
+        <section class="section">
+            <div class="section-title">STEP 2. 제조 방식 (상공정)</div>
+            <div class="method-cards">
+                <div class="method-card goro">
+                    <h3>고로 (高爐) 방식</h3>
+                    <div class="method-info">
+                        <div class="info-item">
+                            <span class="info-label">원료</span>
+                            <span class="info-value">철광석 + 원료탄 (석탄) → 대부분 <span class="tooltip" data-tip="호주에서 50% 이상 수입">수입 의존</span></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">공정</span>
+                            <span class="info-value">원료를 녹여 쇳물 생성 → 주조 공정으로 고체 철강 생산</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">특징</span>
+                            <span class="info-value">대규모 투자 필요 → <strong style="color: var(--spark-orange);">과점 구조</strong></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">대표기업</span>
+                            <span class="info-value">포스코, 현대제철</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="method-card electric">
+                    <h3>전기로 (電氣爐) 방식</h3>
+                    <div class="method-info">
+                        <div class="info-item">
+                            <span class="info-label">원료</span>
+                            <span class="info-value">철스크랩 (고철) → <span class="tooltip" data-tip="선진국일수록 철스크랩이 많이 발생">대부분 국내 조달</span></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">공정</span>
+                            <span class="info-value">전기로에서 고철을 녹여 쇳물 → 반제품 생산</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">특징</span>
+                            <span class="info-value">불순물이 많아 품질이 다소 낮음</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">대표기업</span>
+                            <span class="info-value">현대제철, 세아베스틸, 한국철강, 대한제강 등</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 3: 반제품 -->
+        <section class="section">
+            <div class="section-title">STEP 3. 반제품 (중간재)</div>
+            <div class="semi-products">
+                <div class="semi-product">
+                    <h4>슬라브 (SLAB)</h4>
+                    <p>넓고 납작한 판 형태</p>
+                    <p style="font-size: 0.75rem; color: var(--cool-blue); margin-top: 8px;">→ 강판류 제작</p>
+                </div>
+                <span class="arrow">→</span>
+                <div class="semi-product">
+                    <h4>빌레 (BILLET)</h4>
+                    <p>작은 사각형 봉 형태</p>
+                    <p style="font-size: 0.75rem; color: var(--cool-blue); margin-top: 8px;">→ 선재, 철근 제작</p>
+                </div>
+                <span class="arrow">→</span>
+                <div class="semi-product">
+                    <h4>블룸 (BLOOM)</h4>
+                    <p>큰 사각형 봉 형태</p>
+                    <p style="font-size: 0.75rem; color: var(--cool-blue); margin-top: 8px;">→ 형강, 봉강 제작</p>
+                </div>
+            </div>
+            <p style="text-align: center; color: var(--metal-silver); font-size: 0.9rem;">
+                ☝️ 반제품은 모양에 따라 구분되며, 각각 다른 완제품으로 가공됩니다
+            </p>
+        </section>
+
+        <!-- 섹션 4: 완제품 -->
+        <section class="section">
+            <div class="section-title">STEP 4. 완제품 (하공정 - 압연)</div>
+            <div class="product-tree">
+                <!-- 열연강판 -->
+                <div class="product-branch">
+                    <div class="branch-header">
+                        <div class="branch-icon icon-hot">🔥</div>
+                        <div>
+                            <h4>열연강판</h4>
+                            <small>Hot-Rolled Steel</small>
+                        </div>
+                    </div>
+                    <div class="branch-content">
+                        <p class="use-case">슬라브를 고온에서 압연. 건설, 자동차, 조선 등에 사용</p>
+                        <div class="companies">
+                            <span class="company-tag major">포스코</span>
+                            <span class="company-tag major">현대제철</span>
+                            <span class="company-tag">동부제철</span>
+                            <span class="company-tag">동국산업</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 냉연강판 -->
+                <div class="product-branch">
+                    <div class="branch-header">
+                        <div class="branch-icon icon-cold">❄️</div>
+                        <div>
+                            <h4>냉연강판</h4>
+                            <small>Cold-Rolled Steel</small>
+                        </div>
+                    </div>
+                    <div class="branch-content">
+                        <p class="use-case">열연 + 냉간압연. 표면이 깨끗하고 밝음. 자동차, 백색가전에 사용</p>
+                        <div class="companies">
+                            <span class="company-tag major">포스코</span>
+                            <span class="company-tag major">현대제철</span>
+                            <span class="company-tag">동부제철</span>
+                            <span class="company-tag">동국제강</span>
+                            <span class="company-tag">현대BNG스틸</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 후판 -->
+                <div class="product-branch">
+                    <div class="branch-header">
+                        <div class="branch-icon icon-thick">📐</div>
+                        <div>
+                            <h4>후판</h4>
+                            <small>Heavy Plate</small>
+                        </div>
+                    </div>
+                    <div class="branch-content">
+                        <p class="use-case">두꺼운 강판. 조선, 건설, 중공업에 사용</p>
+                        <div class="companies">
+                            <span class="company-tag major">포스코</span>
+                            <span class="company-tag major">현대제철</span>
+                            <span class="company-tag">동국제강</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 강관 -->
+                <div class="product-branch">
+                    <div class="branch-header">
+                        <div class="branch-icon icon-pipe">🔩</div>
+                        <div>
+                            <h4>강관</h4>
+                            <small>Steel Pipe</small>
+                        </div>
+                    </div>
+                    <div class="branch-content">
+                        <p class="use-case">열연강판을 롤 포밍. 수도관, 가스관, 건설, 원유산업에 사용</p>
+                        <div class="companies">
+                            <span class="company-tag">세아제강</span>
+                            <span class="company-tag">현대중공업</span>
+                            <span class="company-tag">특수강</span>
+                            <span class="company-tag">휴스틸</span>
+                            <span class="company-tag">동양철관</span>
+                            <span class="company-tag">금강공업</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 선재 -->
+                <div class="product-branch">
+                    <div class="branch-header">
+                        <div class="branch-icon icon-wire">🧵</div>
+                        <div>
+                            <h4>선재</h4>
+                            <small>Wire Rod</small>
+                        </div>
+                    </div>
+                    <div class="branch-content">
+                        <p class="use-case">빌레를 가공. 자동차 조향장치, 스프링, 볼트/너트 제작</p>
+                        <div class="companies">
+                            <span class="company-tag major">포스코</span>
+                            <span class="company-tag">고려제강</span>
+                            <span class="company-tag">조선선재</span>
+                            <span class="company-tag">세아창원특수강</span>
+                            <span class="company-tag">세아베스틸</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 철근 -->
+                <div class="product-branch">
+                    <div class="branch-header">
+                        <div class="branch-icon icon-rebar">🏗️</div>
+                        <div>
+                            <h4>철근</h4>
+                            <small>Rebar</small>
+                        </div>
+                    </div>
+                    <div class="branch-content">
+                        <p class="use-case">빌레에서 제작. 콘크리트 보강재로 건설산업에 필수</p>
+                        <div class="companies">
+                            <span class="company-tag major">현대제철</span>
+                            <span class="company-tag">동국제강</span>
+                            <span class="company-tag">대한제강</span>
+                            <span class="company-tag">한국철강</span>
+                            <span class="company-tag">YK스틸</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 형강/봉강 -->
+                <div class="product-branch">
+                    <div class="branch-header">
+                        <div class="branch-icon icon-shape">📏</div>
+                        <div>
+                            <h4>형강 / 봉강</h4>
+                            <small>Section / Bar Steel</small>
+                        </div>
+                    </div>
+                    <div class="branch-content">
+                        <p class="use-case">블룸을 추가 압연. H빔, I빔 등 건설/자동차 산업에 공급</p>
+                        <div class="companies">
+                            <span class="company-tag major">현대제철</span>
+                            <span class="company-tag">동국제강</span>
+                            <span class="company-tag">한국특수형강</span>
+                            <span class="company-tag">영흥철강</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 추가 설명 섹션 -->
+        <section class="section additional-section">
+            <div class="section-title">📚 추가 설명 (영상에서 다루지 않은 내용)</div>
+            
+            <div class="additional-grid">
+                <div class="additional-card">
+                    <h4>🌍 글로벌 철강 시장 현황</h4>
+                    <p>세계 철강 생산의 약 50% 이상을 중국이 차지하고 있으며, 이로 인한 공급 과잉이 글로벌 철강 가격에 큰 영향을 미칩니다.</p>
+                    <ul>
+                        <li>중국의 철강 과잉 생산 → 덤핑 이슈</li>
+                        <li>각국의 반덤핑 관세 부과 증가</li>
+                        <li>탈중국 공급망 재편 움직임</li>
+                    </ul>
+                </div>
+
+                <div class="additional-card">
+                    <h4>🌱 친환경 철강 (그린스틸)</h4>
+                    <p>탄소중립 시대, 철강산업의 가장 큰 과제입니다. 철강 생산은 전세계 CO₂ 배출의 약 7-8%를 차지합니다.</p>
+                    <ul>
+                        <li>수소환원제철: 석탄 대신 수소 사용</li>
+                        <li>전기로 비중 확대 (재활용 중심)</li>
+                        <li>탄소포집저장(CCS) 기술 개발</li>
+                        <li>포스코: 2050년 탄소중립 선언</li>
+                    </ul>
+                </div>
+
+                <div class="additional-card">
+                    <h4>💰 철강 원자재 가격 요인</h4>
+                    <p>철강 가격은 다양한 요인에 의해 변동됩니다. 투자/취업 시 주시해야 할 지표들입니다.</p>
+                    <ul>
+                        <li>철광석 가격 (호주, 브라질 수출가)</li>
+                        <li>원료탄(코킹콜) 가격</li>
+                        <li>철스크랩 가격</li>
+                        <li>전력비 (특히 전기로)</li>
+                        <li>환율 (원/달러)</li>
+                    </ul>
+                </div>
+
+                <div class="additional-card">
+                    <h4>🔧 고부가가치 특수강</h4>
+                    <p>일반 철강보다 높은 마진을 확보할 수 있는 영역입니다.</p>
+                    <ul>
+                        <li>자동차용 고장력강 (AHSS)</li>
+                        <li>전기차 모터코어용 전기강판</li>
+                        <li>조선용 후판 (LNG선 특수강)</li>
+                        <li>반도체 장비용 특수합금</li>
+                        <li>방산용 장갑강판</li>
+                    </ul>
+                </div>
+
+                <div class="additional-card">
+                    <h4>📈 철강주 투자 체크포인트</h4>
+                    <p>철강 관련 주식 투자 시 확인해야 할 핵심 지표들입니다.</p>
+                    <ul>
+                        <li>스프레드: 판매가 - 원재료비</li>
+                        <li>가동률: 공장 가동 비율</li>
+                        <li>재고 수준: 과잉 재고 여부</li>
+                        <li>수주잔고: 향후 매출 예측</li>
+                        <li>중국 철강 수출량 추이</li>
+                    </ul>
+                </div>
+
+                <div class="additional-card">
+                    <h4>🏢 수직계열화 구조</h4>
+                    <p>포스코, 현대제철은 상공정(제선)부터 하공정(압연)까지 보유한 일관제철소를 운영합니다.</p>
+                    <ul>
+                        <li>원가 경쟁력 확보</li>
+                        <li>품질 관리 용이</li>
+                        <li>시장 변화에 유연한 대응</li>
+                        <li>단, 대규모 설비투자 필요</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <h4>💡 취준생/투자자를 위한 핵심 인사이트</h4>
+                <p>
+                    철강산업은 <strong>경기 민감 산업</strong>입니다. 건설, 자동차, 조선 등 후방산업의 경기에 따라 수요가 크게 변동합니다.<br><br>
+                    예를 들어, 최근 조선업 호황으로 후판 수요가 증가하면 → 포스코, 현대제철, 동국제강의 후판 부문 실적이 개선됩니다.<br><br>
+                    반대로, 건설 경기 침체 시 철근/형강 수요가 감소하여 관련 업체들의 실적이 악화될 수 있습니다.<br><br>
+                    <strong style="color: var(--spark-orange);">Tip:</strong> 관심 기업이 어떤 제품군에 강점이 있는지 파악하고, 해당 후방산업의 동향을 함께 추적하세요!
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>🏭 국내 철강산업 구조 마인드맵 | 취준생 & 투자자를 위한 가이드</p>
+    </footer>
+
+    <script>
+        // 스크롤 애니메이션
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // 카드 호버 효과
+        document.querySelectorAll('.product-branch').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
